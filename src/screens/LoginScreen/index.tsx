@@ -1,5 +1,13 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, KeyboardAvoidingView, Platform, Alert } from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
+  Alert,
+  ScrollView,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useTheme } from '@/hooks/useTheme';
@@ -74,59 +82,65 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.keyboardView}
       >
-        <View style={styles.headerSection}>
-          <IconCircle icon="coffee" size="large" />
-          <Text style={styles.appName}>BestBrew</Text>
-          <Text style={styles.tagline}>Find your perfect coffee</Text>
-        </View>
+        <ScrollView
+          contentContainerStyle={styles.scrollContent}
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
+        >
+          <View style={styles.headerSection}>
+            <IconCircle icon="coffee" size="large" />
+            <Text style={styles.appName}>BestBrew</Text>
+            <Text style={styles.tagline}>Find your perfect coffee</Text>
+          </View>
 
-        <View style={styles.formSection}>
-          <View style={styles.inputWrapper}>
-            <Input
-              icon="email"
-              placeholder="Email"
-              value={email}
-              onChangeText={setEmail}
-              keyboardType="email-address"
-              autoCorrect={false}
+          <View style={styles.formSection}>
+            <View style={styles.inputWrapper}>
+              <Input
+                icon="email"
+                placeholder="Email"
+                value={email}
+                onChangeText={setEmail}
+                keyboardType="email-address"
+                autoCorrect={false}
+              />
+            </View>
+
+            <View style={styles.inputWrapper}>
+              <Input
+                icon="lock"
+                placeholder="Password"
+                value={password}
+                onChangeText={setPassword}
+                isPassword
+              />
+            </View>
+
+            <Button title="Sign In" onPress={handleLogin} isLoading={isLoading} />
+
+            <Divider text="or" />
+
+            <Button
+              title="Continue with Google"
+              onPress={handleGoogleLogin}
+              variant="secondary"
+              isLoading={isGoogleLoading}
+              icon={<MaterialIcons name="login" size={20} color={theme.colors.text} />}
             />
           </View>
 
-          <View style={styles.inputWrapper}>
-            <Input
-              icon="lock"
-              placeholder="Password"
-              value={password}
-              onChangeText={setPassword}
-              isPassword
-            />
-          </View>
-
-          <Button title="Sign In" onPress={handleLogin} isLoading={isLoading} />
-
-          <Divider text="or" />
-
-          <Button
-            title="Continue with Google"
-            onPress={handleGoogleLogin}
-            variant="secondary"
-            isLoading={isGoogleLoading}
-            icon={<MaterialIcons name="login" size={20} color={theme.colors.text} />}
-          />
-        </View>
-
-        <View style={styles.footerSection}>
-          <TouchableOpacity onPress={onNavigateToForgotPassword}>
-            <Text style={styles.linkText}>Forgot Password?</Text>
-          </TouchableOpacity>
-
-          <View style={styles.registerContainer}>
-            <Text style={styles.registerText}>Don't have an account? </Text>
-            <TouchableOpacity onPress={onNavigateToRegister}>
-              <Text style={styles.linkText}>Sign up</Text>
+          <View style={styles.footerSection}>
+            <TouchableOpacity onPress={onNavigateToForgotPassword}>
+              <Text style={styles.linkText}>Forgot Password?</Text>
             </TouchableOpacity>
+
+            <View style={styles.registerContainer}>
+              <Text style={styles.registerText}>Don't have an account? </Text>
+              <TouchableOpacity onPress={onNavigateToRegister}>
+                <Text style={styles.linkText}>Sign up</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
+        </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );

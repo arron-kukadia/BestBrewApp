@@ -20,7 +20,7 @@ import { createStyles } from './styles';
 
 interface RegisterScreenProps {
   onNavigateToLogin: () => void;
-  onNavigateToConfirm: (email: string) => void;
+  onNavigateToConfirm: (email: string, password: string) => void;
 }
 
 export const RegisterScreen: React.FC<RegisterScreenProps> = ({
@@ -60,7 +60,7 @@ export const RegisterScreen: React.FC<RegisterScreenProps> = ({
     setIsLoading(true);
     try {
       await authService.signUp({ email: email.trim(), password, name: name.trim() });
-      onNavigateToConfirm(email.trim());
+      onNavigateToConfirm(email.trim(), password);
     } catch (error: unknown) {
       const message =
         error instanceof Error ? error.message : 'Registration failed. Please try again.';

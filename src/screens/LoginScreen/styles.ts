@@ -11,13 +11,17 @@ export const createStyles = (theme: Theme) =>
     },
     keyboardView: {
       flex: 1,
+    },
+    scrollContent: {
+      flexGrow: 1,
       paddingHorizontal: theme.spacing.lg,
+      justifyContent: 'space-between',
+      paddingVertical: theme.spacing.xl,
     },
     headerSection: {
-      flex: 0.4,
-      justifyContent: 'center',
       alignItems: 'center',
       gap: theme.spacing.sm,
+      paddingTop: theme.spacing.xl,
     },
     appName: {
       ...theme.typography.h1,
@@ -29,16 +33,14 @@ export const createStyles = (theme: Theme) =>
       color: theme.colors.textSecondary,
     },
     formSection: {
-      flex: 0.4,
-      justifyContent: 'center',
+      paddingVertical: theme.spacing.xl,
     },
     inputWrapper: {
       marginBottom: theme.spacing.md,
     },
     footerSection: {
-      flex: 0.2,
-      justifyContent: 'center',
       alignItems: 'center',
+      paddingBottom: theme.spacing.md,
     },
     linkText: {
       ...theme.typography.bodySmMedium,

@@ -12,7 +12,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export const RootNavigator: React.FC = () => {
   const { colors } = useTheme();
-  const { isAuthenticated, isLoading, setUser, setLoading } = useAuthStore();
+  const { isAuthenticated, isLoading, setUser } = useAuthStore();
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -34,7 +34,7 @@ export const RootNavigator: React.FC = () => {
     };
 
     checkAuth();
-  }, [setUser, setLoading]);
+  }, [setUser]);
 
   if (isLoading) {
     return (

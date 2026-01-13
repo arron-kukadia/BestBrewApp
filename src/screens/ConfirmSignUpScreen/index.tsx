@@ -3,6 +3,7 @@ import { View, Text, TextInput, KeyboardAvoidingView, Platform, Alert } from 're
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTheme } from '@/hooks/useTheme';
 import { authService } from '@/services/authService';
+import { useAuthStore } from '@/stores/authStore';
 import { Button } from '@/components/common/Button';
 import { IconCircle } from '@/components/common/IconCircle';
 import { BackButton } from '@/components/common/BackButton';
@@ -10,18 +11,19 @@ import { createStyles } from './styles';
 
 interface ConfirmSignUpScreenProps {
   email: string;
-  onConfirmSuccess: () => void;
+  password: string;
   onBack: () => void;
 }
 
 export const ConfirmSignUpScreen: React.FC<ConfirmSignUpScreenProps> = ({
   email,
-  onConfirmSuccess,
+  password,
   onBack,
 }) => {
   const theme = useTheme();
   const styles = createStyles(theme);
 
+  const setUser = useAuthStore((state) => state.setUser);
   const [code, setCode] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -34,13 +36,20 @@ export const ConfirmSignUpScreen: React.FC<ConfirmSignUpScreenProps> = ({
     setIsLoading(true);
     try {
       await authService.confirmSignUp({ email, code: code.trim() });
-      Alert.alert('Success', 'Your account has been verified. Please sign in.', [
-        { text: 'OK', onPress: onConfirmSuccess },
-      ]);
+      await authService.signIn({ email, password });
+      const user = await authService.getCurrentUser();
+      if (user) {
+        setUser({
+          id: user.userId,
+          email: user.signInDetails?.loginId || email,
+          subscriptionStatus: 'free',
+          createdAt: new Date().toISOString(),
+        });
+      }
     } catch (error: unknown) {
       const message =
-        error instanceof Error ? error.message : 'Confirmation failed. Please try again.';
-      Alert.alert('Confirmation Failed', message);
+        error instanceof Error ? error.message : 'Verification failed. Please try again.';
+      Alert.alert('Verification Failed', message);
     } finally {
       setIsLoading(false);
     }

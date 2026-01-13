@@ -18,6 +18,7 @@ const Stack = createNativeStackNavigator<AuthStackParamList>();
 export const AuthNavigator: React.FC = () => {
   const { colors } = useTheme();
   const [confirmEmail, setConfirmEmail] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   return (
     <Stack.Navigator
@@ -38,8 +39,9 @@ export const AuthNavigator: React.FC = () => {
         {({ navigation }) => (
           <RegisterScreen
             onNavigateToLogin={() => navigation.navigate('Login')}
-            onNavigateToConfirm={(email) => {
+            onNavigateToConfirm={(email, password) => {
               setConfirmEmail(email);
+              setConfirmPassword(password);
               navigation.navigate('ConfirmSignUp', { email });
             }}
           />
@@ -49,7 +51,7 @@ export const AuthNavigator: React.FC = () => {
         {({ navigation }) => (
           <ConfirmSignUpScreen
             email={confirmEmail}
-            onConfirmSuccess={() => navigation.navigate('Login')}
+            password={confirmPassword}
             onBack={() => navigation.goBack()}
           />
         )}
