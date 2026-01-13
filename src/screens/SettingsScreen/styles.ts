@@ -62,5 +62,14 @@ export const createStyles = (theme: Theme) =>
     logoutContainer: {
       marginTop: 'auto',
       paddingBottom: theme.spacing.xl,
+      gap: theme.spacing.md,
+    },
+    deleteButton: {
+      alignItems: 'center',
+      paddingVertical: theme.spacing.sm,
+    },
+    deleteButtonText: {
+      ...theme.typography.bodySmMedium,
+      color: theme.colors.error,
     },
   });

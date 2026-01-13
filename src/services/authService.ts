@@ -8,6 +8,7 @@ import {
   getCurrentUser,
   fetchAuthSession,
   signInWithRedirect,
+  deleteUser,
 } from 'aws-amplify/auth';
 
 export interface SignUpParams {
@@ -104,5 +105,9 @@ export const authService = {
       confirmationCode: code,
       newPassword,
     });
+  },
+
+  deleteAccount: async () => {
+    await deleteUser();
   },
 };
