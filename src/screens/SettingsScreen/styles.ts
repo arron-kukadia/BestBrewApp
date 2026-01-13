@@ -34,6 +34,31 @@ export const createStyles = (theme: Theme) =>
       ...theme.typography.body,
       color: theme.colors.text,
     },
+    themeOptions: {
+      flexDirection: 'row',
+      gap: theme.spacing.sm,
+      marginTop: theme.spacing.sm,
+    },
+    themeOption: {
+      flex: 1,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: theme.spacing.xs,
+      paddingVertical: theme.spacing.sm,
+      borderRadius: theme.borderRadius.sm,
+      backgroundColor: theme.colors.surfaceVariant,
+    },
+    themeOptionActive: {
+      backgroundColor: theme.colors.primaryLight,
+    },
+    themeOptionText: {
+      ...theme.typography.bodySmMedium,
+      color: theme.colors.textSecondary,
+    },
+    themeOptionTextActive: {
+      color: theme.colors.primary,
+    },
     logoutContainer: {
       marginTop: 'auto',
       paddingBottom: theme.spacing.xl,
