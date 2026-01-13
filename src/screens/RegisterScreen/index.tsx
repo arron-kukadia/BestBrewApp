@@ -30,6 +30,7 @@ export const RegisterScreen: React.FC<RegisterScreenProps> = ({
   const theme = useTheme();
   const styles = createStyles(theme);
 
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -41,7 +42,7 @@ export const RegisterScreen: React.FC<RegisterScreenProps> = ({
   };
 
   const handleRegister = async () => {
-    if (!email.trim() || !password.trim() || !confirmPassword.trim()) {
+    if (!name.trim() || !email.trim() || !password.trim() || !confirmPassword.trim()) {
       Alert.alert('Error', 'Please fill in all fields');
       return;
     }
@@ -58,7 +59,7 @@ export const RegisterScreen: React.FC<RegisterScreenProps> = ({
 
     setIsLoading(true);
     try {
-      await authService.signUp({ email: email.trim(), password });
+      await authService.signUp({ email: email.trim(), password, name: name.trim() });
       onNavigateToConfirm(email.trim());
     } catch (error: unknown) {
       const message =
@@ -99,6 +100,16 @@ export const RegisterScreen: React.FC<RegisterScreenProps> = ({
           </View>
 
           <View style={styles.formSection}>
+            <View style={styles.inputWrapper}>
+              <Input
+                icon="person"
+                placeholder="Name"
+                value={name}
+                onChangeText={setName}
+                autoCorrect={false}
+              />
+            </View>
+
             <View style={styles.inputWrapper}>
               <Input
                 icon="email"

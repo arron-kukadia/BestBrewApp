@@ -13,6 +13,7 @@ import {
 export interface SignUpParams {
   email: string;
   password: string;
+  name: string;
 }
 
 export interface SignInParams {
@@ -36,13 +37,14 @@ export interface ConfirmResetPasswordParams {
 }
 
 export const authService = {
-  signUp: async ({ email, password }: SignUpParams) => {
+  signUp: async ({ email, password, name }: SignUpParams) => {
     const result = await signUp({
       username: email,
       password,
       options: {
         userAttributes: {
           email,
+          given_name: name,
         },
       },
     });
