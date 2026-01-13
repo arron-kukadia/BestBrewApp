@@ -1,18 +1,11 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  KeyboardAvoidingView,
-  Platform,
-  ActivityIndicator,
-  Alert,
-} from 'react-native';
+import { View, Text, TextInput, KeyboardAvoidingView, Platform, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { MaterialIcons } from '@expo/vector-icons';
 import { useTheme } from '@/hooks/useTheme';
 import { authService } from '@/services/authService';
+import { Button } from '@/components/common/Button';
+import { IconCircle } from '@/components/common/IconCircle';
+import { BackButton } from '@/components/common/BackButton';
 import { createStyles } from './styles';
 
 interface ConfirmSignUpScreenProps {
@@ -59,14 +52,10 @@ export const ConfirmSignUpScreen: React.FC<ConfirmSignUpScreenProps> = ({
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.keyboardView}
       >
-        <TouchableOpacity style={styles.backButton} onPress={onBack}>
-          <MaterialIcons name="arrow-back" size={24} color={theme.colors.text} />
-        </TouchableOpacity>
+        <BackButton onPress={onBack} />
 
         <View style={styles.contentSection}>
-          <View style={styles.iconContainer}>
-            <MaterialIcons name="mark-email-read" size={64} color={theme.colors.primary} />
-          </View>
+          <IconCircle icon="mark-email-read" size="large" />
 
           <Text style={styles.title}>Verify Your Email</Text>
           <Text style={styles.subtitle}>We've sent a verification code to</Text>
@@ -85,17 +74,7 @@ export const ConfirmSignUpScreen: React.FC<ConfirmSignUpScreenProps> = ({
             />
           </View>
 
-          <TouchableOpacity
-            style={styles.primaryButton}
-            onPress={handleConfirm}
-            disabled={isLoading}
-          >
-            {isLoading ? (
-              <ActivityIndicator color={theme.colors.textInverse} />
-            ) : (
-              <Text style={styles.primaryButtonText}>Verify</Text>
-            )}
-          </TouchableOpacity>
+          <Button title="Verify" onPress={handleConfirm} isLoading={isLoading} />
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
