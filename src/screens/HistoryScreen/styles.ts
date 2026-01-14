@@ -8,16 +8,36 @@ export const createStyles = (theme: Theme) =>
     container: {
       flex: 1,
       backgroundColor: theme.colors.background,
-      padding: theme.spacing.md,
+    },
+    header: {
+      paddingHorizontal: theme.spacing.lg,
+      paddingTop: theme.spacing.md,
+      paddingBottom: theme.spacing.sm,
     },
     title: {
       ...theme.typography.h1,
       color: theme.colors.text,
-      marginTop: theme.spacing.xl,
     },
     subtitle: {
       ...theme.typography.body,
       color: theme.colors.textSecondary,
-      marginTop: theme.spacing.sm,
+      marginTop: theme.spacing.xs,
+    },
+    searchSection: {
+      paddingHorizontal: theme.spacing.lg,
+      paddingBottom: theme.spacing.md,
+      gap: theme.spacing.sm,
+    },
+    listContent: {
+      paddingHorizontal: theme.spacing.lg,
+      paddingBottom: theme.spacing.xl,
+    },
+    separator: {
+      height: theme.spacing.md,
+    },
+    emptyContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      paddingHorizontal: theme.spacing.lg,
     },
   })
