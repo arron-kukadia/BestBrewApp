@@ -27,9 +27,9 @@ const getColorsForMode = (mode: ThemeMode, systemIsDark: boolean) => {
 export const useThemeStore = create<ThemeState>()(
   persist(
     (set, get) => ({
-      mode: 'system',
-      isDark: false,
-      colors: lightColors,
+      mode: 'dark',
+      isDark: true,
+      colors: darkColors,
       hasHydrated: false,
 
       setMode: (mode: ThemeMode) => {
