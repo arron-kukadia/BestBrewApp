@@ -126,6 +126,14 @@ export const AddEntryScreen: React.FC<AddEntryScreenProps> = ({ onBack, onSucces
       Alert.alert('Error', 'Please add a rating')
       return false
     }
+    if (!formData.roastLevel) {
+      Alert.alert('Error', 'Please select a roast level')
+      return false
+    }
+    if (!formData.grindType) {
+      Alert.alert('Error', 'Please select a grind type')
+      return false
+    }
     return true
   }
 
@@ -140,8 +148,8 @@ export const AddEntryScreen: React.FC<AddEntryScreenProps> = ({ onBack, onSucces
         brand: formData.brand.trim(),
         name: formData.name.trim(),
         origin: formData.origin.trim() || 'Unknown',
-        roastLevel: formData.roastLevel,
-        grindType: formData.grindType,
+        roastLevel: formData.roastLevel!,
+        grindType: formData.grindType!,
         processMethod: formData.processMethod || undefined,
         rating: formData.rating,
         notes: formData.notes.trim(),

@@ -34,7 +34,7 @@ export const Input: React.FC<InputProps> = ({
         style={styles.input}
         placeholderTextColor={theme.colors.textTertiary}
         secureTextEntry={isPassword && !showPassword}
-        autoCapitalize="none"
+        autoCapitalize={isPassword ? 'none' : 'sentences'}
         {...textInputProps}
       />
       {isPassword && (
