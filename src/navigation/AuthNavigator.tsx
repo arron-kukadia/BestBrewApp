@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { WelcomeScreen } from '@/screens/WelcomeScreen';
 import { LoginScreen } from '@/screens/LoginScreen';
 import { RegisterScreen } from '@/screens/RegisterScreen';
 import { ConfirmSignUpScreen } from '@/screens/ConfirmSignUpScreen';
@@ -7,6 +8,7 @@ import { ForgotPasswordScreen } from '@/screens/ForgotPasswordScreen';
 import { useTheme } from '@/hooks/useTheme';
 
 type AuthStackParamList = {
+  Welcome: undefined;
   Login: undefined;
   Register: undefined;
   ConfirmSignUp: { email: string };
@@ -27,6 +29,14 @@ export const AuthNavigator: React.FC = () => {
         contentStyle: { backgroundColor: colors.background },
       }}
     >
+      <Stack.Screen name="Welcome">
+        {({ navigation }) => (
+          <WelcomeScreen
+            onNavigateToLogin={() => navigation.navigate('Login')}
+            onNavigateToRegister={() => navigation.navigate('Register')}
+          />
+        )}
+      </Stack.Screen>
       <Stack.Screen name="Login">
         {({ navigation }) => (
           <LoginScreen
