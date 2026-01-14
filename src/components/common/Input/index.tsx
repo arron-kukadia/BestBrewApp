@@ -38,7 +38,11 @@ export const Input: React.FC<InputProps> = ({
         {...textInputProps}
       />
       {isPassword && (
-        <Pressable onPress={() => setShowPassword(!showPassword)} style={styles.eyeIcon}>
+        <Pressable
+          onPress={() => setShowPassword(!showPassword)}
+          style={styles.eyeIcon}
+          testID="password-toggle"
+        >
           <MaterialIcons
             name={showPassword ? 'visibility' : 'visibility-off'}
             size={20}

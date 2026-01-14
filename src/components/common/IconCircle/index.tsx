@@ -23,7 +23,7 @@ export const IconCircle: React.FC<IconCircleProps> = ({ icon, size = 'large' }) 
   const iconSize = size === 'small' ? 32 : size === 'medium' ? 48 : 64;
 
   return (
-    <View style={containerStyle}>
+    <View style={containerStyle} testID="icon-circle">
       <MaterialIcons name={icon} size={iconSize} color={theme.colors.primary} />
     </View>
   );

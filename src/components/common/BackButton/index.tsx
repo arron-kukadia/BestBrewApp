@@ -13,7 +13,7 @@ export const BackButton: React.FC<BackButtonProps> = ({ onPress }) => {
   const styles = createStyles(theme);
 
   return (
-    <Pressable style={styles.button} onPress={onPress}>
+    <Pressable style={styles.button} onPress={onPress} testID="back-button">
       <MaterialIcons name="arrow-back" size={24} color={theme.colors.text} />
     </Pressable>
   );
