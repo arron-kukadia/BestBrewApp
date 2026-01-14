@@ -24,8 +24,9 @@ export const createStyles = (theme: Theme) =>
       borderColor: theme.colors.border,
     },
     outline: {
-      backgroundColor: theme.colors.primaryLight,
-      borderWidth: 0,
+      backgroundColor: theme.colors.surface,
+      borderWidth: 1,
+      borderColor: theme.colors.primary,
     },
     disabled: {
       opacity: 0.5,
