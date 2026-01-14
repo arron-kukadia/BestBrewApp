@@ -1,6 +1,8 @@
 import React from 'react'
-import { Platform } from 'react-native'
+import { Platform, View, Pressable, StyleSheet } from 'react-native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { useNavigation } from '@react-navigation/native'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { MaterialIcons } from '@expo/vector-icons'
 import { HomeScreen } from '@/screens/HomeScreen'
@@ -8,9 +10,28 @@ import { HistoryScreen } from '@/screens/HistoryScreen'
 import { DiscoveryScreen } from '@/screens/DiscoveryScreen'
 import { SettingsScreen } from '@/screens/SettingsScreen'
 import { useTheme } from '@/hooks/useTheme'
-import { MainTabParamList } from '@/types'
+import { MainTabParamList, RootStackParamList } from '@/types'
 
 const Tab = createBottomTabNavigator<MainTabParamList>()
+
+type NavigationProp = NativeStackNavigationProp<RootStackParamList>
+
+const AddButton: React.FC = () => {
+  const { colors } = useTheme()
+  const navigation = useNavigation<NavigationProp>()
+
+  return (
+    <View style={styles.addButtonWrapper}>
+      <Pressable
+        style={[styles.addButton, { backgroundColor: colors.primary }]}
+        onPress={() => navigation.navigate('AddEntry')}
+        testID="add-coffee-button"
+      >
+        <MaterialIcons name="add" size={28} color="#FFFFFF" />
+      </Pressable>
+    </View>
+  )
+}
 
 export const TabNavigator: React.FC = () => {
   const { colors } = useTheme()
@@ -55,9 +76,23 @@ export const TabNavigator: React.FC = () => {
         }}
       />
       <Tab.Screen
+        name="Add"
+        component={View}
+        options={{
+          tabBarButton: () => <AddButton />,
+          tabBarLabel: () => null,
+        }}
+        listeners={{
+          tabPress: (e) => {
+            e.preventDefault()
+          },
+        }}
+      />
+      <Tab.Screen
         name="Discovery"
         component={DiscoveryScreen}
         options={{
+          tabBarLabel: 'Discover',
           tabBarIcon: ({ color, size }) => (
             <MaterialIcons name="explore" size={size} color={color} />
           ),
@@ -75,3 +110,20 @@ export const TabNavigator: React.FC = () => {
     </Tab.Navigator>
   )
 }
+
+const styles = StyleSheet.create({
+  addButtonWrapper: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    paddingBottom: 4,
+  },
+  addButton: {
+    width: 52,
+    height: 52,
+    borderRadius: 26,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+})

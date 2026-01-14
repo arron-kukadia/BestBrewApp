@@ -1,8 +1,11 @@
 import React from 'react'
 import { View, Text, ScrollView } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { useNavigation } from '@react-navigation/native'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { useTheme } from '@/hooks/useTheme'
 import { useAuthStore } from '@/stores/authStore'
+import { RootStackParamList } from '@/types'
 import { SectionHeader } from '@/components/common/SectionHeader'
 import { StatCard } from '@/components/common/StatCard'
 import { ActivityCard } from '@/components/common/ActivityCard'
@@ -16,13 +19,20 @@ const getGreeting = () => {
   return 'Good Evening'
 }
 
+type NavigationProp = NativeStackNavigationProp<RootStackParamList>
+
 export const HomeScreen: React.FC = () => {
   const theme = useTheme()
   const styles = createStyles(theme)
+  const navigation = useNavigation<NavigationProp>()
   const user = useAuthStore((state) => state.user)
 
   const userName = user?.name || user?.email?.split('@')[0] || 'Coffee Lover'
   const hasEntries = false
+
+  const handleAddCoffee = () => {
+    navigation.navigate('AddEntry')
+  }
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
@@ -67,7 +77,7 @@ export const HomeScreen: React.FC = () => {
               title="No coffees explored yet"
               description="Start tracking your coffee journey and receive personalized recommendations by adding your first entry"
               actionLabel="Start Your Journey"
-              onAction={() => {}}
+              onAction={handleAddCoffee}
             />
           )}
         </View>

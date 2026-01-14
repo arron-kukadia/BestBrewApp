@@ -2,8 +2,11 @@ import React from 'react'
 import { View, Text } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { FlashList } from '@shopify/flash-list'
+import { useNavigation } from '@react-navigation/native'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { useTheme } from '@/hooks/useTheme'
 import { useCoffeeStore } from '@/stores/coffeeStore'
+import { RootStackParamList } from '@/types'
 import { SearchBar } from '@/components/common/SearchBar'
 import { FilterChips } from '@/components/common/FilterChips'
 import { CoffeeCard } from '@/components/common/CoffeeCard'
@@ -18,9 +21,12 @@ const roastOptions = [
   { label: 'Dark', value: 'dark' as const },
 ]
 
+type NavigationProp = NativeStackNavigationProp<RootStackParamList>
+
 export const HistoryScreen: React.FC = () => {
   const theme = useTheme()
   const styles = createStyles(theme)
+  const navigation = useNavigation<NavigationProp>()
 
   const searchQuery = useCoffeeStore((state) => state.searchQuery)
   const setSearchQuery = useCoffeeStore((state) => state.setSearchQuery)
@@ -79,6 +85,8 @@ export const HistoryScreen: React.FC = () => {
               if (searchQuery) {
                 setSearchQuery('')
                 setSelectedRoastLevel(null)
+              } else {
+                navigation.navigate('AddEntry')
               }
             }}
           />

@@ -4,6 +4,9 @@ import { HomeScreen } from './index'
 import { useAuthStore } from '@/stores/authStore'
 
 jest.mock('@/stores/authStore')
+jest.mock('@react-navigation/native', () => ({
+  useNavigation: () => ({ navigate: jest.fn() }),
+}))
 
 describe('HomeScreen', () => {
   beforeEach(() => {

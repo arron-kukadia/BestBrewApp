@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { ActivityIndicator, View, StyleSheet } from 'react-native'
 import { TabNavigator } from '@/navigation/TabNavigator'
 import { AuthNavigator } from '@/navigation/AuthNavigator'
+import { AddEntryScreen } from '@/screens/AddEntryScreen'
 import { RootStackParamList } from '@/types/index'
 import { useTheme } from '@/hooks/useTheme'
 import { useAuthStore } from '@/stores/authStore'
@@ -54,7 +55,17 @@ export const RootNavigator: React.FC = () => {
       }}
     >
       {isAuthenticated ? (
-        <Stack.Screen name="MainTabs" component={TabNavigator} />
+        <>
+          <Stack.Screen name="MainTabs" component={TabNavigator} />
+          <Stack.Screen name="AddEntry">
+            {({ navigation }) => (
+              <AddEntryScreen
+                onBack={() => navigation.goBack()}
+                onSuccess={() => navigation.goBack()}
+              />
+            )}
+          </Stack.Screen>
+        </>
       ) : (
         <Stack.Screen name="Auth" component={AuthNavigator} />
       )}
