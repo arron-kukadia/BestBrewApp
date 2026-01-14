@@ -9,4 +9,4 @@ module.exports = {
   },
   testMatch: ['**/*.test.ts', '**/*.test.tsx'],
   collectCoverageFrom: ['src/**/*.{ts,tsx}', '!src/**/*.d.ts', '!src/mocks/**', '!src/types/**'],
-};
+}
