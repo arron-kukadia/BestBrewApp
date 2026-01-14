@@ -9,7 +9,7 @@ export const createStyles = (theme: Theme) =>
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
-      padding: theme.spacing.xl,
+      marginVertical: theme.spacing.xl,
     },
     iconContainer: {
       width: 96,
@@ -30,7 +30,6 @@ export const createStyles = (theme: Theme) =>
       ...theme.typography.body,
       color: theme.colors.textSecondary,
       textAlign: 'center',
-      maxWidth: 280,
     },
     buttonContainer: {
       marginTop: theme.spacing.lg,

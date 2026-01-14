@@ -41,32 +41,31 @@ export const HomeScreen: React.FC = () => {
         <View style={styles.statsRow}>
           <StatCard icon="coffee" label="Coffees Curated" value={0} />
           <StatCard icon="star" label="Avg Rating" value="-" color={theme.colors.rating} />
-          <StatCard
-            icon="local-fire-department"
-            label="This Week"
-            value={0}
-            color={theme.colors.warning}
-          />
         </View>
 
         <View style={styles.section}>
-          <SectionHeader title="Recent Activity" actionText="See all" onActionPress={() => {}} />
-
           {hasEntries ? (
-            <View style={styles.activityList}>
-              <ActivityCard
-                icon="coffee"
-                title="Ethiopian Yirgacheffe"
-                subtitle="Light roast • Pour over"
-                meta="Today"
-                onPress={() => {}}
+            <>
+              <SectionHeader
+                title="Recent Activity"
+                actionText="See all"
+                onActionPress={() => {}}
               />
-            </View>
+              <View style={styles.activityList}>
+                <ActivityCard
+                  icon="coffee"
+                  title="Ethiopian Yirgacheffe"
+                  subtitle="Light roast • Pour over"
+                  meta="Today"
+                  onPress={() => {}}
+                />
+              </View>
+            </>
           ) : (
             <EmptyState
               icon="coffee"
               title="No coffees explored yet"
-              description="Start tracking your coffee journey by adding your first entry"
+              description="Start tracking your coffee journey and receive personalized recommendations by adding your first entry"
               actionLabel="Start Your Journey"
               onAction={() => {}}
             />

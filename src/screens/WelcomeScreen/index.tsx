@@ -35,7 +35,7 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
         <Text style={styles.brand}>BestBrew</Text>
         <Text style={styles.headline}>Your Personal Coffee Journey</Text>
         <Text style={styles.description}>
-          Track every bag of coffee, discover new flavors, and find the perfect brew tailored to
+          Track every bag of coffee, discover new flavors, and find the perfect coffee tailored to
           your taste.
         </Text>
       </View>
