@@ -19,6 +19,6 @@ export const createStyles = (theme: Theme) =>
       ...theme.typography.bodySmMedium,
     },
     labelSelected: {
-      color: '#FFFFFF',
+      color: theme.colors.surface,
     },
   })

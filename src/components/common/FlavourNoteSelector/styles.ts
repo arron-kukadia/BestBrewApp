@@ -26,17 +26,15 @@ export const createStyles = (theme: Theme) =>
       paddingHorizontal: theme.spacing.md,
       paddingVertical: theme.spacing.sm,
       borderRadius: theme.borderRadius.full,
-      backgroundColor: theme.colors.surface,
-      borderWidth: 1,
-      borderColor: theme.colors.border,
+      backgroundColor: `${theme.colors.primary}15`,
     },
     chipSelected: {
       backgroundColor: theme.colors.primary,
       borderColor: theme.colors.primary,
     },
     chipText: {
-      ...theme.typography.bodySm,
-      color: theme.colors.text,
+      ...theme.typography.bodySmMedium,
+      color: theme.colors.primary,
     },
     chipTextSelected: {
       color: theme.colors.surface,

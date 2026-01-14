@@ -37,8 +37,8 @@ export interface CoffeeFormData {
   brand: string
   name: string
   origin: string
-  roastLevel: Coffee['roastLevel']
-  grindType: Coffee['grindType']
+  roastLevel: Coffee['roastLevel'] | null
+  grindType: Coffee['grindType'] | null
   processMethod: ProcessMethod | null
   rating: number
   notes: string
