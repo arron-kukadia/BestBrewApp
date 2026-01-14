@@ -13,6 +13,7 @@ import { SelectChips } from '@/components/common/SelectChips'
 import { FlavourNoteSelector } from '@/components/common/FlavourNoteSelector'
 import { StarRating } from '@/components/common/StarRating'
 import { CollapsibleSection } from '@/components/common/CollapsibleSection'
+import Animated, { FadeInRight, FadeOutRight } from 'react-native-reanimated'
 import { Coffee, CoffeeFormData } from '@/types'
 import { createStyles } from './styles'
 
@@ -247,12 +248,17 @@ export const AddEntryScreen: React.FC<AddEntryScreenProps> = ({ onBack, onSucces
               onSelect={(value) => updateField('bagSize', value)}
             />
             {formData.bagSize === 'other' && (
-              <Input
-                icon="scale"
-                placeholder="Custom weight (e.g., 340g)"
-                value={formData.customBagSize}
-                onChangeText={(text) => updateField('customBagSize', text)}
-              />
+              <Animated.View
+                entering={FadeInRight.duration(200)}
+                exiting={FadeOutRight.duration(150)}
+              >
+                <Input
+                  icon="scale"
+                  placeholder="Custom weight (e.g., 340g)"
+                  value={formData.customBagSize}
+                  onChangeText={(text) => updateField('customBagSize', text)}
+                />
+              </Animated.View>
             )}
             <Input
               icon="store"

@@ -1,6 +1,7 @@
 import React from 'react'
 import { View, Text, Pressable } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
+import Animated, { FadeInUp, FadeOutUp } from 'react-native-reanimated'
 import { useTheme } from '@/hooks/useTheme'
 import { FlavourNote } from '@/types'
 import { createStyles } from './styles'
@@ -56,7 +57,11 @@ export const FlavourNoteSelector: React.FC<FlavourNoteSelectorProps> = ({
                 )}
               </Pressable>
               {selected && (
-                <View style={styles.intensityRow}>
+                <Animated.View
+                  entering={FadeInUp.duration(150)}
+                  exiting={FadeOutUp.duration(150)}
+                  style={styles.intensityRow}
+                >
                   {([1, 2, 3] as const).map((level) => (
                     <Pressable
                       key={level}
@@ -76,7 +81,7 @@ export const FlavourNoteSelector: React.FC<FlavourNoteSelectorProps> = ({
                       </Text>
                     </Pressable>
                   ))}
-                </View>
+                </Animated.View>
               )}
             </View>
           )

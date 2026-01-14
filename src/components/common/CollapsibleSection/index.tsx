@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { View, Text, Pressable } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
+import Animated, { FadeInUp, FadeOutUp } from 'react-native-reanimated'
 import { useTheme } from '@/hooks/useTheme'
 import { createStyles } from './styles'
 
@@ -29,7 +30,15 @@ export const CollapsibleSection: React.FC<CollapsibleSectionProps> = ({
           color={theme.colors.primary}
         />
       </Pressable>
-      {isExpanded && <View style={styles.content}>{children}</View>}
+      {isExpanded && (
+        <Animated.View
+          entering={FadeInUp.duration(200)}
+          exiting={FadeOutUp.duration(150)}
+          style={styles.content}
+        >
+          {children}
+        </Animated.View>
+      )}
     </View>
   )
 }
