@@ -1,12 +1,8 @@
 import React, { useState } from 'react'
-import { View, Text, Pressable, LayoutAnimation, Platform, UIManager } from 'react-native'
+import { View, Text, Pressable } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
 import { useTheme } from '@/hooks/useTheme'
 import { createStyles } from './styles'
-
-if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
-  UIManager.setLayoutAnimationEnabledExperimental(true)
-}
 
 interface CollapsibleSectionProps {
   title: string
@@ -23,14 +19,9 @@ export const CollapsibleSection: React.FC<CollapsibleSectionProps> = ({
   const styles = createStyles(theme)
   const [isExpanded, setIsExpanded] = useState(defaultExpanded)
 
-  const toggleExpanded = () => {
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
-    setIsExpanded(!isExpanded)
-  }
-
   return (
     <View style={styles.container}>
-      <Pressable style={styles.header} onPress={toggleExpanded}>
+      <Pressable style={styles.header} onPress={() => setIsExpanded(!isExpanded)}>
         <Text style={styles.title}>{title}</Text>
         <MaterialIcons
           name={isExpanded ? 'expand-less' : 'expand-more'}
