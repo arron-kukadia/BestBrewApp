@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, TouchableOpacity, TextInputProps } from 'react-native';
+import { View, TextInput, Pressable, TextInputProps } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useTheme } from '@/hooks/useTheme';
 import { createStyles } from './styles';
@@ -38,13 +38,13 @@ export const Input: React.FC<InputProps> = ({
         {...textInputProps}
       />
       {isPassword && (
-        <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.eyeIcon}>
+        <Pressable onPress={() => setShowPassword(!showPassword)} style={styles.eyeIcon}>
           <MaterialIcons
             name={showPassword ? 'visibility' : 'visibility-off'}
             size={20}
             color={theme.colors.textTertiary}
           />
-        </TouchableOpacity>
+        </Pressable>
       )}
     </View>
   );

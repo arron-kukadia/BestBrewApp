@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, Text, ActivityIndicator } from 'react-native';
+import { Pressable, Text, ActivityIndicator } from 'react-native';
 import { useTheme } from '@/hooks/useTheme';
 import { createStyles } from './styles';
 
@@ -39,11 +39,10 @@ export const Button: React.FC<ButtonProps> = ({
   ];
 
   return (
-    <TouchableOpacity
-      style={buttonStyle}
+    <Pressable
+      style={({ pressed }) => [buttonStyle, pressed && { opacity: 0.8 }]}
       onPress={onPress}
       disabled={disabled || isLoading}
-      activeOpacity={0.8}
     >
       {isLoading ? (
         <ActivityIndicator
@@ -55,6 +54,6 @@ export const Button: React.FC<ButtonProps> = ({
           <Text style={textStyle}>{title}</Text>
         </>
       )}
-    </TouchableOpacity>
+    </Pressable>
   );
 };

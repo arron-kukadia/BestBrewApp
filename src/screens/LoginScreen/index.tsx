@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {
   View,
   Text,
-  TouchableOpacity,
+  Pressable,
   KeyboardAvoidingView,
   Platform,
   Alert,
@@ -131,15 +131,15 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
           </View>
 
           <View style={styles.footerSection}>
-            <TouchableOpacity onPress={onNavigateToForgotPassword}>
+            <Pressable onPress={onNavigateToForgotPassword}>
               <Text style={styles.linkText}>Forgot Password?</Text>
-            </TouchableOpacity>
+            </Pressable>
 
             <View style={styles.registerContainer}>
               <Text style={styles.registerText}>Don't have an account? </Text>
-              <TouchableOpacity onPress={onNavigateToRegister}>
+              <Pressable onPress={onNavigateToRegister}>
                 <Text style={styles.linkText}>Sign up</Text>
-              </TouchableOpacity>
+              </Pressable>
             </View>
           </View>
         </ScrollView>
