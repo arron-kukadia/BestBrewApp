@@ -13,6 +13,7 @@ import { SelectChips } from '@/components/common/SelectChips'
 import { FlavourNoteSelector } from '@/components/common/FlavourNoteSelector'
 import { StarRating } from '@/components/common/StarRating'
 import { CollapsibleSection } from '@/components/common/CollapsibleSection'
+import { SuccessModal } from '@/components/common/SuccessModal'
 import Animated, { FadeInRight, FadeOutRight } from 'react-native-reanimated'
 import { Coffee, CoffeeFormData } from '@/types'
 import { createStyles } from './styles'
@@ -86,6 +87,7 @@ export const AddEntryScreen: React.FC<AddEntryScreenProps> = ({ onBack, onSucces
     purchaseLocation: '',
   })
   const [isLoading, setIsLoading] = useState(false)
+  const [showSuccess, setShowSuccess] = useState(false)
 
   const updateField = <FieldKey extends keyof CoffeeFormData>(
     key: FieldKey,
@@ -166,7 +168,7 @@ export const AddEntryScreen: React.FC<AddEntryScreenProps> = ({ onBack, onSucces
       }
 
       addCoffee(coffee)
-      Alert.alert('Success', 'Coffee entry added!', [{ text: 'OK', onPress: onSuccess }])
+      setShowSuccess(true)
     } catch {
       Alert.alert('Error', 'Failed to add coffee entry')
     } finally {
@@ -304,6 +306,16 @@ export const AddEntryScreen: React.FC<AddEntryScreenProps> = ({ onBack, onSucces
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
+
+      <SuccessModal
+        visible={showSuccess}
+        title="Coffee Added!"
+        message="Your coffee has been saved to your collection."
+        onClose={() => {
+          setShowSuccess(false)
+          onSuccess()
+        }}
+      />
     </SafeAreaView>
   )
 }

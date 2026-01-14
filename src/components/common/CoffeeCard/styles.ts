@@ -66,4 +66,8 @@ export const createStyles = (theme: Theme) =>
       ...theme.typography.bodySm,
       color: theme.colors.textTertiary,
     },
+    flavourNotes: {
+      ...theme.typography.bodySm,
+      color: theme.colors.primary,
+    },
   })

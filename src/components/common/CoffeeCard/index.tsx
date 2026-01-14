@@ -71,6 +71,12 @@ export const CoffeeCard: React.FC<CoffeeCardProps> = ({ coffee, onPress, onFavor
           </View>
         </View>
 
+        {coffee.flavourNotes && coffee.flavourNotes.length > 0 && (
+          <Text style={styles.flavourNotes} numberOfLines={1}>
+            {coffee.flavourNotes.map((note) => note.name).join(' • ')}
+          </Text>
+        )}
+
         <View style={styles.footer}>
           <View style={styles.rating}>
             <MaterialIcons name="star" size={16} color={theme.colors.rating} />

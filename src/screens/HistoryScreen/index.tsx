@@ -28,14 +28,45 @@ export const HistoryScreen: React.FC = () => {
   const styles = createStyles(theme)
   const navigation = useNavigation<NavigationProp>()
 
+  const coffees = useCoffeeStore((state) => state.coffees)
   const searchQuery = useCoffeeStore((state) => state.searchQuery)
   const setSearchQuery = useCoffeeStore((state) => state.setSearchQuery)
   const selectedRoastLevel = useCoffeeStore((state) => state.selectedRoastLevel)
   const setSelectedRoastLevel = useCoffeeStore((state) => state.setSelectedRoastLevel)
   const toggleFavorite = useCoffeeStore((state) => state.toggleFavorite)
-  const getFilteredCoffees = useCoffeeStore((state) => state.getFilteredCoffees)
+  const sortBy = useCoffeeStore((state) => state.sortBy)
 
-  const coffees = getFilteredCoffees()
+  const filteredCoffees = React.useMemo(() => {
+    let filtered = [...coffees]
+
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase()
+      filtered = filtered.filter(
+        (c) =>
+          c.name.toLowerCase().includes(query) ||
+          c.brand.toLowerCase().includes(query) ||
+          c.origin.toLowerCase().includes(query)
+      )
+    }
+
+    if (selectedRoastLevel) {
+      filtered = filtered.filter((c) => c.roastLevel === selectedRoastLevel)
+    }
+
+    switch (sortBy) {
+      case 'rating':
+        filtered.sort((a, b) => b.rating - a.rating)
+        break
+      case 'name':
+        filtered.sort((a, b) => a.name.localeCompare(b.name))
+        break
+      case 'recent':
+      default:
+        filtered.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+    }
+
+    return filtered
+  }, [coffees, searchQuery, selectedRoastLevel, sortBy])
 
   const renderCoffeeCard = ({ item }: { item: Coffee }) => (
     <CoffeeCard coffee={item} onPress={() => {}} onFavoritePress={() => toggleFavorite(item.id)} />
@@ -61,9 +92,9 @@ export const HistoryScreen: React.FC = () => {
         />
       </View>
 
-      {coffees.length > 0 ? (
+      {filteredCoffees.length > 0 ? (
         <FlashList
-          data={coffees}
+          data={filteredCoffees}
           renderItem={renderCoffeeCard}
           estimatedItemSize={120}
           contentContainerStyle={styles.listContent}
