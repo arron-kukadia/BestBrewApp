@@ -1,16 +1,16 @@
-import React from 'react';
-import { View, ViewProps } from 'react-native';
-import { useTheme } from '@/hooks/useTheme';
-import { createStyles } from './styles';
+import React from 'react'
+import { View, ViewProps } from 'react-native'
+import { useTheme } from '@/hooks/useTheme'
+import { createStyles } from './styles'
 
 interface CardProps extends ViewProps {
-  children: React.ReactNode;
-  variant?: 'default' | 'elevated' | 'outlined';
+  children: React.ReactNode
+  variant?: 'default' | 'elevated' | 'outlined'
 }
 
 export const Card: React.FC<CardProps> = ({ children, variant = 'default', style, ...props }) => {
-  const theme = useTheme();
-  const styles = createStyles(theme);
+  const theme = useTheme()
+  const styles = createStyles(theme)
 
   return (
     <View
@@ -24,5 +24,5 @@ export const Card: React.FC<CardProps> = ({ children, variant = 'default', style
     >
       {children}
     </View>
-  );
-};
+  )
+}

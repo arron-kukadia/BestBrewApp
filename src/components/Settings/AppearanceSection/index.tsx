@@ -1,24 +1,24 @@
-import React from 'react';
-import { View, Text, Pressable } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
-import { useTheme } from '@/hooks/useTheme';
-import { createStyles } from '@/screens/SettingsScreen/styles';
+import React from 'react'
+import { View, Text, Pressable } from 'react-native'
+import { MaterialIcons } from '@expo/vector-icons'
+import { useTheme } from '@/hooks/useTheme'
+import { createStyles } from '@/screens/SettingsScreen/styles'
 
-type ThemeMode = 'light' | 'dark' | 'system';
+type ThemeMode = 'light' | 'dark' | 'system'
 
 const themeOptions: {
-  value: ThemeMode;
-  label: string;
-  icon: keyof typeof MaterialIcons.glyphMap;
+  value: ThemeMode
+  label: string
+  icon: keyof typeof MaterialIcons.glyphMap
 }[] = [
   { value: 'system', label: 'System', icon: 'settings-suggest' },
   { value: 'light', label: 'Light', icon: 'light-mode' },
   { value: 'dark', label: 'Dark', icon: 'dark-mode' },
-];
+]
 
 export const AppearanceSection: React.FC = () => {
-  const theme = useTheme();
-  const styles = createStyles(theme);
+  const theme = useTheme()
+  const styles = createStyles(theme)
 
   return (
     <View style={styles.section}>
@@ -49,5 +49,5 @@ export const AppearanceSection: React.FC = () => {
         ))}
       </View>
     </View>
-  );
-};
+  )
+}

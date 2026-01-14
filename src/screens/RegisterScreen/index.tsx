@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 import {
   View,
   Text,
@@ -7,81 +7,81 @@ import {
   Platform,
   Alert,
   ScrollView,
-} from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { MaterialIcons } from '@expo/vector-icons';
-import { useTheme } from '@/hooks/useTheme';
-import { authService } from '@/services/authService';
-import { Button } from '@/components/common/Button';
-import { Input } from '@/components/common/Input';
-import { Divider } from '@/components/common/Divider';
-import { IconCircle } from '@/components/common/IconCircle';
-import { createStyles } from './styles';
+} from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { MaterialIcons } from '@expo/vector-icons'
+import { useTheme } from '@/hooks/useTheme'
+import { authService } from '@/services/authService'
+import { Button } from '@/components/common/Button'
+import { Input } from '@/components/common/Input'
+import { Divider } from '@/components/common/Divider'
+import { IconCircle } from '@/components/common/IconCircle'
+import { createStyles } from './styles'
 
 interface RegisterScreenProps {
-  onNavigateToLogin: () => void;
-  onNavigateToConfirm: (email: string, password: string) => void;
+  onNavigateToLogin: () => void
+  onNavigateToConfirm: (email: string, password: string) => void
 }
 
 export const RegisterScreen: React.FC<RegisterScreenProps> = ({
   onNavigateToLogin,
   onNavigateToConfirm,
 }) => {
-  const theme = useTheme();
-  const styles = createStyles(theme);
+  const theme = useTheme()
+  const styles = createStyles(theme)
 
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false)
 
   const validatePassword = (pwd: string): boolean => {
-    return pwd.length >= 8;
-  };
+    return pwd.length >= 8
+  }
 
   const handleRegister = async () => {
     if (!name.trim() || !email.trim() || !password.trim() || !confirmPassword.trim()) {
-      Alert.alert('Error', 'Please fill in all fields');
-      return;
+      Alert.alert('Error', 'Please fill in all fields')
+      return
     }
 
     if (!validatePassword(password)) {
-      Alert.alert('Error', 'Password must be at least 8 characters');
-      return;
+      Alert.alert('Error', 'Password must be at least 8 characters')
+      return
     }
 
     if (password !== confirmPassword) {
-      Alert.alert('Error', 'Passwords do not match');
-      return;
+      Alert.alert('Error', 'Passwords do not match')
+      return
     }
 
-    setIsLoading(true);
+    setIsLoading(true)
     try {
-      await authService.signUp({ email: email.trim(), password, name: name.trim() });
-      onNavigateToConfirm(email.trim(), password);
+      await authService.signUp({ email: email.trim(), password, name: name.trim() })
+      onNavigateToConfirm(email.trim(), password)
     } catch (error: unknown) {
       const message =
-        error instanceof Error ? error.message : 'Registration failed. Please try again.';
-      Alert.alert('Registration Failed', message);
+        error instanceof Error ? error.message : 'Registration failed. Please try again.'
+      Alert.alert('Registration Failed', message)
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   const handleGoogleRegister = async () => {
-    setIsGoogleLoading(true);
+    setIsGoogleLoading(true)
     try {
-      await authService.signInWithGoogle();
+      await authService.signInWithGoogle()
     } catch (error: unknown) {
       const message =
-        error instanceof Error ? error.message : 'Google sign up failed. Please try again.';
-      Alert.alert('Google Sign Up Failed', message);
+        error instanceof Error ? error.message : 'Google sign up failed. Please try again.'
+      Alert.alert('Google Sign Up Failed', message)
     } finally {
-      setIsGoogleLoading(false);
+      setIsGoogleLoading(false)
     }
-  };
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -165,5 +165,5 @@ export const RegisterScreen: React.FC<RegisterScreenProps> = ({
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
-  );
-};
+  )
+}

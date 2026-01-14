@@ -1,22 +1,22 @@
-import React from 'react';
-import { View, Text } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { MaterialIcons } from '@expo/vector-icons';
-import { useTheme } from '@/hooks/useTheme';
-import { Button } from '@/components/common/Button';
-import { createStyles } from './styles';
+import React from 'react'
+import { View, Text } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { MaterialIcons } from '@expo/vector-icons'
+import { useTheme } from '@/hooks/useTheme'
+import { Button } from '@/components/common/Button'
+import { createStyles } from './styles'
 
 interface WelcomeScreenProps {
-  onNavigateToLogin: () => void;
-  onNavigateToRegister: () => void;
+  onNavigateToLogin: () => void
+  onNavigateToRegister: () => void
 }
 
 export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
   onNavigateToLogin,
   onNavigateToRegister,
 }) => {
-  const theme = useTheme();
-  const styles = createStyles(theme);
+  const theme = useTheme()
+  const styles = createStyles(theme)
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
@@ -45,5 +45,5 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
         <Button title="Create Account" onPress={onNavigateToRegister} variant="outline" />
       </View>
     </SafeAreaView>
-  );
-};
+  )
+}

@@ -1,7 +1,7 @@
-import { StyleSheet } from 'react-native';
-import { useTheme } from '@/hooks/useTheme';
+import { StyleSheet } from 'react-native'
+import { useTheme } from '@/hooks/useTheme'
 
-type Theme = ReturnType<typeof useTheme>;
+type Theme = ReturnType<typeof useTheme>
 
 export const createStyles = (theme: Theme) =>
   StyleSheet.create({
@@ -21,4 +21,4 @@ export const createStyles = (theme: Theme) =>
     labelSelected: {
       color: '#FFFFFF',
     },
-  });
+  })

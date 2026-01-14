@@ -1,18 +1,18 @@
-import React from 'react';
-import { View, Text } from 'react-native';
-import { useTheme } from '@/hooks/useTheme';
-import { createStyles } from './styles';
+import React from 'react'
+import { View, Text } from 'react-native'
+import { useTheme } from '@/hooks/useTheme'
+import { createStyles } from './styles'
 
 interface DividerProps {
-  text?: string;
+  text?: string
 }
 
 export const Divider: React.FC<DividerProps> = ({ text }) => {
-  const theme = useTheme();
-  const styles = createStyles(theme);
+  const theme = useTheme()
+  const styles = createStyles(theme)
 
   if (!text) {
-    return <View style={styles.line} />;
+    return <View style={styles.line} />
   }
 
   return (
@@ -21,5 +21,5 @@ export const Divider: React.FC<DividerProps> = ({ text }) => {
       <Text style={styles.text}>{text}</Text>
       <View style={styles.line} />
     </View>
-  );
-};
+  )
+}

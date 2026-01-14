@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import { View, TextInput, Pressable, TextInputProps } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
-import { useTheme } from '@/hooks/useTheme';
-import { createStyles } from './styles';
+import React, { useState } from 'react'
+import { View, TextInput, Pressable, TextInputProps } from 'react-native'
+import { MaterialIcons } from '@expo/vector-icons'
+import { useTheme } from '@/hooks/useTheme'
+import { createStyles } from './styles'
 
 interface InputProps extends Omit<TextInputProps, 'style'> {
-  icon?: keyof typeof MaterialIcons.glyphMap;
-  isPassword?: boolean;
-  error?: boolean;
+  icon?: keyof typeof MaterialIcons.glyphMap
+  isPassword?: boolean
+  error?: boolean
 }
 
 export const Input: React.FC<InputProps> = ({
@@ -16,9 +16,9 @@ export const Input: React.FC<InputProps> = ({
   error = false,
   ...textInputProps
 }) => {
-  const theme = useTheme();
-  const styles = createStyles(theme);
-  const [showPassword, setShowPassword] = useState(false);
+  const theme = useTheme()
+  const styles = createStyles(theme)
+  const [showPassword, setShowPassword] = useState(false)
 
   return (
     <View style={[styles.container, error && styles.containerError]}>
@@ -51,5 +51,5 @@ export const Input: React.FC<InputProps> = ({
         </Pressable>
       )}
     </View>
-  );
-};
+  )
+}

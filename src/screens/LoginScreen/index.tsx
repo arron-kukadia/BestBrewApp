@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 import {
   View,
   Text,
@@ -7,76 +7,76 @@ import {
   Platform,
   Alert,
   ScrollView,
-} from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { MaterialIcons } from '@expo/vector-icons';
-import { useTheme } from '@/hooks/useTheme';
-import { authService } from '@/services/authService';
-import { useAuthStore } from '@/stores/authStore';
-import { Button } from '@/components/common/Button';
-import { Input } from '@/components/common/Input';
-import { Divider } from '@/components/common/Divider';
-import { IconCircle } from '@/components/common/IconCircle';
-import { createStyles } from './styles';
+} from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { MaterialIcons } from '@expo/vector-icons'
+import { useTheme } from '@/hooks/useTheme'
+import { authService } from '@/services/authService'
+import { useAuthStore } from '@/stores/authStore'
+import { Button } from '@/components/common/Button'
+import { Input } from '@/components/common/Input'
+import { Divider } from '@/components/common/Divider'
+import { IconCircle } from '@/components/common/IconCircle'
+import { createStyles } from './styles'
 
 interface LoginScreenProps {
-  onNavigateToRegister: () => void;
-  onNavigateToForgotPassword: () => void;
+  onNavigateToRegister: () => void
+  onNavigateToForgotPassword: () => void
 }
 
 export const LoginScreen: React.FC<LoginScreenProps> = ({
   onNavigateToRegister,
   onNavigateToForgotPassword,
 }) => {
-  const theme = useTheme();
-  const styles = createStyles(theme);
-  const setUser = useAuthStore((state) => state.setUser);
+  const theme = useTheme()
+  const styles = createStyles(theme)
+  const setUser = useAuthStore((state) => state.setUser)
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false)
 
   const handleLogin = async () => {
     if (!email.trim() || !password.trim()) {
-      Alert.alert('Error', 'Please enter both email and password');
-      return;
+      Alert.alert('Error', 'Please enter both email and password')
+      return
     }
 
-    setIsLoading(true);
+    setIsLoading(true)
     try {
-      await authService.signIn({ email: email.trim(), password });
-      const user = await authService.getCurrentUser();
+      await authService.signIn({ email: email.trim(), password })
+      const user = await authService.getCurrentUser()
       if (user) {
-        const attributes = await authService.getUserAttributes();
+        const attributes = await authService.getUserAttributes()
         setUser({
           id: user.userId,
           email: attributes?.email || user.signInDetails?.loginId || email,
           name: attributes?.given_name,
           subscriptionStatus: 'free',
           createdAt: new Date().toISOString(),
-        });
+        })
       }
     } catch (error: unknown) {
-      const message = error instanceof Error ? error.message : 'Login failed. Please try again.';
-      Alert.alert('Login Failed', message);
+      const message = error instanceof Error ? error.message : 'Login failed. Please try again.'
+      Alert.alert('Login Failed', message)
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   const handleGoogleLogin = async () => {
-    setIsGoogleLoading(true);
+    setIsGoogleLoading(true)
     try {
-      await authService.signInWithGoogle();
+      await authService.signInWithGoogle()
     } catch (error: unknown) {
       const message =
-        error instanceof Error ? error.message : 'Google login failed. Please try again.';
-      Alert.alert('Google Login Failed', message);
+        error instanceof Error ? error.message : 'Google login failed. Please try again.'
+      Alert.alert('Google Login Failed', message)
     } finally {
-      setIsGoogleLoading(false);
+      setIsGoogleLoading(false)
     }
-  };
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -147,5 +147,5 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
-  );
-};
+  )
+}

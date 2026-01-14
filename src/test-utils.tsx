@@ -1,6 +1,6 @@
-import React from 'react';
-import { render, RenderOptions } from '@testing-library/react-native';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import React from 'react'
+import { render, RenderOptions } from '@testing-library/react-native'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
 
 const AllProviders: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
@@ -12,12 +12,12 @@ const AllProviders: React.FC<{ children: React.ReactNode }> = ({ children }) => 
     >
       {children}
     </SafeAreaProvider>
-  );
-};
+  )
+}
 
 const customRender = (ui: React.ReactElement, options?: Omit<RenderOptions, 'wrapper'>) =>
-  render(ui, { wrapper: AllProviders, ...options });
+  render(ui, { wrapper: AllProviders, ...options })
 
-export * from '@testing-library/react-native';
-export { userEvent } from '@testing-library/react-native';
-export { customRender as render };
+export * from '@testing-library/react-native'
+export { userEvent } from '@testing-library/react-native'
+export { customRender as render }

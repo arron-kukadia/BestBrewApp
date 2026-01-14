@@ -1,13 +1,13 @@
-import React from 'react';
-import { View, Text, Pressable } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
-import { useTheme } from '@/hooks/useTheme';
-import { createStyles } from './styles';
+import React from 'react'
+import { View, Text, Pressable } from 'react-native'
+import { MaterialIcons } from '@expo/vector-icons'
+import { useTheme } from '@/hooks/useTheme'
+import { createStyles } from './styles'
 
 interface SectionHeaderProps {
-  title: string;
-  actionText?: string;
-  onActionPress?: () => void;
+  title: string
+  actionText?: string
+  onActionPress?: () => void
 }
 
 export const SectionHeader: React.FC<SectionHeaderProps> = ({
@@ -15,8 +15,8 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
   actionText,
   onActionPress,
 }) => {
-  const theme = useTheme();
-  const styles = createStyles(theme);
+  const theme = useTheme()
+  const styles = createStyles(theme)
 
   return (
     <View style={styles.container}>
@@ -28,5 +28,5 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
         </Pressable>
       )}
     </View>
-  );
-};
+  )
+}

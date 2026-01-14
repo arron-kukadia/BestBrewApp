@@ -1,7 +1,7 @@
-import { StyleSheet } from 'react-native';
-import { useTheme } from '@/hooks/useTheme';
+import { StyleSheet } from 'react-native'
+import { useTheme } from '@/hooks/useTheme'
 
-type Theme = ReturnType<typeof useTheme>;
+type Theme = ReturnType<typeof useTheme>
 
 export const createStyles = (theme: Theme) =>
   StyleSheet.create({
@@ -36,4 +36,4 @@ export const createStyles = (theme: Theme) =>
       width: '100%',
       marginBottom: theme.spacing.md,
     },
-  });
+  })

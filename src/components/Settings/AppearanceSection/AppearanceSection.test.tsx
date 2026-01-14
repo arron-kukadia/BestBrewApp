@@ -1,16 +1,16 @@
-import React from 'react';
-import { render, screen, userEvent } from '@/test-utils';
-import { AppearanceSection } from './index';
-import { useTheme } from '@/hooks/useTheme';
+import React from 'react'
+import { render, screen, userEvent } from '@/test-utils'
+import { AppearanceSection } from './index'
+import { useTheme } from '@/hooks/useTheme'
 
-jest.mock('@/hooks/useTheme');
+jest.mock('@/hooks/useTheme')
 
-const mockSetMode = jest.fn();
+const mockSetMode = jest.fn()
 
 describe('AppearanceSection', () => {
   beforeEach(() => {
-    mockSetMode.mockClear();
-    (useTheme as jest.Mock).mockReturnValue({
+    mockSetMode.mockClear()
+    ;(useTheme as jest.Mock).mockReturnValue({
       mode: 'system',
       setMode: mockSetMode,
       colors: {
@@ -26,28 +26,28 @@ describe('AppearanceSection', () => {
       typography: {
         bodySmMedium: { fontSize: 14 },
       },
-    });
-  });
+    })
+  })
 
   it('renders appearance section title', () => {
-    render(<AppearanceSection />);
-    expect(screen.getByText('Appearance')).toBeOnTheScreen();
-  });
+    render(<AppearanceSection />)
+    expect(screen.getByText('Appearance')).toBeOnTheScreen()
+  })
 
   it('renders all theme options', () => {
-    render(<AppearanceSection />);
-    expect(screen.getByText('System')).toBeOnTheScreen();
-    expect(screen.getByText('Light')).toBeOnTheScreen();
-    expect(screen.getByText('Dark')).toBeOnTheScreen();
-  });
+    render(<AppearanceSection />)
+    expect(screen.getByText('System')).toBeOnTheScreen()
+    expect(screen.getByText('Light')).toBeOnTheScreen()
+    expect(screen.getByText('Dark')).toBeOnTheScreen()
+  })
 
   it('calls setMode when theme option is pressed', async () => {
-    render(<AppearanceSection />);
+    render(<AppearanceSection />)
 
-    await userEvent.press(screen.getByText('Light'));
-    expect(mockSetMode).toHaveBeenCalledWith('light');
+    await userEvent.press(screen.getByText('Light'))
+    expect(mockSetMode).toHaveBeenCalledWith('light')
 
-    await userEvent.press(screen.getByText('Dark'));
-    expect(mockSetMode).toHaveBeenCalledWith('dark');
-  });
-});
+    await userEvent.press(screen.getByText('Dark'))
+    expect(mockSetMode).toHaveBeenCalledWith('dark')
+  })
+})

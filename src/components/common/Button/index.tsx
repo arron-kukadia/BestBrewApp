@@ -1,15 +1,15 @@
-import React from 'react';
-import { Pressable, Text, ActivityIndicator } from 'react-native';
-import { useTheme } from '@/hooks/useTheme';
-import { createStyles } from './styles';
+import React from 'react'
+import { Pressable, Text, ActivityIndicator } from 'react-native'
+import { useTheme } from '@/hooks/useTheme'
+import { createStyles } from './styles'
 
 interface ButtonProps {
-  title: string;
-  onPress: () => void;
-  variant?: 'primary' | 'secondary' | 'outline';
-  isLoading?: boolean;
-  disabled?: boolean;
-  icon?: React.ReactNode;
+  title: string
+  onPress: () => void
+  variant?: 'primary' | 'secondary' | 'outline'
+  isLoading?: boolean
+  disabled?: boolean
+  icon?: React.ReactNode
 }
 
 export const Button: React.FC<ButtonProps> = ({
@@ -20,8 +20,8 @@ export const Button: React.FC<ButtonProps> = ({
   disabled = false,
   icon,
 }) => {
-  const theme = useTheme();
-  const styles = createStyles(theme);
+  const theme = useTheme()
+  const styles = createStyles(theme)
 
   const buttonStyle = [
     styles.base,
@@ -29,14 +29,14 @@ export const Button: React.FC<ButtonProps> = ({
     variant === 'secondary' && styles.secondary,
     variant === 'outline' && styles.outline,
     disabled && styles.disabled,
-  ];
+  ]
 
   const textStyle = [
     styles.text,
     variant === 'primary' && styles.primaryText,
     variant === 'secondary' && styles.secondaryText,
     variant === 'outline' && styles.outlineText,
-  ];
+  ]
 
   return (
     <Pressable
@@ -55,5 +55,5 @@ export const Button: React.FC<ButtonProps> = ({
         </>
       )}
     </Pressable>
-  );
-};
+  )
+}

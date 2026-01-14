@@ -1,15 +1,15 @@
-import React from 'react';
-import { View, Text, Pressable, Alert } from 'react-native';
-import { useTheme } from '@/hooks/useTheme';
-import { useAuthStore } from '@/stores/authStore';
-import { authService } from '@/services/authService';
-import { Button } from '@/components/common/Button';
-import { createStyles } from '@/screens/SettingsScreen/styles';
+import React from 'react'
+import { View, Text, Pressable, Alert } from 'react-native'
+import { useTheme } from '@/hooks/useTheme'
+import { useAuthStore } from '@/stores/authStore'
+import { authService } from '@/services/authService'
+import { Button } from '@/components/common/Button'
+import { createStyles } from '@/screens/SettingsScreen/styles'
 
 export const AccountActions: React.FC = () => {
-  const theme = useTheme();
-  const styles = createStyles(theme);
-  const setUser = useAuthStore((state) => state.setUser);
+  const theme = useTheme()
+  const styles = createStyles(theme)
+  const setUser = useAuthStore((state) => state.setUser)
 
   const handleLogout = async () => {
     Alert.alert('Sign Out', 'Are you sure you want to sign out?', [
@@ -19,15 +19,15 @@ export const AccountActions: React.FC = () => {
         style: 'destructive',
         onPress: async () => {
           try {
-            await authService.signOut();
-            setUser(null);
+            await authService.signOut()
+            setUser(null)
           } catch {
-            Alert.alert('Error', 'Failed to sign out. Please try again.');
+            Alert.alert('Error', 'Failed to sign out. Please try again.')
           }
         },
       },
-    ]);
-  };
+    ])
+  }
 
   const handleDeleteAccount = () => {
     Alert.alert(
@@ -49,20 +49,20 @@ export const AccountActions: React.FC = () => {
                   style: 'destructive',
                   onPress: async () => {
                     try {
-                      await authService.deleteAccount();
-                      setUser(null);
+                      await authService.deleteAccount()
+                      setUser(null)
                     } catch {
-                      Alert.alert('Error', 'Failed to delete account. Please try again.');
+                      Alert.alert('Error', 'Failed to delete account. Please try again.')
                     }
                   },
                 },
               ]
-            );
+            )
           },
         },
       ]
-    );
-  };
+    )
+  }
 
   return (
     <View style={styles.logoutContainer}>
@@ -71,5 +71,5 @@ export const AccountActions: React.FC = () => {
         <Text style={styles.deleteButtonText}>Delete Account</Text>
       </Pressable>
     </View>
-  );
-};
+  )
+}

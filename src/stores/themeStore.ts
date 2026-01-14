@@ -1,28 +1,28 @@
-import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Appearance } from 'react-native';
-import { lightColors, darkColors, Colors } from '@/theme/colors';
+import { create } from 'zustand'
+import { persist, createJSONStorage } from 'zustand/middleware'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { Appearance } from 'react-native'
+import { lightColors, darkColors, Colors } from '@/theme/colors'
 
-type ThemeMode = 'light' | 'dark' | 'system';
+type ThemeMode = 'light' | 'dark' | 'system'
 
 interface ThemeState {
-  mode: ThemeMode;
-  isDark: boolean;
-  colors: Colors;
-  hasHydrated: boolean;
-  setMode: (mode: ThemeMode) => void;
-  setSystemTheme: (isDark: boolean) => void;
-  setHasHydrated: (value: boolean) => void;
+  mode: ThemeMode
+  isDark: boolean
+  colors: Colors
+  hasHydrated: boolean
+  setMode: (mode: ThemeMode) => void
+  setSystemTheme: (isDark: boolean) => void
+  setHasHydrated: (value: boolean) => void
 }
 
 const getColorsForMode = (mode: ThemeMode, systemIsDark: boolean) => {
-  const isDark = mode === 'dark' || (mode === 'system' && systemIsDark);
+  const isDark = mode === 'dark' || (mode === 'system' && systemIsDark)
   return {
     isDark,
     colors: isDark ? darkColors : lightColors,
-  };
-};
+  }
+}
 
 export const useThemeStore = create<ThemeState>()(
   persist(
@@ -33,18 +33,18 @@ export const useThemeStore = create<ThemeState>()(
       hasHydrated: false,
 
       setMode: (mode: ThemeMode) => {
-        const systemIsDark = Appearance.getColorScheme() === 'dark';
-        const { isDark, colors } = getColorsForMode(mode, systemIsDark);
-        set({ mode, isDark, colors });
+        const systemIsDark = Appearance.getColorScheme() === 'dark'
+        const { isDark, colors } = getColorsForMode(mode, systemIsDark)
+        set({ mode, isDark, colors })
       },
 
       setSystemTheme: (systemIsDark: boolean) => {
-        const { mode } = get();
+        const { mode } = get()
         if (mode === 'system') {
           set({
             isDark: systemIsDark,
             colors: systemIsDark ? darkColors : lightColors,
-          });
+          })
         }
       },
 
@@ -56,13 +56,13 @@ export const useThemeStore = create<ThemeState>()(
       partialize: (state) => ({ mode: state.mode }),
       onRehydrateStorage: () => (state) => {
         if (state) {
-          const systemIsDark = Appearance.getColorScheme() === 'dark';
-          const { isDark, colors } = getColorsForMode(state.mode, systemIsDark);
-          state.isDark = isDark;
-          state.colors = colors;
-          state.hasHydrated = true;
+          const systemIsDark = Appearance.getColorScheme() === 'dark'
+          const { isDark, colors } = getColorsForMode(state.mode, systemIsDark)
+          state.isDark = isDark
+          state.colors = colors
+          state.hasHydrated = true
         }
       },
     }
   )
-);
+)

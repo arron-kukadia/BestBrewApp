@@ -1,23 +1,23 @@
-import React from 'react';
-import { Platform } from 'react-native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { MaterialIcons } from '@expo/vector-icons';
-import { HomeScreen } from '@/screens/HomeScreen';
-import { HistoryScreen } from '@/screens/HistoryScreen';
-import { DiscoveryScreen } from '@/screens/DiscoveryScreen';
-import { SettingsScreen } from '@/screens/SettingsScreen';
-import { useTheme } from '@/hooks/useTheme';
-import { MainTabParamList } from '@/types';
+import React from 'react'
+import { Platform } from 'react-native'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { MaterialIcons } from '@expo/vector-icons'
+import { HomeScreen } from '@/screens/HomeScreen'
+import { HistoryScreen } from '@/screens/HistoryScreen'
+import { DiscoveryScreen } from '@/screens/DiscoveryScreen'
+import { SettingsScreen } from '@/screens/SettingsScreen'
+import { useTheme } from '@/hooks/useTheme'
+import { MainTabParamList } from '@/types'
 
-const Tab = createBottomTabNavigator<MainTabParamList>();
+const Tab = createBottomTabNavigator<MainTabParamList>()
 
 export const TabNavigator: React.FC = () => {
-  const { colors } = useTheme();
-  const insets = useSafeAreaInsets();
+  const { colors } = useTheme()
+  const insets = useSafeAreaInsets()
 
   const tabBarHeight =
-    60 + (Platform.OS === 'android' ? Math.max(insets.bottom, 25) : insets.bottom);
+    60 + (Platform.OS === 'android' ? Math.max(insets.bottom, 25) : insets.bottom)
 
   return (
     <Tab.Navigator
@@ -73,5 +73,5 @@ export const TabNavigator: React.FC = () => {
         }}
       />
     </Tab.Navigator>
-  );
-};
+  )
+}

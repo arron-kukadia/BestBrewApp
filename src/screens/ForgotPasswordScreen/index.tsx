@@ -1,47 +1,47 @@
-import React, { useState } from 'react';
-import { View, Text, KeyboardAvoidingView, Platform, Alert } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useTheme } from '@/hooks/useTheme';
-import { authService } from '@/services/authService';
-import { Button } from '@/components/common/Button';
-import { Input } from '@/components/common/Input';
-import { IconCircle } from '@/components/common/IconCircle';
-import { BackButton } from '@/components/common/BackButton';
-import { createStyles } from './styles';
+import React, { useState } from 'react'
+import { View, Text, KeyboardAvoidingView, Platform, Alert } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { useTheme } from '@/hooks/useTheme'
+import { authService } from '@/services/authService'
+import { Button } from '@/components/common/Button'
+import { Input } from '@/components/common/Input'
+import { IconCircle } from '@/components/common/IconCircle'
+import { BackButton } from '@/components/common/BackButton'
+import { createStyles } from './styles'
 
 interface ForgotPasswordScreenProps {
-  onBack: () => void;
-  onCodeSent: (email: string) => void;
+  onBack: () => void
+  onCodeSent: (email: string) => void
 }
 
 export const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = ({
   onBack,
   onCodeSent,
 }) => {
-  const theme = useTheme();
-  const styles = createStyles(theme);
+  const theme = useTheme()
+  const styles = createStyles(theme)
 
-  const [email, setEmail] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [email, setEmail] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleResetPassword = async () => {
     if (!email.trim()) {
-      Alert.alert('Error', 'Please enter your email address');
-      return;
+      Alert.alert('Error', 'Please enter your email address')
+      return
     }
 
-    setIsLoading(true);
+    setIsLoading(true)
     try {
-      await authService.resetPassword({ email: email.trim() });
-      onCodeSent(email.trim());
+      await authService.resetPassword({ email: email.trim() })
+      onCodeSent(email.trim())
     } catch (error: unknown) {
       const message =
-        error instanceof Error ? error.message : 'Failed to send reset code. Please try again.';
-      Alert.alert('Error', message);
+        error instanceof Error ? error.message : 'Failed to send reset code. Please try again.'
+      Alert.alert('Error', message)
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -74,5 +74,5 @@ export const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = ({
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
-  );
-};
+  )
+}

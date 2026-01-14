@@ -10,32 +10,32 @@ import {
   fetchUserAttributes,
   signInWithRedirect,
   deleteUser,
-} from 'aws-amplify/auth';
+} from 'aws-amplify/auth'
 
 export interface SignUpParams {
-  email: string;
-  password: string;
-  name: string;
+  email: string
+  password: string
+  name: string
 }
 
 export interface SignInParams {
-  email: string;
-  password: string;
+  email: string
+  password: string
 }
 
 export interface ConfirmSignUpParams {
-  email: string;
-  code: string;
+  email: string
+  code: string
 }
 
 export interface ResetPasswordParams {
-  email: string;
+  email: string
 }
 
 export interface ConfirmResetPasswordParams {
-  email: string;
-  code: string;
-  newPassword: string;
+  email: string
+  code: string
+  newPassword: string
 }
 
 export const authService = {
@@ -49,64 +49,64 @@ export const authService = {
           given_name: name,
         },
       },
-    });
-    return result;
+    })
+    return result
   },
 
   confirmSignUp: async ({ email, code }: ConfirmSignUpParams) => {
     const result = await confirmSignUp({
       username: email,
       confirmationCode: code,
-    });
-    return result;
+    })
+    return result
   },
 
   signIn: async ({ email, password }: SignInParams) => {
     const result = await signIn({
       username: email,
       password,
-    });
-    return result;
+    })
+    return result
   },
 
   signInWithGoogle: async () => {
-    await signInWithRedirect({ provider: 'Google' });
+    await signInWithRedirect({ provider: 'Google' })
   },
 
   signOut: async () => {
-    await signOut();
+    await signOut()
   },
 
   getCurrentUser: async () => {
     try {
-      const user = await getCurrentUser();
-      return user;
+      const user = await getCurrentUser()
+      return user
     } catch {
-      return null;
+      return null
     }
   },
 
   getUserAttributes: async () => {
     try {
-      const attributes = await fetchUserAttributes();
-      return attributes;
+      const attributes = await fetchUserAttributes()
+      return attributes
     } catch {
-      return null;
+      return null
     }
   },
 
   getSession: async () => {
     try {
-      const session = await fetchAuthSession();
-      return session;
+      const session = await fetchAuthSession()
+      return session
     } catch {
-      return null;
+      return null
     }
   },
 
   resetPassword: async ({ email }: ResetPasswordParams) => {
-    const result = await resetPassword({ username: email });
-    return result;
+    const result = await resetPassword({ username: email })
+    return result
   },
 
   confirmResetPassword: async ({ email, code, newPassword }: ConfirmResetPasswordParams) => {
@@ -114,10 +114,10 @@ export const authService = {
       username: email,
       confirmationCode: code,
       newPassword,
-    });
+    })
   },
 
   deleteAccount: async () => {
-    await deleteUser();
+    await deleteUser()
   },
-};
+}

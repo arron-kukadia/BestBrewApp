@@ -1,28 +1,28 @@
-import React, { useState } from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { WelcomeScreen } from '@/screens/WelcomeScreen';
-import { LoginScreen } from '@/screens/LoginScreen';
-import { RegisterScreen } from '@/screens/RegisterScreen';
-import { ConfirmSignUpScreen } from '@/screens/ConfirmSignUpScreen';
-import { ForgotPasswordScreen } from '@/screens/ForgotPasswordScreen';
-import { ResetPasswordScreen } from '@/screens/ResetPasswordScreen';
-import { useTheme } from '@/hooks/useTheme';
+import React, { useState } from 'react'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import { WelcomeScreen } from '@/screens/WelcomeScreen'
+import { LoginScreen } from '@/screens/LoginScreen'
+import { RegisterScreen } from '@/screens/RegisterScreen'
+import { ConfirmSignUpScreen } from '@/screens/ConfirmSignUpScreen'
+import { ForgotPasswordScreen } from '@/screens/ForgotPasswordScreen'
+import { ResetPasswordScreen } from '@/screens/ResetPasswordScreen'
+import { useTheme } from '@/hooks/useTheme'
 
 type AuthStackParamList = {
-  Welcome: undefined;
-  Login: undefined;
-  Register: undefined;
-  ConfirmSignUp: { email: string };
-  ForgotPassword: undefined;
-  ResetPassword: { email: string };
-};
+  Welcome: undefined
+  Login: undefined
+  Register: undefined
+  ConfirmSignUp: { email: string }
+  ForgotPassword: undefined
+  ResetPassword: { email: string }
+}
 
-const Stack = createNativeStackNavigator<AuthStackParamList>();
+const Stack = createNativeStackNavigator<AuthStackParamList>()
 
 export const AuthNavigator: React.FC = () => {
-  const { colors } = useTheme();
-  const [confirmEmail, setConfirmEmail] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const { colors } = useTheme()
+  const [confirmEmail, setConfirmEmail] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
 
   return (
     <Stack.Navigator
@@ -52,9 +52,9 @@ export const AuthNavigator: React.FC = () => {
           <RegisterScreen
             onNavigateToLogin={() => navigation.navigate('Login')}
             onNavigateToConfirm={(email, password) => {
-              setConfirmEmail(email);
-              setConfirmPassword(password);
-              navigation.navigate('ConfirmSignUp', { email });
+              setConfirmEmail(email)
+              setConfirmPassword(password)
+              navigation.navigate('ConfirmSignUp', { email })
             }}
           />
         )}
@@ -86,5 +86,5 @@ export const AuthNavigator: React.FC = () => {
         )}
       </Stack.Screen>
     </Stack.Navigator>
-  );
-};
+  )
+}

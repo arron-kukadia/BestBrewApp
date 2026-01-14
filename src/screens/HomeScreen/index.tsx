@@ -1,28 +1,28 @@
-import React from 'react';
-import { View, Text, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useTheme } from '@/hooks/useTheme';
-import { useAuthStore } from '@/stores/authStore';
-import { SectionHeader } from '@/components/common/SectionHeader';
-import { StatCard } from '@/components/common/StatCard';
-import { ActivityCard } from '@/components/common/ActivityCard';
-import { EmptyState } from '@/components/common/EmptyState';
-import { createStyles } from './styles';
+import React from 'react'
+import { View, Text, ScrollView } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { useTheme } from '@/hooks/useTheme'
+import { useAuthStore } from '@/stores/authStore'
+import { SectionHeader } from '@/components/common/SectionHeader'
+import { StatCard } from '@/components/common/StatCard'
+import { ActivityCard } from '@/components/common/ActivityCard'
+import { EmptyState } from '@/components/common/EmptyState'
+import { createStyles } from './styles'
 
 const getGreeting = () => {
-  const hour = new Date().getHours();
-  if (hour < 12) return 'Good Morning';
-  if (hour < 17) return 'Good Afternoon';
-  return 'Good Evening';
-};
+  const hour = new Date().getHours()
+  if (hour < 12) return 'Good Morning'
+  if (hour < 17) return 'Good Afternoon'
+  return 'Good Evening'
+}
 
 export const HomeScreen: React.FC = () => {
-  const theme = useTheme();
-  const styles = createStyles(theme);
-  const user = useAuthStore((state) => state.user);
+  const theme = useTheme()
+  const styles = createStyles(theme)
+  const user = useAuthStore((state) => state.user)
 
-  const userName = user?.name || user?.email?.split('@')[0] || 'Coffee Lover';
-  const hasEntries = false;
+  const userName = user?.name || user?.email?.split('@')[0] || 'Coffee Lover'
+  const hasEntries = false
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
@@ -73,5 +73,5 @@ export const HomeScreen: React.FC = () => {
         </View>
       </ScrollView>
     </SafeAreaView>
-  );
-};
+  )
+}

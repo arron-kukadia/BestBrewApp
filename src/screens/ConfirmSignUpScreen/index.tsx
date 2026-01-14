@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, KeyboardAvoidingView, Platform, Alert } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useTheme } from '@/hooks/useTheme';
-import { authService } from '@/services/authService';
-import { useAuthStore } from '@/stores/authStore';
-import { Button } from '@/components/common/Button';
-import { IconCircle } from '@/components/common/IconCircle';
-import { BackButton } from '@/components/common/BackButton';
-import { createStyles } from './styles';
+import React, { useState } from 'react'
+import { View, Text, TextInput, KeyboardAvoidingView, Platform, Alert } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { useTheme } from '@/hooks/useTheme'
+import { authService } from '@/services/authService'
+import { useAuthStore } from '@/stores/authStore'
+import { Button } from '@/components/common/Button'
+import { IconCircle } from '@/components/common/IconCircle'
+import { BackButton } from '@/components/common/BackButton'
+import { createStyles } from './styles'
 
 interface ConfirmSignUpScreenProps {
-  email: string;
-  password: string;
-  onBack: () => void;
+  email: string
+  password: string
+  onBack: () => void
 }
 
 export const ConfirmSignUpScreen: React.FC<ConfirmSignUpScreenProps> = ({
@@ -20,42 +20,42 @@ export const ConfirmSignUpScreen: React.FC<ConfirmSignUpScreenProps> = ({
   password,
   onBack,
 }) => {
-  const theme = useTheme();
-  const styles = createStyles(theme);
+  const theme = useTheme()
+  const styles = createStyles(theme)
 
-  const setUser = useAuthStore((state) => state.setUser);
-  const [code, setCode] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const setUser = useAuthStore((state) => state.setUser)
+  const [code, setCode] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleConfirm = async () => {
     if (!code.trim()) {
-      Alert.alert('Error', 'Please enter the confirmation code');
-      return;
+      Alert.alert('Error', 'Please enter the confirmation code')
+      return
     }
 
-    setIsLoading(true);
+    setIsLoading(true)
     try {
-      await authService.confirmSignUp({ email, code: code.trim() });
-      await authService.signIn({ email, password });
-      const user = await authService.getCurrentUser();
+      await authService.confirmSignUp({ email, code: code.trim() })
+      await authService.signIn({ email, password })
+      const user = await authService.getCurrentUser()
       if (user) {
-        const attributes = await authService.getUserAttributes();
+        const attributes = await authService.getUserAttributes()
         setUser({
           id: user.userId,
           email: attributes?.email || user.signInDetails?.loginId || email,
           name: attributes?.given_name,
           subscriptionStatus: 'free',
           createdAt: new Date().toISOString(),
-        });
+        })
       }
     } catch (error: unknown) {
       const message =
-        error instanceof Error ? error.message : 'Verification failed. Please try again.';
-      Alert.alert('Verification Failed', message);
+        error instanceof Error ? error.message : 'Verification failed. Please try again.'
+      Alert.alert('Verification Failed', message)
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -89,5 +89,5 @@ export const ConfirmSignUpScreen: React.FC<ConfirmSignUpScreenProps> = ({
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
-  );
-};
+  )
+}

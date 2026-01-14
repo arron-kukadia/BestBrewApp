@@ -25,7 +25,7 @@ export const lightColors = {
   rating: '#FBBF24',
   overlay: 'rgba(13, 148, 136, 0.2)',
   shadow: 'rgba(0, 0, 0, 0.08)',
-};
+}
 
 export const darkColors = {
   primary: '#2DD4BF',
@@ -54,6 +54,6 @@ export const darkColors = {
   rating: '#FBBF24',
   overlay: 'rgba(45, 212, 191, 0.2)',
   shadow: 'rgba(0, 0, 0, 0.4)',
-};
+}
 
-export type Colors = typeof lightColors;
+export type Colors = typeof lightColors

@@ -1,20 +1,20 @@
-import React from 'react';
-import { View, Text } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
-import { useTheme } from '@/hooks/useTheme';
-import { createStyles } from './styles';
+import React from 'react'
+import { View, Text } from 'react-native'
+import { MaterialIcons } from '@expo/vector-icons'
+import { useTheme } from '@/hooks/useTheme'
+import { createStyles } from './styles'
 
 interface StatCardProps {
-  icon: keyof typeof MaterialIcons.glyphMap;
-  label: string;
-  value: string | number;
-  color?: string;
+  icon: keyof typeof MaterialIcons.glyphMap
+  label: string
+  value: string | number
+  color?: string
 }
 
 export const StatCard: React.FC<StatCardProps> = ({ icon, label, value, color }) => {
-  const theme = useTheme();
-  const styles = createStyles(theme);
-  const iconColor = color || theme.colors.primary;
+  const theme = useTheme()
+  const styles = createStyles(theme)
+  const iconColor = color || theme.colors.primary
 
   return (
     <View style={styles.container}>
@@ -24,5 +24,5 @@ export const StatCard: React.FC<StatCardProps> = ({ icon, label, value, color })
       <Text style={styles.value}>{value}</Text>
       <Text style={styles.label}>{label}</Text>
     </View>
-  );
-};
+  )
+}

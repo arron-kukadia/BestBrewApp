@@ -1,15 +1,15 @@
-import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { User } from '@/types';
+import { create } from 'zustand'
+import { persist, createJSONStorage } from 'zustand/middleware'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { User } from '@/types'
 
 interface AuthState {
-  user: User | null;
-  isAuthenticated: boolean;
-  isLoading: boolean;
-  setUser: (user: User | null) => void;
-  setLoading: (isLoading: boolean) => void;
-  logout: () => void;
+  user: User | null
+  isAuthenticated: boolean
+  isLoading: boolean
+  setUser: (user: User | null) => void
+  setLoading: (isLoading: boolean) => void
+  logout: () => void
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -44,4 +44,4 @@ export const useAuthStore = create<AuthState>()(
       }),
     }
   )
-);
+)

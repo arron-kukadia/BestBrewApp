@@ -1,16 +1,16 @@
-import React from 'react';
-import { render, screen, userEvent } from '@/test-utils';
-import { RegisterScreen } from './index';
+import React from 'react'
+import { render, screen, userEvent } from '@/test-utils'
+import { RegisterScreen } from './index'
 
-jest.mock('@/services/authService');
+jest.mock('@/services/authService')
 
 describe('RegisterScreen', () => {
-  const mockNavigateToLogin = jest.fn();
-  const mockNavigateToConfirm = jest.fn();
+  const mockNavigateToLogin = jest.fn()
+  const mockNavigateToConfirm = jest.fn()
 
   beforeEach(() => {
-    jest.clearAllMocks();
-  });
+    jest.clearAllMocks()
+  })
 
   it('renders name input', () => {
     render(
@@ -18,9 +18,9 @@ describe('RegisterScreen', () => {
         onNavigateToLogin={mockNavigateToLogin}
         onNavigateToConfirm={mockNavigateToConfirm}
       />
-    );
-    expect(screen.getByPlaceholderText('Name')).toBeOnTheScreen();
-  });
+    )
+    expect(screen.getByPlaceholderText('Name')).toBeOnTheScreen()
+  })
 
   it('renders email input', () => {
     render(
@@ -28,9 +28,9 @@ describe('RegisterScreen', () => {
         onNavigateToLogin={mockNavigateToLogin}
         onNavigateToConfirm={mockNavigateToConfirm}
       />
-    );
-    expect(screen.getByPlaceholderText('Email')).toBeOnTheScreen();
-  });
+    )
+    expect(screen.getByPlaceholderText('Email')).toBeOnTheScreen()
+  })
 
   it('renders password input', () => {
     render(
@@ -38,9 +38,9 @@ describe('RegisterScreen', () => {
         onNavigateToLogin={mockNavigateToLogin}
         onNavigateToConfirm={mockNavigateToConfirm}
       />
-    );
-    expect(screen.getByPlaceholderText('Password')).toBeOnTheScreen();
-  });
+    )
+    expect(screen.getByPlaceholderText('Password')).toBeOnTheScreen()
+  })
 
   it('renders confirm password input', () => {
     render(
@@ -48,9 +48,9 @@ describe('RegisterScreen', () => {
         onNavigateToLogin={mockNavigateToLogin}
         onNavigateToConfirm={mockNavigateToConfirm}
       />
-    );
-    expect(screen.getByPlaceholderText('Confirm Password')).toBeOnTheScreen();
-  });
+    )
+    expect(screen.getByPlaceholderText('Confirm Password')).toBeOnTheScreen()
+  })
 
   it('renders create account button', () => {
     render(
@@ -58,9 +58,9 @@ describe('RegisterScreen', () => {
         onNavigateToLogin={mockNavigateToLogin}
         onNavigateToConfirm={mockNavigateToConfirm}
       />
-    );
-    expect(screen.getAllByText('Create Account').length).toBeGreaterThan(0);
-  });
+    )
+    expect(screen.getAllByText('Create Account').length).toBeGreaterThan(0)
+  })
 
   it('calls onNavigateToLogin when sign in link is pressed', async () => {
     render(
@@ -68,11 +68,11 @@ describe('RegisterScreen', () => {
         onNavigateToLogin={mockNavigateToLogin}
         onNavigateToConfirm={mockNavigateToConfirm}
       />
-    );
+    )
 
-    await userEvent.press(screen.getByText('Sign in'));
-    expect(mockNavigateToLogin).toHaveBeenCalledTimes(1);
-  });
+    await userEvent.press(screen.getByText('Sign in'))
+    expect(mockNavigateToLogin).toHaveBeenCalledTimes(1)
+  })
 
   it('allows user to fill in registration form', async () => {
     render(
@@ -80,14 +80,14 @@ describe('RegisterScreen', () => {
         onNavigateToLogin={mockNavigateToLogin}
         onNavigateToConfirm={mockNavigateToConfirm}
       />
-    );
+    )
 
-    await userEvent.type(screen.getByPlaceholderText('Name'), 'John Doe');
-    await userEvent.type(screen.getByPlaceholderText('Email'), 'john@example.com');
-    await userEvent.type(screen.getByPlaceholderText('Password'), 'password123');
-    await userEvent.type(screen.getByPlaceholderText('Confirm Password'), 'password123');
+    await userEvent.type(screen.getByPlaceholderText('Name'), 'John Doe')
+    await userEvent.type(screen.getByPlaceholderText('Email'), 'john@example.com')
+    await userEvent.type(screen.getByPlaceholderText('Password'), 'password123')
+    await userEvent.type(screen.getByPlaceholderText('Confirm Password'), 'password123')
 
-    expect(screen.getByPlaceholderText('Name')).toBeOnTheScreen();
-    expect(screen.getByPlaceholderText('Email')).toBeOnTheScreen();
-  });
-});
+    expect(screen.getByPlaceholderText('Name')).toBeOnTheScreen()
+    expect(screen.getByPlaceholderText('Email')).toBeOnTheScreen()
+  })
+})

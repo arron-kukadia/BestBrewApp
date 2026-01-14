@@ -1,21 +1,21 @@
-import React from 'react';
-import { View, Text, Pressable } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
-import { useTheme } from '@/hooks/useTheme';
-import { createStyles } from './styles';
+import React from 'react'
+import { View, Text, Pressable } from 'react-native'
+import { MaterialIcons } from '@expo/vector-icons'
+import { useTheme } from '@/hooks/useTheme'
+import { createStyles } from './styles'
 
 interface ChipProps {
-  label: string;
-  selected?: boolean;
-  onPress?: () => void;
-  icon?: keyof typeof MaterialIcons.glyphMap;
-  color?: string;
+  label: string
+  selected?: boolean
+  onPress?: () => void
+  icon?: keyof typeof MaterialIcons.glyphMap
+  color?: string
 }
 
 export const Chip: React.FC<ChipProps> = ({ label, selected = false, onPress, icon, color }) => {
-  const theme = useTheme();
-  const styles = createStyles(theme);
-  const chipColor = color || theme.colors.primary;
+  const theme = useTheme()
+  const styles = createStyles(theme)
+  const chipColor = color || theme.colors.primary
 
   const content = (
     <View
@@ -39,11 +39,11 @@ export const Chip: React.FC<ChipProps> = ({ label, selected = false, onPress, ic
         {label}
       </Text>
     </View>
-  );
+  )
 
   if (onPress) {
-    return <Pressable onPress={onPress}>{content}</Pressable>;
+    return <Pressable onPress={onPress}>{content}</Pressable>
   }
 
-  return content;
-};
+  return content
+}

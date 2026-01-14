@@ -1,16 +1,16 @@
-import React from 'react';
-import { View, Text, Pressable, Platform } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
-import { useTheme } from '@/hooks/useTheme';
-import { createStyles } from './styles';
+import React from 'react'
+import { View, Text, Pressable, Platform } from 'react-native'
+import { MaterialIcons } from '@expo/vector-icons'
+import { useTheme } from '@/hooks/useTheme'
+import { createStyles } from './styles'
 
 interface ActivityCardProps {
-  icon: keyof typeof MaterialIcons.glyphMap;
-  title: string;
-  subtitle?: string;
-  meta?: string;
-  color?: string;
-  onPress?: () => void;
+  icon: keyof typeof MaterialIcons.glyphMap
+  title: string
+  subtitle?: string
+  meta?: string
+  color?: string
+  onPress?: () => void
 }
 
 export const ActivityCard: React.FC<ActivityCardProps> = ({
@@ -21,9 +21,9 @@ export const ActivityCard: React.FC<ActivityCardProps> = ({
   color,
   onPress,
 }) => {
-  const theme = useTheme();
-  const styles = createStyles(theme);
-  const iconColor = color || theme.colors.primary;
+  const theme = useTheme()
+  const styles = createStyles(theme)
+  const iconColor = color || theme.colors.primary
 
   const content = (
     <View style={styles.container}>
@@ -45,7 +45,7 @@ export const ActivityCard: React.FC<ActivityCardProps> = ({
         <MaterialIcons name="chevron-right" size={20} color={theme.colors.textTertiary} />
       )}
     </View>
-  );
+  )
 
   if (onPress) {
     return (
@@ -55,8 +55,8 @@ export const ActivityCard: React.FC<ActivityCardProps> = ({
       >
         {content}
       </Pressable>
-    );
+    )
   }
 
-  return content;
-};
+  return content
+}
