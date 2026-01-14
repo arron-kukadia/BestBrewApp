@@ -7,6 +7,7 @@ import {
   confirmResetPassword,
   getCurrentUser,
   fetchAuthSession,
+  fetchUserAttributes,
   signInWithRedirect,
   deleteUser,
 } from 'aws-amplify/auth';
@@ -80,6 +81,15 @@ export const authService = {
     try {
       const user = await getCurrentUser();
       return user;
+    } catch {
+      return null;
+    }
+  },
+
+  getUserAttributes: async () => {
+    try {
+      const attributes = await fetchUserAttributes();
+      return attributes;
     } catch {
       return null;
     }

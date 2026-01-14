@@ -19,9 +19,11 @@ export const RootNavigator: React.FC = () => {
       try {
         const user = await authService.getCurrentUser();
         if (user) {
+          const attributes = await authService.getUserAttributes();
           setUser({
             id: user.userId,
-            email: user.signInDetails?.loginId || '',
+            email: attributes?.email || user.signInDetails?.loginId || '',
+            name: attributes?.given_name,
             subscriptionStatus: 'free',
             createdAt: new Date().toISOString(),
           });
