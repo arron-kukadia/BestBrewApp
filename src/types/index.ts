@@ -4,8 +4,8 @@ export interface Coffee {
   brand: string;
   name: string;
   origin: string;
-  roastLevel: "light" | "medium" | "medium-dark" | "dark";
-  grindType: "whole-bean" | "ground";
+  roastLevel: 'light' | 'medium' | 'medium-dark' | 'dark';
+  grindType: 'whole-bean' | 'ground';
   rating: number;
   notes: string;
   imageUrl?: string;
@@ -19,8 +19,8 @@ export interface CoffeeFormData {
   brand: string;
   name: string;
   origin: string;
-  roastLevel: Coffee["roastLevel"];
-  grindType: Coffee["grindType"];
+  roastLevel: Coffee['roastLevel'];
+  grindType: Coffee['grindType'];
   rating: number;
   notes: string;
   flavorNotes: string[];
@@ -30,9 +30,10 @@ export interface CoffeeFormData {
 export interface User {
   id: string;
   email: string;
+  name?: string;
   displayName?: string;
   avatarUrl?: string;
-  subscriptionStatus: "free" | "premium";
+  subscriptionStatus: 'free' | 'premium';
   createdAt: string;
 }
 
@@ -55,9 +56,9 @@ export interface Recommendation {
 export interface FeedbackQuestion {
   id: string;
   coffeeId: string;
-  brightness: "flat" | "crisp";
-  mouthfeel: "watery" | "heavy";
-  aftertaste: "quick" | "lingering";
+  brightness: 'flat' | 'crisp';
+  mouthfeel: 'watery' | 'heavy';
+  aftertaste: 'quick' | 'lingering';
   submittedAt: string;
 }
 

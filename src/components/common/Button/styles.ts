@@ -9,29 +9,30 @@ export const createStyles = (theme: Theme) =>
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'center',
-      borderRadius: theme.borderRadius.md,
+      borderRadius: theme.borderRadius.full,
       paddingVertical: theme.spacing.md,
-      paddingHorizontal: theme.spacing.lg,
+      paddingHorizontal: theme.spacing.xl,
       gap: theme.spacing.sm,
+      minHeight: 52,
     },
     primary: {
       backgroundColor: theme.colors.primary,
     },
     secondary: {
       backgroundColor: theme.colors.surface,
-      borderWidth: 1,
+      borderWidth: 1.5,
       borderColor: theme.colors.border,
     },
     outline: {
-      backgroundColor: 'transparent',
-      borderWidth: 1,
-      borderColor: theme.colors.primary,
+      backgroundColor: theme.colors.primaryLight,
+      borderWidth: 0,
     },
     disabled: {
       opacity: 0.5,
     },
     text: {
       ...theme.typography.button,
+      fontWeight: '600',
     },
     primaryText: {
       color: theme.colors.textInverse,

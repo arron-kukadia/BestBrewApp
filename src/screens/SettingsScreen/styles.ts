@@ -20,10 +20,10 @@ export const createStyles = (theme: Theme) =>
       marginTop: theme.spacing.xs,
     },
     section: {
-      marginTop: theme.spacing.xl,
+      marginTop: theme.spacing.lg,
       padding: theme.spacing.md,
       backgroundColor: theme.colors.surface,
-      borderRadius: theme.borderRadius.md,
+      borderRadius: theme.borderRadius.lg,
     },
     sectionTitle: {
       ...theme.typography.bodySmMedium,
@@ -45,8 +45,8 @@ export const createStyles = (theme: Theme) =>
       alignItems: 'center',
       justifyContent: 'center',
       gap: theme.spacing.xs,
-      paddingVertical: theme.spacing.sm,
-      borderRadius: theme.borderRadius.sm,
+      paddingVertical: theme.spacing.md,
+      borderRadius: theme.borderRadius.md,
       backgroundColor: theme.colors.surfaceVariant,
     },
     themeOptionActive: {

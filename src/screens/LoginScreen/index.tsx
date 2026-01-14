@@ -48,9 +48,11 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
       await authService.signIn({ email: email.trim(), password });
       const user = await authService.getCurrentUser();
       if (user) {
+        const attributes = await authService.getUserAttributes();
         setUser({
           id: user.userId,
-          email: user.signInDetails?.loginId || email,
+          email: attributes?.email || user.signInDetails?.loginId || email,
+          name: attributes?.given_name,
           subscriptionStatus: 'free',
           createdAt: new Date().toISOString(),
         });
