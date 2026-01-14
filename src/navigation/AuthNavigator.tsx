@@ -5,6 +5,7 @@ import { LoginScreen } from '@/screens/LoginScreen';
 import { RegisterScreen } from '@/screens/RegisterScreen';
 import { ConfirmSignUpScreen } from '@/screens/ConfirmSignUpScreen';
 import { ForgotPasswordScreen } from '@/screens/ForgotPasswordScreen';
+import { ResetPasswordScreen } from '@/screens/ResetPasswordScreen';
 import { useTheme } from '@/hooks/useTheme';
 
 type AuthStackParamList = {
@@ -13,6 +14,7 @@ type AuthStackParamList = {
   Register: undefined;
   ConfirmSignUp: { email: string };
   ForgotPassword: undefined;
+  ResetPassword: { email: string };
 };
 
 const Stack = createNativeStackNavigator<AuthStackParamList>();
@@ -70,7 +72,16 @@ export const AuthNavigator: React.FC = () => {
         {({ navigation }) => (
           <ForgotPasswordScreen
             onBack={() => navigation.goBack()}
-            onCodeSent={() => navigation.navigate('Login')}
+            onCodeSent={(email) => navigation.navigate('ResetPassword', { email })}
+          />
+        )}
+      </Stack.Screen>
+      <Stack.Screen name="ResetPassword">
+        {({ navigation, route }) => (
+          <ResetPasswordScreen
+            email={route.params.email}
+            onBack={() => navigation.goBack()}
+            onSuccess={() => navigation.navigate('Login')}
           />
         )}
       </Stack.Screen>
