@@ -12,6 +12,7 @@ import { DateInput } from '@/components/common/DateInput'
 import { SelectChips } from '@/components/common/SelectChips'
 import { FlavourNoteSelector } from '@/components/common/FlavourNoteSelector'
 import { StarRating } from '@/components/common/StarRating'
+import { CollapsibleSection } from '@/components/common/CollapsibleSection'
 import { Coffee, CoffeeFormData } from '@/types'
 import { createStyles } from './styles'
 
@@ -85,7 +86,10 @@ export const AddEntryScreen: React.FC<AddEntryScreenProps> = ({ onBack, onSucces
   })
   const [isLoading, setIsLoading] = useState(false)
 
-  const updateField = <K extends keyof CoffeeFormData>(key: K, value: CoffeeFormData[K]) => {
+  const updateField = <FieldKey extends keyof CoffeeFormData>(
+    key: FieldKey,
+    value: CoffeeFormData[FieldKey]
+  ) => {
     setFormData((prev) => ({ ...prev, [key]: value }))
   }
 
@@ -195,7 +199,7 @@ export const AddEntryScreen: React.FC<AddEntryScreenProps> = ({ onBack, onSucces
             />
             <Input
               icon="place"
-              placeholder="Origin (e.g., Ethiopia, Colombia)"
+              placeholder="Origin (e.g. Ethiopia)"
               value={formData.origin}
               onChangeText={(text) => updateField('origin', text)}
             />
@@ -210,21 +214,34 @@ export const AddEntryScreen: React.FC<AddEntryScreenProps> = ({ onBack, onSucces
               onSelect={(value) => updateField('roastLevel', value)}
             />
             <SelectChips
-              label="Process Method"
-              options={PROCESS_OPTIONS}
-              selectedValue={formData.processMethod}
-              onSelect={(value) => updateField('processMethod', value)}
-            />
-            <SelectChips
               label="Grind Type"
               options={GRIND_OPTIONS}
               selectedValue={formData.grindType}
               onSelect={(value) => updateField('grindType', value)}
             />
+            <Text style={styles.fieldLabel}>Your Rating</Text>
+            <StarRating
+              rating={formData.rating}
+              onRatingChange={(rating) => updateField('rating', rating)}
+            />
+            <Text style={styles.fieldLabel}>Flavour Notes</Text>
+            <Text style={styles.sectionSubtitle}>Select flavours and set intensity (1-3)</Text>
+            <FlavourNoteSelector
+              options={FLAVOUR_OPTIONS}
+              selectedNotes={formData.flavourNotes}
+              onToggle={toggleFlavourNote}
+              onIntensityChange={updateFlavourIntensity}
+            />
           </View>
 
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Purchase Info</Text>
+          <CollapsibleSection title="Additional Details">
+            <SelectChips
+              label="Process Method"
+              options={PROCESS_OPTIONS}
+              selectedValue={formData.processMethod}
+              onSelect={(value) => updateField('processMethod', value)}
+            />
+            <Text style={styles.fieldLabel}>Price</Text>
             <PriceInput
               value={formData.price}
               onChangeText={(text) => updateField('price', text)}
@@ -256,26 +273,7 @@ export const AddEntryScreen: React.FC<AddEntryScreenProps> = ({ onBack, onSucces
               onChange={(date) => updateField('roastDate', date)}
               placeholder="Roast Date"
             />
-          </View>
-
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Your Rating</Text>
-            <StarRating
-              rating={formData.rating}
-              onRatingChange={(rating) => updateField('rating', rating)}
-            />
-          </View>
-
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Flavour Notes</Text>
-            <Text style={styles.sectionSubtitle}>Select flavours and set intensity (1-3)</Text>
-            <FlavourNoteSelector
-              options={FLAVOUR_OPTIONS}
-              selectedNotes={formData.flavourNotes}
-              onToggle={toggleFlavourNote}
-              onIntensityChange={updateFlavourIntensity}
-            />
-          </View>
+          </CollapsibleSection>
 
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Notes</Text>

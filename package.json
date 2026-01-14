@@ -10,6 +10,8 @@
     "build:dev": "eas build --profile development --platform all",
     "build:dev:ios": "eas build --profile development --platform ios",
     "build:dev:android": "eas build --profile development --platform android",
+    "dev-client": "expo start --dev-client",
+    "prod-client": "expo start --production",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
