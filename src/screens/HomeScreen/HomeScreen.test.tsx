@@ -7,11 +7,8 @@ jest.mock('@/stores/authStore')
 
 describe('HomeScreen', () => {
   beforeEach(() => {
-    ;(useAuthStore as unknown as jest.Mock).mockImplementation((selector) =>
-      selector({
-        user: { name: 'John', email: 'john@example.com' },
-      })
-    )
+    const mockStore = { user: { name: 'John', email: 'john@example.com' } }
+    ;(useAuthStore as unknown as jest.Mock).mockImplementation((selector) => selector(mockStore))
   })
 
   it('renders greeting with user name', () => {
