@@ -14,11 +14,9 @@ import { EmptyState } from '@/components/common/EmptyState'
 import { Coffee } from '@/types'
 import { createStyles } from './styles'
 
-const roastOptions = [
-  { label: 'Light', value: 'light' as const },
-  { label: 'Medium', value: 'medium' as const },
-  { label: 'Med-Dark', value: 'medium-dark' as const },
-  { label: 'Dark', value: 'dark' as const },
+const sortOptions = [
+  { label: 'Recent', value: 'recent' as const },
+  { label: 'Top Rated', value: 'rating' as const },
 ]
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>
@@ -31,10 +29,9 @@ export const HistoryScreen: React.FC = () => {
   const coffees = useCoffeeStore((state) => state.coffees)
   const searchQuery = useCoffeeStore((state) => state.searchQuery)
   const setSearchQuery = useCoffeeStore((state) => state.setSearchQuery)
-  const selectedRoastLevel = useCoffeeStore((state) => state.selectedRoastLevel)
-  const setSelectedRoastLevel = useCoffeeStore((state) => state.setSelectedRoastLevel)
   const toggleFavorite = useCoffeeStore((state) => state.toggleFavorite)
   const sortBy = useCoffeeStore((state) => state.sortBy)
+  const setSortBy = useCoffeeStore((state) => state.setSortBy)
 
   const filteredCoffees = React.useMemo(() => {
     let filtered = [...coffees]
@@ -47,10 +44,6 @@ export const HistoryScreen: React.FC = () => {
           c.brand.toLowerCase().includes(query) ||
           c.origin.toLowerCase().includes(query)
       )
-    }
-
-    if (selectedRoastLevel) {
-      filtered = filtered.filter((c) => c.roastLevel === selectedRoastLevel)
     }
 
     switch (sortBy) {
@@ -66,7 +59,7 @@ export const HistoryScreen: React.FC = () => {
     }
 
     return filtered
-  }, [coffees, searchQuery, selectedRoastLevel, sortBy])
+  }, [coffees, searchQuery, sortBy])
 
   const renderCoffeeCard = ({ item }: { item: Coffee }) => (
     <CoffeeCard coffee={item} onPress={() => {}} onFavoritePress={() => toggleFavorite(item.id)} />
@@ -86,9 +79,9 @@ export const HistoryScreen: React.FC = () => {
           placeholder="Search coffees..."
         />
         <FilterChips
-          options={roastOptions}
-          selectedValue={selectedRoastLevel}
-          onSelect={setSelectedRoastLevel}
+          options={sortOptions}
+          selectedValue={sortBy}
+          onSelect={(value) => setSortBy(value || 'recent')}
         />
       </View>
 
@@ -115,7 +108,6 @@ export const HistoryScreen: React.FC = () => {
             onAction={() => {
               if (searchQuery) {
                 setSearchQuery('')
-                setSelectedRoastLevel(null)
               } else {
                 navigation.navigate('AddEntry')
               }

@@ -29,7 +29,6 @@ export function FilterChips<OptionValue>({
       showsHorizontalScrollIndicator={false}
       contentContainerStyle={styles.container}
     >
-      <Chip label="All" selected={selectedValue === null} onPress={() => onSelect(null)} />
       {options.map((option) => (
         <Chip
           key={String(option.value)}
