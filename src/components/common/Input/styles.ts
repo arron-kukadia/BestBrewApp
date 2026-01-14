@@ -24,7 +24,6 @@ export const createStyles = (theme: Theme) =>
       flex: 1,
       ...theme.typography.body,
       color: theme.colors.text,
-      paddingVertical: theme.spacing.md,
     },
     eyeIcon: {
       padding: theme.spacing.xs,

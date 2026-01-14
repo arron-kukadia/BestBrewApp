@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Pressable } from 'react-native'
+import { View, Text, Pressable } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
 import { useTheme } from '@/hooks/useTheme'
 import { createStyles } from './styles'
@@ -10,6 +10,7 @@ interface StarRatingProps {
   maxStars?: number
   size?: number
   readonly?: boolean
+  label?: string
 }
 
 export const StarRating: React.FC<StarRatingProps> = ({
@@ -18,6 +19,7 @@ export const StarRating: React.FC<StarRatingProps> = ({
   maxStars = 5,
   size = 32,
   readonly = false,
+  label,
 }) => {
   const theme = useTheme()
   const styles = createStyles(theme)
@@ -29,28 +31,31 @@ export const StarRating: React.FC<StarRatingProps> = ({
   }
 
   return (
-    <View style={styles.container} testID="star-rating">
-      {Array.from({ length: maxStars }, (_, index) => {
-        const star = index + 1
-        const isFilled = star <= rating
-        const isHalf = star - 0.5 === rating
+    <View style={styles.wrapper} testID="star-rating">
+      {label && <Text style={styles.label}>{label}</Text>}
+      <View style={styles.container}>
+        {Array.from({ length: maxStars }, (_, index) => {
+          const star = index + 1
+          const isFilled = star <= rating
+          const isHalf = star - 0.5 === rating
 
-        return (
-          <Pressable
-            key={star}
-            onPress={() => handlePress(star)}
-            disabled={readonly}
-            hitSlop={4}
-            testID={`star-${star}`}
-          >
-            <MaterialIcons
-              name={isFilled ? 'star' : isHalf ? 'star-half' : 'star-border'}
-              size={size}
-              color={theme.colors.rating}
-            />
-          </Pressable>
-        )
-      })}
+          return (
+            <Pressable
+              key={star}
+              onPress={() => handlePress(star)}
+              disabled={readonly}
+              hitSlop={4}
+              testID={`star-${star}`}
+            >
+              <MaterialIcons
+                name={isFilled ? 'star' : isHalf ? 'star-half' : 'star-border'}
+                size={size}
+                color={theme.colors.rating}
+              />
+            </Pressable>
+          )
+        })}
+      </View>
     </View>
   )
 }

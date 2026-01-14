@@ -9,9 +9,8 @@ export const createStyles = (theme: Theme) =>
       gap: theme.spacing.sm,
     },
     label: {
-      ...theme.typography.bodyMedium,
-      color: theme.colors.textSecondary,
-      marginBottom: theme.spacing.xs,
+      ...theme.typography.bodySmMedium,
+      color: theme.colors.text,
     },
     chipsContainer: {
       flexDirection: 'row',

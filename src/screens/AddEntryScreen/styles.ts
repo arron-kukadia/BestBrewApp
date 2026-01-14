@@ -35,15 +35,14 @@ export const createStyles = (theme: Theme) =>
     },
     section: {
       marginBottom: theme.spacing.xl,
-      gap: theme.spacing.md,
+      gap: theme.spacing.lg,
     },
     sectionTitle: {
       ...theme.typography.h3,
       color: theme.colors.primary,
-      marginBottom: theme.spacing.sm,
     },
     fieldLabel: {
-      ...theme.typography.bodyMedium,
+      ...theme.typography.bodySm,
       color: theme.colors.text,
       marginTop: theme.spacing.xs,
     },

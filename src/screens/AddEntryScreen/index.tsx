@@ -219,14 +219,13 @@ export const AddEntryScreen: React.FC<AddEntryScreenProps> = ({ onBack, onSucces
               selectedValue={formData.grindType}
               onSelect={(value) => updateField('grindType', value)}
             />
-            <Text style={styles.fieldLabel}>Your Rating</Text>
             <StarRating
+              label="Your Rating"
               rating={formData.rating}
               onRatingChange={(rating) => updateField('rating', rating)}
             />
-            <Text style={styles.fieldLabel}>Flavour Notes</Text>
-            <Text style={styles.sectionSubtitle}>Select flavours and set intensity (1-3)</Text>
             <FlavourNoteSelector
+              label="Flavour Notes"
               options={FLAVOUR_OPTIONS}
               selectedNotes={formData.flavourNotes}
               onToggle={toggleFlavourNote}
@@ -240,13 +239,6 @@ export const AddEntryScreen: React.FC<AddEntryScreenProps> = ({ onBack, onSucces
               options={PROCESS_OPTIONS}
               selectedValue={formData.processMethod}
               onSelect={(value) => updateField('processMethod', value)}
-            />
-            <Text style={styles.fieldLabel}>Price</Text>
-            <PriceInput
-              value={formData.price}
-              onChangeText={(text) => updateField('price', text)}
-              currency={formData.currency}
-              onCurrencyChange={(currency) => updateField('currency', currency)}
             />
             <SelectChips
               label="Bag Size"
@@ -267,6 +259,12 @@ export const AddEntryScreen: React.FC<AddEntryScreenProps> = ({ onBack, onSucces
               placeholder="Store / Website"
               value={formData.purchaseLocation}
               onChangeText={(text) => updateField('purchaseLocation', text)}
+            />
+            <PriceInput
+              value={formData.price}
+              onChangeText={(text) => updateField('price', text)}
+              currency={formData.currency}
+              onCurrencyChange={(currency) => updateField('currency', currency)}
             />
             <DateInput
               value={formData.roastDate}
