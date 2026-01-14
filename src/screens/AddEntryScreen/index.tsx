@@ -7,8 +7,10 @@ import { useCoffeeStore } from '@/stores/coffeeStore'
 import { BackButton } from '@/components/common/BackButton'
 import { Button } from '@/components/common/Button'
 import { Input } from '@/components/common/Input'
+import { PriceInput } from '@/components/common/PriceInput'
+import { DateInput } from '@/components/common/DateInput'
 import { SelectChips } from '@/components/common/SelectChips'
-import { MultiSelectChips } from '@/components/common/MultiSelectChips'
+import { FlavourNoteSelector } from '@/components/common/FlavourNoteSelector'
 import { StarRating } from '@/components/common/StarRating'
 import { Coffee, CoffeeFormData } from '@/types'
 import { createStyles } from './styles'
@@ -25,7 +27,22 @@ const GRIND_OPTIONS = [
   { label: 'Ground', value: 'ground' as const },
 ]
 
-const FLAVOR_OPTIONS = [
+const PROCESS_OPTIONS = [
+  { label: 'Washed', value: 'washed' as const },
+  { label: 'Natural', value: 'natural' as const },
+  { label: 'Honey', value: 'honey' as const },
+  { label: 'Anaerobic', value: 'anaerobic' as const },
+  { label: 'Other', value: 'other' as const },
+]
+
+const BAG_SIZE_OPTIONS = [
+  { label: '250g', value: '250g' as const },
+  { label: '500g', value: '500g' as const },
+  { label: '1kg', value: '1kg' as const },
+  { label: 'Other', value: 'other' as const },
+]
+
+const FLAVOUR_OPTIONS = [
   'Fruity',
   'Floral',
   'Nutty',
@@ -55,9 +72,16 @@ export const AddEntryScreen: React.FC<AddEntryScreenProps> = ({ onBack, onSucces
     origin: '',
     roastLevel: 'medium',
     grindType: 'whole-bean',
+    processMethod: null,
     rating: 0,
     notes: '',
-    flavorNotes: [],
+    flavourNotes: [],
+    price: '',
+    currency: 'GBP',
+    bagSize: null,
+    customBagSize: '',
+    roastDate: '',
+    purchaseLocation: '',
   })
   const [isLoading, setIsLoading] = useState(false)
 
@@ -65,12 +89,22 @@ export const AddEntryScreen: React.FC<AddEntryScreenProps> = ({ onBack, onSucces
     setFormData((prev) => ({ ...prev, [key]: value }))
   }
 
-  const toggleFlavorNote = (flavor: string) => {
+  const toggleFlavourNote = (name: string) => {
+    setFormData((prev) => {
+      const exists = prev.flavourNotes.find((note) => note.name === name)
+      if (exists) {
+        return { ...prev, flavourNotes: prev.flavourNotes.filter((note) => note.name !== name) }
+      }
+      return { ...prev, flavourNotes: [...prev.flavourNotes, { name, intensity: 2 as const }] }
+    })
+  }
+
+  const updateFlavourIntensity = (name: string, intensity: 1 | 2 | 3) => {
     setFormData((prev) => ({
       ...prev,
-      flavorNotes: prev.flavorNotes.includes(flavor)
-        ? prev.flavorNotes.filter((f) => f !== flavor)
-        : [...prev.flavorNotes, flavor],
+      flavourNotes: prev.flavourNotes.map((note) =>
+        note.name === name ? { ...note, intensity } : note
+      ),
     }))
   }
 
@@ -103,9 +137,16 @@ export const AddEntryScreen: React.FC<AddEntryScreenProps> = ({ onBack, onSucces
         origin: formData.origin.trim() || 'Unknown',
         roastLevel: formData.roastLevel,
         grindType: formData.grindType,
+        processMethod: formData.processMethod || undefined,
         rating: formData.rating,
         notes: formData.notes.trim(),
-        flavorNotes: formData.flavorNotes,
+        flavourNotes: formData.flavourNotes,
+        price: formData.price ? parseFloat(formData.price) : undefined,
+        currency: formData.currency,
+        bagSize: formData.bagSize || undefined,
+        customBagSize: formData.bagSize === 'other' ? formData.customBagSize : undefined,
+        roastDate: formData.roastDate || undefined,
+        purchaseLocation: formData.purchaseLocation.trim() || undefined,
         isFavorite: false,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
@@ -169,10 +210,51 @@ export const AddEntryScreen: React.FC<AddEntryScreenProps> = ({ onBack, onSucces
               onSelect={(value) => updateField('roastLevel', value)}
             />
             <SelectChips
+              label="Process Method"
+              options={PROCESS_OPTIONS}
+              selectedValue={formData.processMethod}
+              onSelect={(value) => updateField('processMethod', value)}
+            />
+            <SelectChips
               label="Grind Type"
               options={GRIND_OPTIONS}
               selectedValue={formData.grindType}
               onSelect={(value) => updateField('grindType', value)}
+            />
+          </View>
+
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Purchase Info</Text>
+            <PriceInput
+              value={formData.price}
+              onChangeText={(text) => updateField('price', text)}
+              currency={formData.currency}
+              onCurrencyChange={(currency) => updateField('currency', currency)}
+            />
+            <SelectChips
+              label="Bag Size"
+              options={BAG_SIZE_OPTIONS}
+              selectedValue={formData.bagSize}
+              onSelect={(value) => updateField('bagSize', value)}
+            />
+            {formData.bagSize === 'other' && (
+              <Input
+                icon="scale"
+                placeholder="Custom weight (e.g., 340g)"
+                value={formData.customBagSize}
+                onChangeText={(text) => updateField('customBagSize', text)}
+              />
+            )}
+            <Input
+              icon="store"
+              placeholder="Store / Website"
+              value={formData.purchaseLocation}
+              onChangeText={(text) => updateField('purchaseLocation', text)}
+            />
+            <DateInput
+              value={formData.roastDate}
+              onChange={(date) => updateField('roastDate', date)}
+              placeholder="Roast Date"
             />
           </View>
 
@@ -185,11 +267,13 @@ export const AddEntryScreen: React.FC<AddEntryScreenProps> = ({ onBack, onSucces
           </View>
 
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Flavor Notes</Text>
-            <MultiSelectChips
-              options={FLAVOR_OPTIONS}
-              selectedValues={formData.flavorNotes}
-              onToggle={toggleFlavorNote}
+            <Text style={styles.sectionTitle}>Flavour Notes</Text>
+            <Text style={styles.sectionSubtitle}>Select flavours and set intensity (1-3)</Text>
+            <FlavourNoteSelector
+              options={FLAVOUR_OPTIONS}
+              selectedNotes={formData.flavourNotes}
+              onToggle={toggleFlavourNote}
+              onIntensityChange={updateFlavourIntensity}
             />
           </View>
 
@@ -197,7 +281,7 @@ export const AddEntryScreen: React.FC<AddEntryScreenProps> = ({ onBack, onSucces
             <Text style={styles.sectionTitle}>Notes</Text>
             <Input
               icon="notes"
-              placeholder="Your tasting notes, brewing method, etc."
+              placeholder="Your tasting notes, your favourite brewing method, etc."
               value={formData.notes}
               onChangeText={(text) => updateField('notes', text)}
               multiline

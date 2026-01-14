@@ -4,19 +4,24 @@ import { Chip } from '@/components/common/Chip'
 import { useTheme } from '@/hooks/useTheme'
 import { createStyles } from './styles'
 
-interface SelectOption<T> {
+interface SelectOption<OptionValue> {
   label: string
-  value: T
+  value: OptionValue
 }
 
-interface SelectChipsProps<T> {
+interface SelectChipsProps<OptionValue> {
   label?: string
-  options: SelectOption<T>[]
-  selectedValue: T
-  onSelect: (value: T) => void
+  options: SelectOption<OptionValue>[]
+  selectedValue: OptionValue | null
+  onSelect: (value: OptionValue) => void
 }
 
-export function SelectChips<T>({ label, options, selectedValue, onSelect }: SelectChipsProps<T>) {
+export function SelectChips<OptionValue>({
+  label,
+  options,
+  selectedValue,
+  onSelect,
+}: SelectChipsProps<OptionValue>) {
   const theme = useTheme()
   const styles = createStyles(theme)
 

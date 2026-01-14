@@ -1,3 +1,14 @@
+export type ProcessMethod = 'washed' | 'natural' | 'honey' | 'anaerobic' | 'other'
+
+export type BagSize = '250g' | '500g' | '1kg' | 'other'
+
+export interface FlavourNote {
+  name: string
+  intensity: 1 | 2 | 3
+}
+
+export type Currency = 'GBP' | 'USD' | 'EUR'
+
 export interface Coffee {
   id: string
   userId: string
@@ -6,10 +17,17 @@ export interface Coffee {
   origin: string
   roastLevel: 'light' | 'medium' | 'medium-dark' | 'dark'
   grindType: 'whole-bean' | 'ground'
+  processMethod?: ProcessMethod
   rating: number
   notes: string
   imageUrl?: string
-  flavorNotes: string[]
+  flavourNotes: FlavourNote[]
+  price?: number
+  currency?: Currency
+  bagSize?: BagSize
+  customBagSize?: string
+  roastDate?: string
+  purchaseLocation?: string
   isFavorite: boolean
   createdAt: string
   updatedAt: string
@@ -21,9 +39,16 @@ export interface CoffeeFormData {
   origin: string
   roastLevel: Coffee['roastLevel']
   grindType: Coffee['grindType']
+  processMethod: ProcessMethod | null
   rating: number
   notes: string
-  flavorNotes: string[]
+  flavourNotes: FlavourNote[]
+  price: string
+  bagSize: BagSize | null
+  customBagSize: string
+  currency: Currency
+  roastDate: string
+  purchaseLocation: string
   imageUri?: string
 }
 

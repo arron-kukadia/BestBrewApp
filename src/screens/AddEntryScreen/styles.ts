@@ -42,6 +42,18 @@ export const createStyles = (theme: Theme) =>
       color: theme.colors.text,
       marginBottom: theme.spacing.xs,
     },
+    sectionSubtitle: {
+      ...theme.typography.bodySm,
+      color: theme.colors.textSecondary,
+      marginTop: -theme.spacing.xs,
+    },
+    row: {
+      flexDirection: 'row',
+      gap: theme.spacing.md,
+    },
+    halfWidth: {
+      flex: 1,
+    },
     buttonContainer: {
       marginTop: theme.spacing.md,
     },
