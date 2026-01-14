@@ -90,7 +90,9 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
           <View style={styles.headerSection}>
             <IconCircle icon="coffee" size="large" />
             <Text style={styles.appName}>BestBrew</Text>
-            <Text style={styles.tagline}>Find your perfect coffee</Text>
+            <Text style={styles.tagline}>
+              Keep track of your brews and find your perfect coffee
+            </Text>
           </View>
 
           <View style={styles.formSection}>

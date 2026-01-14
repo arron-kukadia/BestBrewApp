@@ -31,6 +31,7 @@ export const createStyles = (theme: Theme) =>
     tagline: {
       ...theme.typography.body,
       color: theme.colors.textSecondary,
+      textAlign: 'center',
     },
     formSection: {
       paddingVertical: theme.spacing.xl,
