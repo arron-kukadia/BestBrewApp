@@ -5,7 +5,8 @@ import { MaterialIcons } from '@expo/vector-icons'
 import { useRoute, useNavigation, RouteProp } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { useTheme } from '@/hooks/useTheme'
-import { useCoffeeStore } from '@/stores/coffeeStore'
+import { useAuthStore } from '@/stores/authStore'
+import { useCoffees, useDeleteCoffee, useToggleFavorite } from '@/api/useCoffees'
 import { BackButton } from '@/components/common/BackButton'
 import { StarRating } from '@/components/common/StarRating'
 import { Chip } from '@/components/common/Chip'
@@ -29,9 +30,22 @@ export const CoffeeDetailScreen: React.FC = () => {
   const navigation = useNavigation<NavigationProp>()
   const { coffeeId } = route.params
 
-  const coffee = useCoffeeStore((state) => state.coffees.find((coffee) => coffee.id === coffeeId))
-  const toggleFavorite = useCoffeeStore((state) => state.toggleFavorite)
-  const deleteCoffee = useCoffeeStore((state) => state.deleteCoffee)
+  const user = useAuthStore((state) => state.user)
+  const { data: coffees = [] } = useCoffees(user?.id)
+  const deleteMutation = useDeleteCoffee()
+  const toggleFavoriteMutation = useToggleFavorite()
+
+  const coffee = coffees.find((c) => c.id === coffeeId)
+
+  const handleToggleFavorite = () => {
+    if (user?.id && coffee) {
+      toggleFavoriteMutation.mutate({
+        id: coffee.id,
+        userId: user.id,
+        isFavorite: !coffee.isFavorite,
+      })
+    }
+  }
 
   const handleDelete = () => {
     Alert.alert(
@@ -43,8 +57,12 @@ export const CoffeeDetailScreen: React.FC = () => {
           text: 'Delete',
           style: 'destructive',
           onPress: () => {
-            deleteCoffee(coffeeId)
-            navigation.goBack()
+            if (user?.id) {
+              deleteMutation.mutate(
+                { id: coffeeId, userId: user.id },
+                { onSuccess: () => navigation.goBack() }
+              )
+            }
           },
         },
       ]
@@ -99,11 +117,7 @@ export const CoffeeDetailScreen: React.FC = () => {
           >
             <MaterialIcons name="edit" size={24} color={theme.colors.text} />
           </Pressable>
-          <Pressable
-            onPress={() => toggleFavorite(coffee.id)}
-            hitSlop={8}
-            style={styles.headerButton}
-          >
+          <Pressable onPress={handleToggleFavorite} hitSlop={8} style={styles.headerButton}>
             <MaterialIcons
               name={coffee.isFavorite ? 'favorite' : 'favorite-border'}
               size={24}

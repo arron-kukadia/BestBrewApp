@@ -1,11 +1,13 @@
-import React from 'react'
-import { View, Text } from 'react-native'
+import React, { useCallback } from 'react'
+import { View, Text, RefreshControl, ActivityIndicator } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { FlashList } from '@shopify/flash-list'
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { useTheme } from '@/hooks/useTheme'
+import { useAuthStore } from '@/stores/authStore'
 import { useCoffeeStore } from '@/stores/coffeeStore'
+import { useCoffees, useToggleFavorite } from '@/api/useCoffees'
 import { RootStackParamList } from '@/types'
 import { SearchBar } from '@/components/common/SearchBar'
 import { FilterChips } from '@/components/common/FilterChips'
@@ -27,12 +29,32 @@ export const HistoryScreen: React.FC = () => {
   const styles = createStyles(theme)
   const navigation = useNavigation<NavigationProp>()
 
-  const coffees = useCoffeeStore((state) => state.coffees)
+  const user = useAuthStore((state) => state.user)
+  const { data: coffees = [], isLoading, refetch, isRefetching } = useCoffees(user?.id)
+
   const searchQuery = useCoffeeStore((state) => state.searchQuery)
   const setSearchQuery = useCoffeeStore((state) => state.setSearchQuery)
-  const toggleFavorite = useCoffeeStore((state) => state.toggleFavorite)
   const sortBy = useCoffeeStore((state) => state.sortBy)
   const setSortBy = useCoffeeStore((state) => state.setSortBy)
+
+  const toggleFavoriteMutation = useToggleFavorite()
+
+  const onRefresh = useCallback(() => {
+    refetch()
+  }, [refetch])
+
+  const handleToggleFavorite = useCallback(
+    (coffee: Coffee) => {
+      if (user?.id) {
+        toggleFavoriteMutation.mutate({
+          id: coffee.id,
+          userId: user.id,
+          isFavorite: !coffee.isFavorite,
+        })
+      }
+    },
+    [user?.id, toggleFavoriteMutation]
+  )
 
   const filteredCoffees = React.useMemo(() => {
     let filtered = [...coffees]
@@ -71,7 +93,7 @@ export const HistoryScreen: React.FC = () => {
     <CoffeeCard
       coffee={item}
       onPress={() => navigation.navigate('CoffeeDetail', { coffeeId: item.id })}
-      onFavoritePress={() => toggleFavorite(item.id)}
+      onFavoritePress={() => handleToggleFavorite(item)}
     />
   )
 
@@ -95,7 +117,11 @@ export const HistoryScreen: React.FC = () => {
         />
       </View>
 
-      {filteredCoffees.length > 0 ? (
+      {isLoading ? (
+        <View style={styles.emptyContainer}>
+          <ActivityIndicator size="large" color={theme.colors.primary} />
+        </View>
+      ) : filteredCoffees.length > 0 ? (
         <FlashList
           data={filteredCoffees}
           renderItem={renderCoffeeCard}
@@ -103,6 +129,13 @@ export const HistoryScreen: React.FC = () => {
           contentContainerStyle={styles.listContent}
           ItemSeparatorComponent={() => <View style={styles.separator} />}
           showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl
+              refreshing={isRefetching}
+              onRefresh={onRefresh}
+              tintColor={theme.colors.primary}
+            />
+          }
         />
       ) : (
         <View style={styles.emptyContainer}>

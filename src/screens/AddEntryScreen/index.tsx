@@ -3,7 +3,7 @@ import { View, Text, ScrollView, KeyboardAvoidingView, Platform, Alert } from 'r
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTheme } from '@/hooks/useTheme'
 import { useAuthStore } from '@/stores/authStore'
-import { useCoffeeStore } from '@/stores/coffeeStore'
+import { useCoffees, useCreateCoffee, useUpdateCoffee } from '@/api/useCoffees'
 import { BackButton } from '@/components/common/BackButton'
 import { Button } from '@/components/common/Button'
 import { Input } from '@/components/common/Input'
@@ -15,7 +15,7 @@ import { StarRating } from '@/components/common/StarRating'
 import { CollapsibleSection } from '@/components/common/CollapsibleSection'
 import { SuccessModal } from '@/components/common/SuccessModal'
 import Animated, { FadeInRight, FadeOutRight } from 'react-native-reanimated'
-import { Coffee, CoffeeFormData } from '@/types'
+import { CoffeeFormData } from '@/types'
 import {
   ROAST_OPTIONS,
   GRIND_OPTIONS,
@@ -35,12 +35,12 @@ export const AddEntryScreen: React.FC<AddEntryScreenProps> = ({ onBack, onSucces
   const theme = useTheme()
   const styles = createStyles(theme)
   const user = useAuthStore((state) => state.user)
-  const addCoffee = useCoffeeStore((state) => state.addCoffee)
-  const updateCoffee = useCoffeeStore((state) => state.updateCoffee)
-  const coffees = useCoffeeStore((state) => state.coffees)
+  const { data: coffees = [] } = useCoffees(user?.id)
+  const createMutation = useCreateCoffee()
+  const updateMutation = useUpdateCoffee()
 
   const isEditMode = !!coffeeId
-  const existingCoffee = isEditMode ? coffees.find((coffee) => coffee.id === coffeeId) : null
+  const existingCoffee = isEditMode ? coffees.find((c) => c.id === coffeeId) : null
 
   const [formData, setFormData] = useState<CoffeeFormData>({
     brand: '',
@@ -139,8 +139,13 @@ export const AddEntryScreen: React.FC<AddEntryScreenProps> = ({ onBack, onSucces
 
     setIsLoading(true)
     try {
-      if (isEditMode && coffeeId) {
-        updateCoffee(coffeeId, {
+      const now = new Date().toISOString().split('T')[0]
+      const userId = user?.id || ''
+
+      if (isEditMode && coffeeId && existingCoffee) {
+        const updates = {
+          id: coffeeId,
+          userId,
           brand: formData.brand.trim(),
           name: formData.name.trim(),
           origin: formData.origin.trim() || 'Unknown',
@@ -156,35 +161,42 @@ export const AddEntryScreen: React.FC<AddEntryScreenProps> = ({ onBack, onSucces
           customBagSize: formData.bagSize === 'other' ? formData.customBagSize : undefined,
           roastDate: formData.roastDate || undefined,
           purchaseLocation: formData.purchaseLocation.trim() || undefined,
-        })
+        }
+        await updateMutation.mutateAsync(updates)
         setShowSuccess(true)
       } else {
-        const coffee: Coffee = {
+        const coffeeInput: Record<string, unknown> = {
           id: Date.now().toString(),
-          userId: user?.id || '',
+          userId,
           brand: formData.brand.trim(),
           name: formData.name.trim(),
           origin: formData.origin.trim() || 'Unknown',
           roastLevel: formData.roastLevel!,
           grindType: formData.grindType!,
-          processMethod: formData.processMethod || undefined,
           rating: formData.rating,
-          notes: formData.notes.trim(),
           flavourNotes: formData.flavourNotes,
-          price: formData.price ? parseFloat(formData.price) : undefined,
-          currency: formData.currency,
-          bagSize: formData.bagSize || undefined,
-          customBagSize: formData.bagSize === 'other' ? formData.customBagSize : undefined,
-          roastDate: formData.roastDate || undefined,
-          purchaseLocation: formData.purchaseLocation.trim() || undefined,
           isFavorite: false,
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
+          createdAt: now,
         }
-        addCoffee(coffee)
+        if (formData.processMethod) coffeeInput.processMethod = formData.processMethod
+        if (formData.notes.trim()) coffeeInput.notes = formData.notes.trim()
+        if (formData.price) coffeeInput.price = parseFloat(formData.price)
+        if (formData.price) coffeeInput.currency = formData.currency
+        if (formData.bagSize) coffeeInput.bagSize = formData.bagSize
+        if (formData.bagSize === 'other' && formData.customBagSize) {
+          coffeeInput.customBagSize = formData.customBagSize
+        }
+        if (formData.roastDate) coffeeInput.roastDate = formData.roastDate
+        if (formData.purchaseLocation.trim()) {
+          coffeeInput.purchaseLocation = formData.purchaseLocation.trim()
+        }
+        await createMutation.mutateAsync(
+          coffeeInput as unknown as Parameters<typeof createMutation.mutateAsync>[0]
+        )
         setShowSuccess(true)
       }
-    } catch {
+    } catch (error) {
+      console.error('Error saving coffee:', error)
       Alert.alert(
         'Error',
         isEditMode ? 'Failed to update coffee entry' : 'Failed to add coffee entry'
