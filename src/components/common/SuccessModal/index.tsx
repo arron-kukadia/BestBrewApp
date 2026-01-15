@@ -34,7 +34,7 @@ export const SuccessModal: React.FC<SuccessModalProps> = ({
           <LottieView
             ref={animationRef}
             source={{
-              uri: 'https://lottie.host/27665831-96e9-4341-b6f5-ec3c3b9ec9cb/jKDfcA8JK0.lottie',
+              uri: 'https://lottie.host/9f5548f8-3937-4ca4-98c7-98858a8d2976/b7DodZnzeQ.lottie',
             }}
             style={styles.animation}
             autoPlay

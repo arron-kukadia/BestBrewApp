@@ -7,7 +7,7 @@ export const createStyles = (theme: Theme) =>
   StyleSheet.create({
     overlay: {
       flex: 1,
-      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+      backgroundColor: 'rgba(0, 0, 0, 0.7)',
       justifyContent: 'center',
       alignItems: 'center',
       padding: theme.spacing.xl,
@@ -18,16 +18,15 @@ export const createStyles = (theme: Theme) =>
       padding: theme.spacing.xl,
       alignItems: 'center',
       width: '100%',
-      maxWidth: 320,
     },
     animation: {
-      width: 150,
+      width: 200,
       height: 150,
     },
     title: {
       ...theme.typography.h3,
       color: theme.colors.text,
-      marginTop: theme.spacing.md,
+      marginTop: theme.spacing.sm,
       textAlign: 'center',
     },
     message: {
