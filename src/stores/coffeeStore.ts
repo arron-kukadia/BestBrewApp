@@ -8,14 +8,14 @@ interface CoffeeState {
   isLoading: boolean
   searchQuery: string
   selectedRoastLevel: Coffee['roastLevel'] | null
-  sortBy: 'recent' | 'rating' | 'name'
+  sortBy: 'recent' | 'rating' | 'name' | 'saved'
   addCoffee: (coffee: Coffee) => void
   updateCoffee: (id: string, updates: Partial<Coffee>) => void
   deleteCoffee: (id: string) => void
   toggleFavorite: (id: string) => void
   setSearchQuery: (query: string) => void
   setSelectedRoastLevel: (level: Coffee['roastLevel'] | null) => void
-  setSortBy: (sort: 'recent' | 'rating' | 'name') => void
+  setSortBy: (sort: 'recent' | 'rating' | 'name' | 'saved') => void
   getFilteredCoffees: () => Coffee[]
 }
 

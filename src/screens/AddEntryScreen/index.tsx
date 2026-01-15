@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, ScrollView, KeyboardAvoidingView, Platform, Alert } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTheme } from '@/hooks/useTheme'
@@ -16,58 +16,31 @@ import { CollapsibleSection } from '@/components/common/CollapsibleSection'
 import { SuccessModal } from '@/components/common/SuccessModal'
 import Animated, { FadeInRight, FadeOutRight } from 'react-native-reanimated'
 import { Coffee, CoffeeFormData } from '@/types'
+import {
+  ROAST_OPTIONS,
+  GRIND_OPTIONS,
+  PROCESS_OPTIONS,
+  BAG_SIZE_OPTIONS,
+  FLAVOUR_OPTIONS,
+} from '@/constants/coffee'
 import { createStyles } from './styles'
-
-const ROAST_OPTIONS = [
-  { label: 'Light', value: 'light' as const },
-  { label: 'Medium', value: 'medium' as const },
-  { label: 'Med-Dark', value: 'medium-dark' as const },
-  { label: 'Dark', value: 'dark' as const },
-]
-
-const GRIND_OPTIONS = [
-  { label: 'Whole Bean', value: 'whole-bean' as const },
-  { label: 'Ground', value: 'ground' as const },
-]
-
-const PROCESS_OPTIONS = [
-  { label: 'Washed', value: 'washed' as const },
-  { label: 'Natural', value: 'natural' as const },
-  { label: 'Honey', value: 'honey' as const },
-  { label: 'Anaerobic', value: 'anaerobic' as const },
-  { label: 'Other', value: 'other' as const },
-]
-
-const BAG_SIZE_OPTIONS = [
-  { label: '250g', value: '250g' as const },
-  { label: '500g', value: '500g' as const },
-  { label: '1kg', value: '1kg' as const },
-  { label: 'Other', value: 'other' as const },
-]
-
-const FLAVOUR_OPTIONS = [
-  'Fruity',
-  'Floral',
-  'Nutty',
-  'Chocolate',
-  'Caramel',
-  'Citrus',
-  'Berry',
-  'Earthy',
-  'Spicy',
-  'Sweet',
-]
 
 interface AddEntryScreenProps {
   onBack: () => void
   onSuccess: () => void
+  coffeeId?: string
 }
 
-export const AddEntryScreen: React.FC<AddEntryScreenProps> = ({ onBack, onSuccess }) => {
+export const AddEntryScreen: React.FC<AddEntryScreenProps> = ({ onBack, onSuccess, coffeeId }) => {
   const theme = useTheme()
   const styles = createStyles(theme)
   const user = useAuthStore((state) => state.user)
   const addCoffee = useCoffeeStore((state) => state.addCoffee)
+  const updateCoffee = useCoffeeStore((state) => state.updateCoffee)
+  const coffees = useCoffeeStore((state) => state.coffees)
+
+  const isEditMode = !!coffeeId
+  const existingCoffee = isEditMode ? coffees.find((coffee) => coffee.id === coffeeId) : null
 
   const [formData, setFormData] = useState<CoffeeFormData>({
     brand: '',
@@ -88,6 +61,28 @@ export const AddEntryScreen: React.FC<AddEntryScreenProps> = ({ onBack, onSucces
   })
   const [isLoading, setIsLoading] = useState(false)
   const [showSuccess, setShowSuccess] = useState(false)
+
+  useEffect(() => {
+    if (existingCoffee) {
+      setFormData({
+        brand: existingCoffee.brand,
+        name: existingCoffee.name,
+        origin: existingCoffee.origin,
+        roastLevel: existingCoffee.roastLevel,
+        grindType: existingCoffee.grindType,
+        processMethod: existingCoffee.processMethod || null,
+        rating: existingCoffee.rating,
+        notes: existingCoffee.notes,
+        flavourNotes: existingCoffee.flavourNotes,
+        price: existingCoffee.price?.toString() || '',
+        currency: existingCoffee.currency || 'GBP',
+        bagSize: existingCoffee.bagSize || null,
+        customBagSize: existingCoffee.customBagSize || '',
+        roastDate: existingCoffee.roastDate || '',
+        purchaseLocation: existingCoffee.purchaseLocation || '',
+      })
+    }
+  }, [existingCoffee])
 
   const updateField = <FieldKey extends keyof CoffeeFormData>(
     key: FieldKey,
@@ -144,33 +139,56 @@ export const AddEntryScreen: React.FC<AddEntryScreenProps> = ({ onBack, onSucces
 
     setIsLoading(true)
     try {
-      const coffee: Coffee = {
-        id: Date.now().toString(),
-        userId: user?.id || '',
-        brand: formData.brand.trim(),
-        name: formData.name.trim(),
-        origin: formData.origin.trim() || 'Unknown',
-        roastLevel: formData.roastLevel!,
-        grindType: formData.grindType!,
-        processMethod: formData.processMethod || undefined,
-        rating: formData.rating,
-        notes: formData.notes.trim(),
-        flavourNotes: formData.flavourNotes,
-        price: formData.price ? parseFloat(formData.price) : undefined,
-        currency: formData.currency,
-        bagSize: formData.bagSize || undefined,
-        customBagSize: formData.bagSize === 'other' ? formData.customBagSize : undefined,
-        roastDate: formData.roastDate || undefined,
-        purchaseLocation: formData.purchaseLocation.trim() || undefined,
-        isFavorite: false,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
+      if (isEditMode && coffeeId) {
+        updateCoffee(coffeeId, {
+          brand: formData.brand.trim(),
+          name: formData.name.trim(),
+          origin: formData.origin.trim() || 'Unknown',
+          roastLevel: formData.roastLevel!,
+          grindType: formData.grindType!,
+          processMethod: formData.processMethod || undefined,
+          rating: formData.rating,
+          notes: formData.notes.trim(),
+          flavourNotes: formData.flavourNotes,
+          price: formData.price ? parseFloat(formData.price) : undefined,
+          currency: formData.currency,
+          bagSize: formData.bagSize || undefined,
+          customBagSize: formData.bagSize === 'other' ? formData.customBagSize : undefined,
+          roastDate: formData.roastDate || undefined,
+          purchaseLocation: formData.purchaseLocation.trim() || undefined,
+        })
+        setShowSuccess(true)
+      } else {
+        const coffee: Coffee = {
+          id: Date.now().toString(),
+          userId: user?.id || '',
+          brand: formData.brand.trim(),
+          name: formData.name.trim(),
+          origin: formData.origin.trim() || 'Unknown',
+          roastLevel: formData.roastLevel!,
+          grindType: formData.grindType!,
+          processMethod: formData.processMethod || undefined,
+          rating: formData.rating,
+          notes: formData.notes.trim(),
+          flavourNotes: formData.flavourNotes,
+          price: formData.price ? parseFloat(formData.price) : undefined,
+          currency: formData.currency,
+          bagSize: formData.bagSize || undefined,
+          customBagSize: formData.bagSize === 'other' ? formData.customBagSize : undefined,
+          roastDate: formData.roastDate || undefined,
+          purchaseLocation: formData.purchaseLocation.trim() || undefined,
+          isFavorite: false,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        }
+        addCoffee(coffee)
+        setShowSuccess(true)
       }
-
-      addCoffee(coffee)
-      setShowSuccess(true)
     } catch {
-      Alert.alert('Error', 'Failed to add coffee entry')
+      Alert.alert(
+        'Error',
+        isEditMode ? 'Failed to update coffee entry' : 'Failed to add coffee entry'
+      )
     } finally {
       setIsLoading(false)
     }
@@ -184,7 +202,7 @@ export const AddEntryScreen: React.FC<AddEntryScreenProps> = ({ onBack, onSucces
       >
         <View style={styles.header}>
           <BackButton onPress={onBack} />
-          <Text style={styles.title}>Add Coffee</Text>
+          <Text style={styles.title}>{isEditMode ? 'Edit Coffee' : 'Add Coffee'}</Text>
           <View style={styles.headerSpacer} />
         </View>
 
@@ -302,15 +320,23 @@ export const AddEntryScreen: React.FC<AddEntryScreenProps> = ({ onBack, onSucces
           </View>
 
           <View style={styles.buttonContainer}>
-            <Button title="Save Coffee" onPress={handleSubmit} isLoading={isLoading} />
+            <Button
+              title={isEditMode ? 'Update Coffee' : 'Save Coffee'}
+              onPress={handleSubmit}
+              isLoading={isLoading}
+            />
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
 
       <SuccessModal
         visible={showSuccess}
-        title="Coffee Added!"
-        message="Your coffee has been saved to your collection."
+        title={isEditMode ? 'Coffee Updated!' : 'Coffee Added!'}
+        message={
+          isEditMode
+            ? 'Your changes have been saved.'
+            : 'Your coffee has been saved to your collection.'
+        }
         onClose={() => {
           setShowSuccess(false)
           onSuccess()

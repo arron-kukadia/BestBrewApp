@@ -4,6 +4,7 @@ import { MaterialIcons } from '@expo/vector-icons'
 import Animated, { FadeInUp, FadeOutUp } from 'react-native-reanimated'
 import { useTheme } from '@/hooks/useTheme'
 import { FlavourNote } from '@/types'
+import { INTENSITY_LEVELS } from '@/constants/coffee'
 import { createStyles } from './styles'
 
 interface FlavourNoteSelectorProps {
@@ -62,7 +63,7 @@ export const FlavourNoteSelector: React.FC<FlavourNoteSelectorProps> = ({
                   exiting={FadeOutUp.duration(150)}
                   style={styles.intensityRow}
                 >
-                  {([1, 2, 3] as const).map((level) => (
+                  {INTENSITY_LEVELS.map((level) => (
                     <Pressable
                       key={level}
                       style={[

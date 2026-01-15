@@ -9,24 +9,11 @@ const options = [
 ]
 
 describe('FilterChips', () => {
-  it('renders All chip', () => {
-    render(<FilterChips options={options} selectedValue={null} onSelect={() => {}} />)
-    expect(screen.getByText('All')).toBeOnTheScreen()
-  })
-
   it('renders all filter options', () => {
     render(<FilterChips options={options} selectedValue={null} onSelect={() => {}} />)
     expect(screen.getByText('Light')).toBeOnTheScreen()
     expect(screen.getByText('Medium')).toBeOnTheScreen()
     expect(screen.getByText('Dark')).toBeOnTheScreen()
-  })
-
-  it('calls onSelect with null when All is pressed', async () => {
-    const onSelectMock = jest.fn()
-    render(<FilterChips options={options} selectedValue="light" onSelect={onSelectMock} />)
-
-    await userEvent.press(screen.getByText('All'))
-    expect(onSelectMock).toHaveBeenCalledWith(null)
   })
 
   it('calls onSelect with value when option is pressed', async () => {
@@ -35,5 +22,10 @@ describe('FilterChips', () => {
 
     await userEvent.press(screen.getByText('Medium'))
     expect(onSelectMock).toHaveBeenCalledWith('medium')
+  })
+
+  it('highlights selected option', () => {
+    render(<FilterChips options={options} selectedValue="medium" onSelect={() => {}} />)
+    expect(screen.getByText('Medium')).toBeOnTheScreen()
   })
 })

@@ -17,6 +17,7 @@ import { createStyles } from './styles'
 const sortOptions = [
   { label: 'Recent', value: 'recent' as const },
   { label: 'Top Rated', value: 'rating' as const },
+  { label: 'Saved', value: 'saved' as const },
 ]
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>
@@ -46,6 +47,10 @@ export const HistoryScreen: React.FC = () => {
       )
     }
 
+    if (sortBy === 'saved') {
+      filtered = filtered.filter((coffee) => coffee.isFavorite)
+    }
+
     switch (sortBy) {
       case 'rating':
         filtered.sort((a, b) => b.rating - a.rating)
@@ -53,6 +58,7 @@ export const HistoryScreen: React.FC = () => {
       case 'name':
         filtered.sort((a, b) => a.name.localeCompare(b.name))
         break
+      case 'saved':
       case 'recent':
       default:
         filtered.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
@@ -62,7 +68,11 @@ export const HistoryScreen: React.FC = () => {
   }, [coffees, searchQuery, sortBy])
 
   const renderCoffeeCard = ({ item }: { item: Coffee }) => (
-    <CoffeeCard coffee={item} onPress={() => {}} onFavoritePress={() => toggleFavorite(item.id)} />
+    <CoffeeCard
+      coffee={item}
+      onPress={() => navigation.navigate('CoffeeDetail', { coffeeId: item.id })}
+      onFavoritePress={() => toggleFavorite(item.id)}
+    />
   )
 
   return (

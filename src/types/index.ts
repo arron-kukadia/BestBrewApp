@@ -89,7 +89,7 @@ export interface FeedbackQuestion {
 
 export type RootStackParamList = {
   MainTabs: undefined
-  AddEntry: undefined
+  AddEntry: { coffeeId?: string } | undefined
   CoffeeDetail: { coffeeId: string }
   Auth: undefined
   Login: undefined

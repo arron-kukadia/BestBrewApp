@@ -4,6 +4,7 @@ import { ActivityIndicator, View, StyleSheet } from 'react-native'
 import { TabNavigator } from '@/navigation/TabNavigator'
 import { AuthNavigator } from '@/navigation/AuthNavigator'
 import { AddEntryScreen } from '@/screens/AddEntryScreen'
+import { CoffeeDetailScreen } from '@/screens/CoffeeDetailScreen'
 import { RootStackParamList } from '@/types/index'
 import { useTheme } from '@/hooks/useTheme'
 import { useAuthStore } from '@/stores/authStore'
@@ -58,13 +59,15 @@ export const RootNavigator: React.FC = () => {
         <>
           <Stack.Screen name="MainTabs" component={TabNavigator} />
           <Stack.Screen name="AddEntry">
-            {({ navigation }) => (
+            {({ navigation, route }) => (
               <AddEntryScreen
                 onBack={() => navigation.goBack()}
                 onSuccess={() => navigation.goBack()}
+                coffeeId={route.params?.coffeeId}
               />
             )}
           </Stack.Screen>
+          <Stack.Screen name="CoffeeDetail" component={CoffeeDetailScreen} />
         </>
       ) : (
         <Stack.Screen name="Auth" component={AuthNavigator} />
