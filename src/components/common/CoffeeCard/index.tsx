@@ -2,6 +2,7 @@ import React from 'react'
 import { View, Text, Pressable } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
 import { useTheme } from '@/hooks/useTheme'
+import { StarDisplay } from '@/components/common/StarDisplay'
 import { Coffee } from '@/types'
 import { createStyles } from './styles'
 
@@ -78,10 +79,7 @@ export const CoffeeCard: React.FC<CoffeeCardProps> = ({ coffee, onPress, onFavor
         )}
 
         <View style={styles.footer}>
-          <View style={styles.rating}>
-            <MaterialIcons name="star" size={16} color={theme.colors.rating} />
-            <Text style={styles.ratingText}>{coffee.rating.toFixed(1)}</Text>
-          </View>
+          <StarDisplay rating={coffee.rating} size={16} />
           <Text style={styles.date}>{formatDate(coffee.createdAt)}</Text>
         </View>
       </View>

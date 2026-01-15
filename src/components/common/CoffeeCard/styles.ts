@@ -53,15 +53,6 @@ export const createStyles = (theme: Theme) =>
       alignItems: 'center',
       marginTop: theme.spacing.xs,
     },
-    rating: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      gap: theme.spacing.xs,
-    },
-    ratingText: {
-      ...theme.typography.bodySmMedium,
-      color: theme.colors.text,
-    },
     date: {
       ...theme.typography.bodySm,
       color: theme.colors.textTertiary,

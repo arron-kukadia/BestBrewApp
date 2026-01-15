@@ -32,6 +32,10 @@ export const createStyles = (theme: Theme) =>
       color: theme.colors.textSecondary,
       marginTop: 2,
     },
+    starsContainer: {
+      flexDirection: 'row',
+      marginTop: 4,
+    },
     meta: {
       ...theme.typography.bodySm,
       color: theme.colors.textTertiary,

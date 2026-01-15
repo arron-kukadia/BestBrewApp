@@ -2,12 +2,14 @@ import React from 'react'
 import { View, Text, Pressable, Platform } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
 import { useTheme } from '@/hooks/useTheme'
+import { StarDisplay } from '@/components/common/StarDisplay'
 import { createStyles } from './styles'
 
 interface ActivityCardProps {
   icon: keyof typeof MaterialIcons.glyphMap
   title: string
   subtitle?: string
+  rating?: number
   meta?: string
   color?: string
   onPress?: () => void
@@ -17,6 +19,7 @@ export const ActivityCard: React.FC<ActivityCardProps> = ({
   icon,
   title,
   subtitle,
+  rating,
   meta,
   color,
   onPress,
@@ -38,6 +41,11 @@ export const ActivityCard: React.FC<ActivityCardProps> = ({
           <Text style={styles.subtitle} numberOfLines={1}>
             {subtitle}
           </Text>
+        )}
+        {rating !== undefined && (
+          <View style={styles.starsContainer}>
+            <StarDisplay rating={rating} size={14} />
+          </View>
         )}
       </View>
       {meta && <Text style={styles.meta}>{meta}</Text>}

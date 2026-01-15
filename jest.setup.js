@@ -1,24 +1,33 @@
 import '@testing-library/react-native'
 
 jest.mock('react-native-reanimated', () => {
-  const { View } = require('react-native')
+  const { View, Text } = require('react-native')
+  const React = require('react')
   return {
     default: {
       createAnimatedComponent: (component) => component,
       View,
+      Text,
     },
+    createAnimatedComponent: (component) => component,
     View,
-    FadeIn: { duration: () => ({}) },
+    Text,
+    FadeIn: { duration: () => ({ delay: () => ({}) }) },
     FadeOut: { duration: () => ({}) },
-    FadeInUp: { duration: () => ({}) },
+    FadeInUp: { duration: () => ({ delay: () => ({}) }) },
     FadeOutUp: { duration: () => ({}) },
     FadeInRight: { duration: () => ({}) },
     FadeOutRight: { duration: () => ({}) },
-    useSharedValue: jest.fn(),
+    useSharedValue: jest.fn((init) => ({ value: init })),
     useAnimatedStyle: jest.fn(() => ({})),
-    withTiming: jest.fn(),
-    withSpring: jest.fn(),
+    useAnimatedProps: jest.fn(() => ({})),
+    withTiming: jest.fn((val) => val),
+    withSpring: jest.fn((val) => val),
     runOnJS: jest.fn((fn) => fn),
+    Easing: {
+      out: jest.fn(() => jest.fn()),
+      cubic: jest.fn(),
+    },
   }
 })
 
@@ -41,6 +50,29 @@ jest.mock('react-native-safe-area-context', () => {
     useSafeAreaInsets: () => inset,
   }
 })
+
+jest.mock('aws-amplify/api', () => ({
+  generateClient: jest.fn(() => ({
+    graphql: jest.fn(),
+  })),
+  GraphQLResult: {},
+}))
+
+jest.mock('@/api/useCoffees', () => ({
+  useCoffees: jest.fn(() => ({ data: [], isLoading: false, refetch: jest.fn() })),
+  useCoffee: jest.fn(() => ({ data: null, isLoading: false })),
+  useCreateCoffee: jest.fn(() => ({ mutate: jest.fn(), mutateAsync: jest.fn() })),
+  useUpdateCoffee: jest.fn(() => ({ mutate: jest.fn(), mutateAsync: jest.fn() })),
+  useDeleteCoffee: jest.fn(() => ({ mutate: jest.fn(), mutateAsync: jest.fn() })),
+  useToggleFavorite: jest.fn(() => ({ mutate: jest.fn(), mutateAsync: jest.fn() })),
+  coffeeKeys: {
+    all: ['coffees'],
+    lists: () => ['coffees', 'list'],
+    list: (userId) => ['coffees', 'list', userId],
+    details: () => ['coffees', 'detail'],
+    detail: (id) => ['coffees', 'detail', id],
+  },
+}))
 
 jest.mock('@/services/authService', () => ({
   authService: {

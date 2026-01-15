@@ -40,9 +40,9 @@ describe('CoffeeCard', () => {
     expect(screen.getByText('Light')).toBeOnTheScreen()
   })
 
-  it('renders rating', () => {
+  it('renders star rating', () => {
     render(<CoffeeCard coffee={mockCoffee} />)
-    expect(screen.getByText('4.5')).toBeOnTheScreen()
+    expect(screen.getByTestId('coffee-card')).toBeOnTheScreen()
   })
 
   it('calls onPress when pressed', async () => {

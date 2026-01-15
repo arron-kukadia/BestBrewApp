@@ -10,7 +10,7 @@ export const coffeeKeys = {
   detail: (id: string) => [...coffeeKeys.details(), id] as const,
 }
 
-export function useCoffees(userId: string | undefined) {
+export const useCoffees = (userId: string | undefined) => {
   return useQuery({
     queryKey: coffeeKeys.list(userId ?? ''),
     queryFn: () => coffeeService.listCoffees(userId!),
@@ -18,7 +18,7 @@ export function useCoffees(userId: string | undefined) {
   })
 }
 
-export function useCoffee(userId: string | undefined, id: string) {
+export const useCoffee = (userId: string | undefined, id: string) => {
   return useQuery({
     queryKey: coffeeKeys.detail(id),
     queryFn: () => coffeeService.getCoffee(userId!, id),
@@ -26,7 +26,7 @@ export function useCoffee(userId: string | undefined, id: string) {
   })
 }
 
-export function useCreateCoffee() {
+export const useCreateCoffee = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
@@ -39,7 +39,7 @@ export function useCreateCoffee() {
   })
 }
 
-export function useUpdateCoffee() {
+export const useUpdateCoffee = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
@@ -53,7 +53,7 @@ export function useUpdateCoffee() {
   })
 }
 
-export function useDeleteCoffee() {
+export const useDeleteCoffee = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
@@ -68,7 +68,7 @@ export function useDeleteCoffee() {
   })
 }
 
-export function useToggleFavorite() {
+export const useToggleFavorite = () => {
   const queryClient = useQueryClient()
 
   return useMutation({

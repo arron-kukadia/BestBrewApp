@@ -4,7 +4,7 @@ import { StatCard } from './index'
 
 describe('StatCard', () => {
   it('renders label and value', () => {
-    render(<StatCard icon="coffee" label="Total Brews" value={42} />)
+    render(<StatCard icon="coffee" label="Total Brews" value={42} animate={false} />)
     expect(screen.getByText('Total Brews')).toBeOnTheScreen()
     expect(screen.getByText('42')).toBeOnTheScreen()
   })
