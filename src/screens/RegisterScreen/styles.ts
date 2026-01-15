@@ -24,8 +24,8 @@ export const createStyles = (theme: Theme) =>
       gap: theme.spacing.sm,
     },
     logo: {
-      width: 240,
-      height: 240,
+      width: 150,
+      height: 150,
     },
     header: {
       ...theme.typography.h2,
