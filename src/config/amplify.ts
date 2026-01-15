@@ -1,7 +1,7 @@
 import { Amplify } from 'aws-amplify'
 import { createURL } from 'expo-linking'
 
-const redirectUri = createURL('/')
+const redirectUri = createURL('')
 
 export const configureAmplify = () => {
   Amplify.configure({
