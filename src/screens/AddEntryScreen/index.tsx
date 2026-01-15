@@ -146,21 +146,21 @@ export const AddEntryScreen: React.FC<AddEntryScreenProps> = ({ onBack, onSucces
         const updates = {
           id: coffeeId,
           userId,
-          brand: formData.brand.trim(),
-          name: formData.name.trim(),
-          origin: formData.origin.trim() || 'Unknown',
+          brand: (formData.brand || '').trim(),
+          name: (formData.name || '').trim(),
+          origin: (formData.origin || '').trim() || 'Unknown',
           roastLevel: formData.roastLevel!,
           grindType: formData.grindType!,
           processMethod: formData.processMethod || undefined,
           rating: formData.rating,
-          notes: formData.notes.trim(),
+          notes: (formData.notes || '').trim(),
           flavourNotes: formData.flavourNotes,
           price: formData.price ? parseFloat(formData.price) : undefined,
           currency: formData.currency,
           bagSize: formData.bagSize || undefined,
           customBagSize: formData.bagSize === 'other' ? formData.customBagSize : undefined,
           roastDate: formData.roastDate || undefined,
-          purchaseLocation: formData.purchaseLocation.trim() || undefined,
+          purchaseLocation: (formData.purchaseLocation || '').trim() || undefined,
           updatedAt: now,
         }
         await updateMutation.mutateAsync(updates)
@@ -169,9 +169,9 @@ export const AddEntryScreen: React.FC<AddEntryScreenProps> = ({ onBack, onSucces
         const coffeeInput: Record<string, unknown> = {
           id: Date.now().toString(),
           userId,
-          brand: formData.brand.trim(),
-          name: formData.name.trim(),
-          origin: formData.origin.trim() || 'Unknown',
+          brand: (formData.brand || '').trim(),
+          name: (formData.name || '').trim(),
+          origin: (formData.origin || '').trim() || 'Unknown',
           roastLevel: formData.roastLevel!,
           grindType: formData.grindType!,
           rating: formData.rating,
@@ -180,7 +180,7 @@ export const AddEntryScreen: React.FC<AddEntryScreenProps> = ({ onBack, onSucces
           createdAt: now,
         }
         if (formData.processMethod) coffeeInput.processMethod = formData.processMethod
-        if (formData.notes.trim()) coffeeInput.notes = formData.notes.trim()
+        if ((formData.notes || '').trim()) coffeeInput.notes = (formData.notes || '').trim()
         if (formData.price) coffeeInput.price = parseFloat(formData.price)
         if (formData.price) coffeeInput.currency = formData.currency
         if (formData.bagSize) coffeeInput.bagSize = formData.bagSize
@@ -188,8 +188,8 @@ export const AddEntryScreen: React.FC<AddEntryScreenProps> = ({ onBack, onSucces
           coffeeInput.customBagSize = formData.customBagSize
         }
         if (formData.roastDate) coffeeInput.roastDate = formData.roastDate
-        if (formData.purchaseLocation.trim()) {
-          coffeeInput.purchaseLocation = formData.purchaseLocation.trim()
+        if ((formData.purchaseLocation || '').trim()) {
+          coffeeInput.purchaseLocation = (formData.purchaseLocation || '').trim()
         }
         await createMutation.mutateAsync(
           coffeeInput as unknown as Parameters<typeof createMutation.mutateAsync>[0]
