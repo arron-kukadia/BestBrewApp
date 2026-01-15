@@ -33,9 +33,7 @@ export const SuccessModal: React.FC<SuccessModalProps> = ({
         <View style={styles.container}>
           <LottieView
             ref={animationRef}
-            source={{
-              uri: 'https://lottie.host/9f5548f8-3937-4ca4-98c7-98858a8d2976/b7DodZnzeQ.lottie',
-            }}
+            source={require('@/assets/animations/success.json')}
             style={styles.animation}
             autoPlay
             loop={false}

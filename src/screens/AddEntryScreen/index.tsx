@@ -161,6 +161,7 @@ export const AddEntryScreen: React.FC<AddEntryScreenProps> = ({ onBack, onSucces
           customBagSize: formData.bagSize === 'other' ? formData.customBagSize : undefined,
           roastDate: formData.roastDate || undefined,
           purchaseLocation: formData.purchaseLocation.trim() || undefined,
+          updatedAt: now,
         }
         await updateMutation.mutateAsync(updates)
         setShowSuccess(true)
