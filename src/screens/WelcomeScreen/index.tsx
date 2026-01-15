@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text } from 'react-native'
+import { View, Text, Image } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { MaterialIcons } from '@expo/vector-icons'
 import { useTheme } from '@/hooks/useTheme'
@@ -20,15 +20,8 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
-      <View style={styles.illustrationSection}>
-        <View style={styles.illustrationContainer}>
-          <View style={styles.coffeeIconWrapper}>
-            <MaterialIcons name="coffee" size={80} color={theme.colors.primary} />
-          </View>
-          <View style={styles.decorCircle1} />
-          <View style={styles.decorCircle2} />
-          <View style={styles.decorCircle3} />
-        </View>
+      <View style={styles.logoSection}>
+        <Image source={require('@/assets/images/logo.png')} style={styles.logo} />
       </View>
 
       <View style={styles.contentSection}>

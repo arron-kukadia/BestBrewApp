@@ -23,8 +23,12 @@ export const createStyles = (theme: Theme) =>
       gap: theme.spacing.sm,
       paddingTop: theme.spacing.xl,
     },
-    appName: {
-      ...theme.typography.h1,
+    logo: {
+      width: 240,
+      height: 240,
+    },
+    header: {
+      ...theme.typography.h2,
       color: theme.colors.text,
       marginTop: theme.spacing.md,
     },

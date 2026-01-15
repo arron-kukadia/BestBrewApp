@@ -7,6 +7,7 @@ import {
   Platform,
   Alert,
   ScrollView,
+  Image,
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { MaterialIcons } from '@expo/vector-icons'
@@ -16,7 +17,6 @@ import { useAuthStore } from '@/stores/authStore'
 import { Button } from '@/components/common/Button'
 import { Input } from '@/components/common/Input'
 import { Divider } from '@/components/common/Divider'
-import { IconCircle } from '@/components/common/IconCircle'
 import { createStyles } from './styles'
 
 interface LoginScreenProps {
@@ -90,11 +90,9 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
           keyboardShouldPersistTaps="handled"
         >
           <View style={styles.headerSection}>
-            <IconCircle icon="coffee" size="large" />
-            <Text style={styles.appName}>BestBrew</Text>
-            <Text style={styles.tagline}>
-              Keep track of your brews and find your perfect coffee
-            </Text>
+            <Image source={require('@/assets/images/logo.png')} style={styles.logo} />
+            <Text style={styles.header}>Login</Text>
+            <Text style={styles.tagline}>Continue your coffee journey</Text>
           </View>
 
           <View style={styles.formSection}>

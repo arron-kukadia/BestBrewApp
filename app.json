@@ -2,6 +2,7 @@
   "expo": {
     "name": "BestBrew",
     "slug": "bestbrew",
+    "scheme": "bestbrew",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -28,10 +29,7 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": [
-      "expo-web-browser",
-      "@react-native-community/datetimepicker"
-    ],
+    "plugins": ["expo-web-browser", "@react-native-community/datetimepicker"],
     "extra": {
       "eas": {
         "projectId": "6ebf34cb-b60e-48e3-a26c-78208fdf0ffc"

@@ -7,6 +7,7 @@ import {
   Platform,
   Alert,
   ScrollView,
+  Image,
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { MaterialIcons } from '@expo/vector-icons'
@@ -15,7 +16,6 @@ import { authService } from '@/services/authService'
 import { Button } from '@/components/common/Button'
 import { Input } from '@/components/common/Input'
 import { Divider } from '@/components/common/Divider'
-import { IconCircle } from '@/components/common/IconCircle'
 import { createStyles } from './styles'
 
 interface RegisterScreenProps {
@@ -94,8 +94,8 @@ export const RegisterScreen: React.FC<RegisterScreenProps> = ({
           showsVerticalScrollIndicator={false}
         >
           <View style={styles.headerSection}>
-            <IconCircle icon="coffee" size="medium" />
-            <Text style={styles.appName}>Create Account</Text>
+            <Image source={require('@/assets/images/logo.png')} style={styles.logo} />
+            <Text style={styles.header}>Create Account</Text>
             <Text style={styles.tagline}>Start your coffee journey</Text>
           </View>
 
