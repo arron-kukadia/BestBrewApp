@@ -4,6 +4,8 @@ import { MaterialIcons } from '@expo/vector-icons'
 import { useTheme } from '@/hooks/useTheme'
 import { StarDisplay } from '@/components/common/StarDisplay'
 import { Coffee } from '@/types'
+import { ROAST_LEVEL_LABELS } from '@/constants/coffee'
+import { formatRelativeDate } from '@/helpers/date'
 import { createStyles } from './styles'
 
 interface CoffeeCardProps {
@@ -12,27 +14,9 @@ interface CoffeeCardProps {
   onFavoritePress?: () => void
 }
 
-const roastLevelLabels: Record<Coffee['roastLevel'], string> = {
-  light: 'Light',
-  medium: 'Medium',
-  'medium-dark': 'Medium-Dark',
-  dark: 'Dark',
-}
-
 export const CoffeeCard: React.FC<CoffeeCardProps> = ({ coffee, onPress, onFavoritePress }) => {
   const theme = useTheme()
   const styles = createStyles(theme)
-
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString)
-    const now = new Date()
-    const diffDays = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24))
-
-    if (diffDays === 0) return 'Today'
-    if (diffDays === 1) return 'Yesterday'
-    if (diffDays < 7) return `${diffDays} days ago`
-    return date.toLocaleDateString()
-  }
 
   return (
     <Pressable
@@ -68,7 +52,7 @@ export const CoffeeCard: React.FC<CoffeeCardProps> = ({ coffee, onPress, onFavor
               size={14}
               color={theme.colors.textTertiary}
             />
-            <Text style={styles.detailText}>{roastLevelLabels[coffee.roastLevel]}</Text>
+            <Text style={styles.detailText}>{ROAST_LEVEL_LABELS[coffee.roastLevel]}</Text>
           </View>
         </View>
 
@@ -80,7 +64,7 @@ export const CoffeeCard: React.FC<CoffeeCardProps> = ({ coffee, onPress, onFavor
 
         <View style={styles.footer}>
           <StarDisplay rating={coffee.rating} size={16} />
-          <Text style={styles.date}>{formatDate(coffee.createdAt)}</Text>
+          <Text style={styles.date}>{formatRelativeDate(coffee.createdAt)}</Text>
         </View>
       </View>
     </Pressable>

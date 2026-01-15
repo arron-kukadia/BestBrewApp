@@ -13,14 +13,8 @@ import { SectionHeader } from '@/components/common/SectionHeader'
 import { StatCard } from '@/components/common/StatCard'
 import { ActivityCard } from '@/components/common/ActivityCard'
 import { EmptyState } from '@/components/common/EmptyState'
+import { getGreeting, formatRelativeDate } from '@/helpers/date'
 import { createStyles } from './styles'
-
-const getGreeting = () => {
-  const hour = new Date().getHours()
-  if (hour < 12) return 'Good Morning'
-  if (hour < 17) return 'Good Afternoon'
-  return 'Good Evening'
-}
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>
 type TabNavigationProp = BottomTabNavigationProp<MainTabParamList>
@@ -48,16 +42,6 @@ export const HomeScreen: React.FC = () => {
       .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
       .slice(0, 3)
   }, [coffees])
-
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString)
-    const today = new Date()
-    const diffDays = Math.floor((today.getTime() - date.getTime()) / (1000 * 60 * 60 * 24))
-    if (diffDays === 0) return 'Today'
-    if (diffDays === 1) return 'Yesterday'
-    if (diffDays < 7) return `${diffDays} days ago`
-    return date.toLocaleDateString()
-  }
 
   const handleAddCoffee = () => {
     navigation.navigate('AddEntry')
@@ -110,7 +94,7 @@ export const HomeScreen: React.FC = () => {
                       title={coffee.name}
                       subtitle={coffee.brand}
                       rating={coffee.rating}
-                      meta={formatDate(coffee.createdAt)}
+                      meta={formatRelativeDate(coffee.createdAt)}
                       onPress={() => navigation.navigate('CoffeeDetail', { coffeeId: coffee.id })}
                     />
                   </Animated.View>

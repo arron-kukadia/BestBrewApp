@@ -18,6 +18,8 @@ import {
   PROCESS_METHOD_LABELS,
   BAG_SIZE_LABELS,
 } from '@/constants/coffee'
+import { formatFullDate } from '@/helpers/date'
+import { formatPrice } from '@/helpers/currency'
 import { createStyles } from './styles'
 
 type CoffeeDetailRouteProp = RouteProp<RootStackParamList, 'CoffeeDetail'>
@@ -83,18 +85,9 @@ export const CoffeeDetailScreen: React.FC = () => {
     )
   }
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-GB', {
-      day: 'numeric',
-      month: 'short',
-      year: 'numeric',
-    })
-  }
-
-  const formatPrice = () => {
-    if (!coffee.price) return null
-    const symbol = coffee.currency === 'GBP' ? '£' : coffee.currency === 'EUR' ? '€' : '$'
-    return `${symbol}${coffee.price.toFixed(2)}`
+  const getPriceDisplay = () => {
+    if (!coffee.price || !coffee.currency) return null
+    return formatPrice(coffee.price, coffee.currency)
   }
 
   const getBagSizeDisplay = () => {
@@ -209,10 +202,10 @@ export const CoffeeDetailScreen: React.FC = () => {
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Purchase Info</Text>
             <View style={styles.purchaseGrid}>
-              {formatPrice() && (
+              {getPriceDisplay() && (
                 <View style={styles.purchaseItem}>
                   <Text style={styles.purchaseLabel}>Price</Text>
-                  <Text style={styles.purchaseValue}>{formatPrice()}</Text>
+                  <Text style={styles.purchaseValue}>{getPriceDisplay()}</Text>
                 </View>
               )}
               {getBagSizeDisplay() && (
@@ -224,7 +217,7 @@ export const CoffeeDetailScreen: React.FC = () => {
               {coffee.roastDate && (
                 <View style={styles.purchaseItem}>
                   <Text style={styles.purchaseLabel}>Roast Date</Text>
-                  <Text style={styles.purchaseValue}>{formatDate(coffee.roastDate)}</Text>
+                  <Text style={styles.purchaseValue}>{formatFullDate(coffee.roastDate)}</Text>
                 </View>
               )}
               {coffee.purchaseLocation && (
@@ -245,9 +238,9 @@ export const CoffeeDetailScreen: React.FC = () => {
         )}
 
         <View style={styles.metadata}>
-          <Text style={styles.metadataText}>Added {formatDate(coffee.createdAt)}</Text>
+          <Text style={styles.metadataText}>Added {formatFullDate(coffee.createdAt)}</Text>
           {coffee.updatedAt !== coffee.createdAt && (
-            <Text style={styles.metadataText}>Updated {formatDate(coffee.updatedAt)}</Text>
+            <Text style={styles.metadataText}>Updated {formatFullDate(coffee.updatedAt)}</Text>
           )}
         </View>
       </ScrollView>
