@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useCallback } from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { ActivityIndicator, View, StyleSheet } from 'react-native'
+import { Hub } from 'aws-amplify/utils'
 import { TabNavigator } from '@/navigation/TabNavigator'
 import { AuthNavigator } from '@/navigation/AuthNavigator'
 import { AddEntryScreen } from '@/screens/AddEntryScreen'
@@ -16,29 +17,66 @@ export const RootNavigator: React.FC = () => {
   const { colors } = useTheme()
   const { isAuthenticated, isLoading, setUser } = useAuthStore()
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const user = await authService.getCurrentUser()
-        if (user) {
-          const attributes = await authService.getUserAttributes()
-          setUser({
-            id: user.userId,
-            email: attributes?.email || user.signInDetails?.loginId || '',
-            name: attributes?.given_name,
-            subscriptionStatus: 'free',
-            createdAt: new Date().toISOString(),
-          })
-        } else {
-          setUser(null)
+  const checkAuth = useCallback(async () => {
+    try {
+      const user = await authService.getCurrentUser()
+      console.log('Current user:', JSON.stringify(user, null, 2))
+      if (user) {
+        const attributes = await authService.getUserAttributes()
+        console.log('User attributes:', JSON.stringify(attributes, null, 2))
+
+        let email = attributes?.email || ''
+        let name = attributes?.name || attributes?.given_name || ''
+
+        if (!email || !name) {
+          const session = await authService.getSession()
+          const idToken = session?.tokens?.idToken
+          if (idToken) {
+            const payload = idToken.payload
+            console.log('ID Token payload:', JSON.stringify(payload, null, 2))
+            email = email || (payload?.email as string) || ''
+            name = name || (payload?.name as string) || (payload?.given_name as string) || ''
+          }
         }
-      } catch {
+
+        if (!email) {
+          email = user.signInDetails?.loginId || ''
+        }
+        if (!name) {
+          name = email.split('@')[0] || user.username
+        }
+
+        console.log('Setting user - email:', email, 'name:', name)
+        setUser({
+          id: user.userId,
+          email,
+          name,
+          subscriptionStatus: 'free',
+          createdAt: new Date().toISOString(),
+        })
+      } else {
         setUser(null)
       }
+    } catch (error) {
+      console.log('Auth check error:', error)
+      setUser(null)
     }
-
-    checkAuth()
   }, [setUser])
+
+  useEffect(() => {
+    checkAuth()
+
+    const hubListener = Hub.listen('auth', ({ payload }) => {
+      if (payload.event === 'signInWithRedirect') {
+        checkAuth()
+      }
+      if (payload.event === 'signedOut') {
+        setUser(null)
+      }
+    })
+
+    return () => hubListener()
+  }, [checkAuth, setUser])
 
   if (isLoading) {
     return (

@@ -30,9 +30,14 @@ export const createStyles = (theme: Theme) =>
       color: theme.colors.textSecondary,
       marginBottom: theme.spacing.xs,
     },
+    userName: {
+      ...theme.typography.bodyMedium,
+      color: theme.colors.text,
+      marginBottom: theme.spacing.xs,
+    },
     email: {
       ...theme.typography.body,
-      color: theme.colors.text,
+      color: theme.colors.textSecondary,
     },
     themeOptions: {
       flexDirection: 'row',

@@ -12,7 +12,8 @@ export const AccountSection: React.FC = () => {
   return (
     <View style={styles.section}>
       <Text style={styles.sectionTitle}>Account</Text>
-      <Text style={styles.email}>{user?.email}</Text>
+      {user?.name && <Text style={styles.userName}>{user.name}</Text>}
+      <Text style={styles.email}>{user?.email || 'No email'}</Text>
     </View>
   )
 }

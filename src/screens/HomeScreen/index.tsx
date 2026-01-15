@@ -27,7 +27,8 @@ export const HomeScreen: React.FC = () => {
   const user = useAuthStore((state) => state.user)
   const { data: coffees = [], isLoading } = useCoffees(user?.id)
 
-  const userName = user?.name || user?.email?.split('@')[0] || 'Coffee Lover'
+  const fullName = user?.name || user?.email?.split('@')[0] || 'Coffee Lover'
+  const userName = fullName.split(' ')[0]
   const hasEntries = coffees.length > 0
 
   const stats = useMemo(() => {
