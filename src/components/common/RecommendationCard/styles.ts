@@ -17,12 +17,17 @@ export const createStyles = (theme: Theme) =>
       gap: theme.spacing.sm,
     },
     iconContainer: {
-      width: 36,
-      height: 36,
+      width: 48,
+      height: 48,
       borderRadius: theme.borderRadius.md,
       backgroundColor: theme.colors.primaryLight,
       justifyContent: 'center',
       alignItems: 'center',
+    },
+    productImage: {
+      width: 48,
+      height: 48,
+      borderRadius: theme.borderRadius.md,
     },
     titleContainer: {
       flex: 1,
@@ -34,6 +39,11 @@ export const createStyles = (theme: Theme) =>
     subtitle: {
       ...theme.typography.bodySm,
       color: theme.colors.textSecondary,
+    },
+    priceRange: {
+      ...theme.typography.bodySmMedium,
+      color: theme.colors.primary,
+      marginTop: 2,
     },
     matchBadge: {
       backgroundColor: theme.colors.primaryLight,
@@ -53,8 +63,29 @@ export const createStyles = (theme: Theme) =>
     footer: {
       flexDirection: 'row',
       alignItems: 'center',
-      gap: theme.spacing.xs,
+      justifyContent: 'space-between',
       marginTop: theme.spacing.xs,
+    },
+    buyButton: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: theme.spacing.xs,
+      backgroundColor: theme.colors.primary,
+      paddingHorizontal: theme.spacing.sm,
+      paddingVertical: theme.spacing.xs,
+      borderRadius: theme.borderRadius.md,
+    },
+    buyButtonPressed: {
+      opacity: 0.8,
+    },
+    buyButtonText: {
+      ...theme.typography.bodySmMedium,
+      color: theme.colors.textInverse,
+    },
+    detailsLink: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: theme.spacing.xs,
     },
     ctaText: {
       ...theme.typography.bodySmMedium,

@@ -42,4 +42,41 @@ export const createStyles = (theme: Theme) =>
     recommendationsContainer: {
       gap: theme.spacing.sm,
     },
+    locationBanner: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: theme.colors.primaryLight,
+      marginHorizontal: theme.spacing.lg,
+      marginTop: theme.spacing.sm,
+      padding: theme.spacing.sm,
+      borderRadius: theme.borderRadius.md,
+      gap: theme.spacing.sm,
+    },
+    locationBannerText: {
+      ...theme.typography.bodySm,
+      color: theme.colors.text,
+      flex: 1,
+    },
+    loadingContainer: {
+      backgroundColor: theme.colors.surface,
+      borderRadius: theme.borderRadius.lg,
+      padding: theme.spacing.lg,
+      alignItems: 'center',
+      gap: theme.spacing.sm,
+    },
+    loadingText: {
+      ...theme.typography.bodySm,
+      color: theme.colors.textSecondary,
+    },
+    errorContainer: {
+      backgroundColor: theme.colors.surface,
+      borderRadius: theme.borderRadius.lg,
+      padding: theme.spacing.lg,
+      alignItems: 'center',
+      gap: theme.spacing.sm,
+    },
+    errorText: {
+      ...theme.typography.bodySm,
+      color: theme.colors.textSecondary,
+    },
   })

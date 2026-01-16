@@ -32,7 +32,7 @@ describe('RecommendationCard', () => {
   it('calls onPress when pressed', async () => {
     const onPressMock = jest.fn()
     render(<RecommendationCard {...defaultProps} onPress={onPressMock} />)
-    await userEvent.press(screen.getByText('View Details'))
+    await userEvent.press(screen.getByText('Details'))
     expect(onPressMock).toHaveBeenCalledTimes(1)
   })
 })

@@ -1,6 +1,5 @@
 import { useMemo } from 'react'
 import { Coffee } from '@/types'
-import { ROAST_LEVEL_LABELS } from '@/constants/coffee'
 
 interface BrandData {
   value: number
@@ -13,18 +12,9 @@ interface FlavourProfile {
   labels: string[]
 }
 
-interface Recommendation {
-  id: string
-  title: string
-  subtitle: string
-  reason: string
-  matchScore: number
-}
-
 interface DiscoveryData {
   topBrands: BrandData[]
   flavourProfile: FlavourProfile
-  recommendations: Recommendation[]
   hasEntries: boolean
 }
 
@@ -71,29 +61,5 @@ export const useDiscoveryData = (coffees: Coffee[], primaryColor: string): Disco
     }
   }, [coffees])
 
-  const recommendations = useMemo(() => {
-    if (coffees.length < 2) return []
-
-    const topRated = [...coffees].sort((a, b) => b.rating - a.rating)[0]
-    const roastLabel = ROAST_LEVEL_LABELS[topRated?.roastLevel] || 'Medium'
-
-    return [
-      {
-        id: '1',
-        title: 'Ethiopian Yirgacheffe',
-        subtitle: 'Origin Coffee Roasters',
-        reason: `Based on your love for ${roastLabel.toLowerCase()} roasts and fruity notes, you might enjoy this bright, citrusy coffee.`,
-        matchScore: 92,
-      },
-      {
-        id: '2',
-        title: 'Colombian Supremo',
-        subtitle: 'Square Mile Coffee',
-        reason: `Similar to ${topRated?.brand || 'your favorites'}, this coffee offers balanced sweetness with chocolate undertones.`,
-        matchScore: 87,
-      },
-    ]
-  }, [coffees])
-
-  return { topBrands, flavourProfile, recommendations, hasEntries }
+  return { topBrands, flavourProfile, hasEntries }
 }
