@@ -1,18 +1,17 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { View, Text, ScrollView, Pressable, ActivityIndicator } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { MaterialIcons } from '@expo/vector-icons'
 import { useTheme } from '@/hooks/useTheme'
 import { useAuthStore } from '@/stores/authStore'
 import { useCoffees } from '@/api/useCoffees'
-import { useRecommendations } from '@/api/useRecommendations'
+import { useInsights } from '@/api/useInsights'
 import { useDiscoveryData } from '@/hooks/useDiscoveryData'
-import { useLocation } from '@/hooks/useLocation'
 import { SectionHeader } from '@/components/common/SectionHeader'
-import { RecommendationCard } from '@/components/common/RecommendationCard'
 import { EmptyState } from '@/components/common/EmptyState'
 import { TopBrandsChart } from '@/components/Discovery/TopBrandsChart'
 import { FlavourProfileChart } from '@/components/Discovery/FlavourProfileChart'
+import { Insight } from '@/types/insight'
 import { createStyles } from './styles'
 
 export const DiscoveryScreen: React.FC = () => {
@@ -23,33 +22,15 @@ export const DiscoveryScreen: React.FC = () => {
   const { topBrands, flavourProfile, hasEntries } = useDiscoveryData(coffees, theme.colors.primary)
 
   const {
-    country,
-    countryCode,
-    city,
-    hasPermission,
-    isLoading: locationLoading,
-    requestPermission,
-  } = useLocation()
-
-  const locationInfo = hasPermission ? { country, countryCode, city } : null
-
-  const {
-    data: aiRecommendations = [],
-    isLoading: recommendationsLoading,
-    error: recommendationsError,
-    refetch: refetchRecommendations,
-  } = useRecommendations({
+    data: insightsData,
+    isLoading: insightsLoading,
+    error: insightsError,
+    refetch: refetchInsights,
+  } = useInsights({
     userId: user?.id,
     coffees,
-    location: locationInfo,
     enabled: hasEntries && coffees.length >= 2,
   })
-
-  useEffect(() => {
-    if (hasEntries && !hasPermission && !locationLoading) {
-      requestPermission()
-    }
-  }, [hasEntries, hasPermission, locationLoading, requestPermission])
 
   const renderHeader = () => (
     <View style={styles.header}>
@@ -58,38 +39,26 @@ export const DiscoveryScreen: React.FC = () => {
     </View>
   )
 
-  const renderLocationBanner = () => {
-    if (hasPermission || !hasEntries) return null
-
-    return (
-      <Pressable style={styles.locationBanner} onPress={requestPermission}>
-        <MaterialIcons name="location-on" size={20} color={theme.colors.primary} />
-        <Text style={styles.locationBannerText}>Enable location for better recommendations</Text>
-        <MaterialIcons name="chevron-right" size={20} color={theme.colors.textSecondary} />
-      </Pressable>
-    )
-  }
-
-  const renderRecommendations = () => {
+  const renderInsights = () => {
     if (coffees.length < 2) return null
 
-    if (recommendationsLoading) {
+    if (insightsLoading) {
       return (
         <View style={styles.section}>
-          <SectionHeader title="Recommended for You" />
+          <SectionHeader title="Your Coffee Insights" />
           <View style={styles.loadingContainer}>
             <ActivityIndicator size="small" color={theme.colors.primary} />
-            <Text style={styles.loadingText}>Finding perfect coffees for you...</Text>
+            <Text style={styles.loadingText}>Analyzing your taste profile...</Text>
           </View>
         </View>
       )
     }
 
-    if (recommendationsError) {
+    if (insightsError) {
       return (
         <View style={styles.section}>
-          <SectionHeader title="Recommended for You" />
-          <Pressable style={styles.errorContainer} onPress={() => refetchRecommendations()}>
+          <SectionHeader title="Your Coffee Insights" />
+          <Pressable style={styles.errorContainer} onPress={() => refetchInsights()}>
             <MaterialIcons name="refresh" size={24} color={theme.colors.primary} />
             <Text style={styles.errorText}>Tap to retry</Text>
           </Pressable>
@@ -97,27 +66,41 @@ export const DiscoveryScreen: React.FC = () => {
       )
     }
 
-    if (aiRecommendations.length === 0) return null
+    if (!insightsData) return null
 
     return (
-      <View style={styles.section}>
-        <SectionHeader title="Recommended for You" />
-        <View style={styles.recommendationsContainer}>
-          {aiRecommendations.map((rec) => (
-            <RecommendationCard
-              key={rec.id}
-              title={rec.coffeeName}
-              subtitle={rec.brand}
-              reason={rec.reason}
-              matchScore={rec.matchScore}
-              imageUrl={rec.imageUrl}
-              purchaseUrl={rec.purchaseUrl}
-              purchaseSource={rec.purchaseSource}
-              priceRange={rec.priceRange}
-            />
-          ))}
-        </View>
-      </View>
+      <>
+        {insightsData.tasteProfile && (
+          <View style={styles.section}>
+            <SectionHeader title="Your Taste Profile" />
+            <View style={styles.profileCard}>
+              <MaterialIcons name="person" size={24} color={theme.colors.primary} />
+              <Text style={styles.profileText}>{insightsData.tasteProfile}</Text>
+            </View>
+          </View>
+        )}
+
+        {insightsData.insights.length > 0 && (
+          <View style={styles.section}>
+            <SectionHeader title="Insights" />
+            <View style={styles.insightsContainer}>
+              {insightsData.insights.map((insight: Insight) => (
+                <View key={insight.id} style={styles.insightCard}>
+                  <MaterialIcons
+                    name={insight.icon as keyof typeof MaterialIcons.glyphMap}
+                    size={24}
+                    color={theme.colors.primary}
+                  />
+                  <View style={styles.insightContent}>
+                    <Text style={styles.insightTitle}>{insight.title}</Text>
+                    <Text style={styles.insightDescription}>{insight.description}</Text>
+                  </View>
+                </View>
+              ))}
+            </View>
+          </View>
+        )}
+      </>
     )
   }
 
@@ -144,8 +127,7 @@ export const DiscoveryScreen: React.FC = () => {
         showsVerticalScrollIndicator={false}
       >
         {renderHeader()}
-        {renderLocationBanner()}
-        {renderRecommendations()}
+        {renderInsights()}
         <TopBrandsChart data={topBrands} />
         <FlavourProfileChart data={flavourProfile} />
       </ScrollView>

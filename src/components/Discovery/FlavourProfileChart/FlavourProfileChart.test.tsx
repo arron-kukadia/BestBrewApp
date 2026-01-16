@@ -19,7 +19,7 @@ describe('FlavourProfileChart', () => {
 
   it('renders description', () => {
     render(<FlavourProfileChart data={mockData} />)
-    expect(screen.getByText('Based on your highest-rated coffees (4+ stars)')).toBeOnTheScreen()
+    expect(screen.getByText('Flavours weighted by your ratings')).toBeOnTheScreen()
   })
 
   it('returns null when data has fewer than 3 points', () => {

@@ -23,7 +23,7 @@ export const FlavourProfileChart: React.FC<FlavourProfileChartProps> = ({ data }
   return (
     <View style={styles.section}>
       <SectionHeader title="Your Flavour Profile" />
-      <Text style={styles.chartDescription}>Based on your highest-rated coffees (4+ stars)</Text>
+      <Text style={styles.chartDescription}>Flavours weighted by your ratings</Text>
       <View style={styles.radarContainer}>
         <RadarChart
           data={data.data}
