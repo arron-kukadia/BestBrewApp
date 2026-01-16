@@ -178,6 +178,7 @@ export const AddEntryScreen: React.FC<AddEntryScreenProps> = ({ onBack, onSucces
           flavourNotes: formData.flavourNotes,
           isFavorite: false,
           createdAt: now,
+          updatedAt: now,
         }
         if (formData.processMethod) coffeeInput.processMethod = formData.processMethod
         if ((formData.notes || '').trim()) coffeeInput.notes = (formData.notes || '').trim()
