@@ -20,10 +20,8 @@ export const RootNavigator: React.FC = () => {
   const checkAuth = useCallback(async () => {
     try {
       const user = await authService.getCurrentUser()
-      console.log('Current user:', JSON.stringify(user, null, 2))
       if (user) {
         const attributes = await authService.getUserAttributes()
-        console.log('User attributes:', JSON.stringify(attributes, null, 2))
 
         let email = attributes?.email || ''
         let name = attributes?.name || attributes?.given_name || ''
@@ -33,7 +31,6 @@ export const RootNavigator: React.FC = () => {
           const idToken = session?.tokens?.idToken
           if (idToken) {
             const payload = idToken.payload
-            console.log('ID Token payload:', JSON.stringify(payload, null, 2))
             email = email || (payload?.email as string) || ''
             name = name || (payload?.name as string) || (payload?.given_name as string) || ''
           }
@@ -46,7 +43,6 @@ export const RootNavigator: React.FC = () => {
           name = email.split('@')[0] || user.username
         }
 
-        console.log('Setting user - email:', email, 'name:', name)
         setUser({
           id: user.userId,
           email,
@@ -57,8 +53,7 @@ export const RootNavigator: React.FC = () => {
       } else {
         setUser(null)
       }
-    } catch (error) {
-      console.log('Auth check error:', error)
+    } catch {
       setUser(null)
     }
   }, [setUser])

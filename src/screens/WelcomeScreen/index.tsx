@@ -1,7 +1,6 @@
 import React from 'react'
 import { View, Text, Image } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { MaterialIcons } from '@expo/vector-icons'
 import { useTheme } from '@/hooks/useTheme'
 import { Button } from '@/components/common/Button'
 import { createStyles } from './styles'

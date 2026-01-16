@@ -125,7 +125,6 @@ export const HistoryScreen: React.FC = () => {
         <FlashList
           data={filteredCoffees}
           renderItem={renderCoffeeCard}
-          estimatedItemSize={120}
           contentContainerStyle={styles.listContent}
           ItemSeparatorComponent={() => <View style={styles.separator} />}
           showsVerticalScrollIndicator={false}

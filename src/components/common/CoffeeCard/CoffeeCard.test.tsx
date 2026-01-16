@@ -13,7 +13,10 @@ const mockCoffee: Coffee = {
   grindType: 'whole-bean',
   rating: 4.5,
   notes: 'Great coffee',
-  flavorNotes: ['fruity', 'floral'],
+  flavourNotes: [
+    { name: 'fruity', intensity: 3 },
+    { name: 'floral', intensity: 2 },
+  ],
   isFavorite: false,
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
