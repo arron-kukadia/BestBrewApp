@@ -6,7 +6,6 @@ type Theme = ReturnType<typeof useTheme>
 export const createStyles = (theme: Theme) =>
   StyleSheet.create({
     section: {
-      marginTop: theme.spacing.lg,
       paddingHorizontal: theme.spacing.lg,
     },
     chartDescription: {

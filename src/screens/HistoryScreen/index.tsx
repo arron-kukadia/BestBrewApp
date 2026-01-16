@@ -62,10 +62,10 @@ export const HistoryScreen: React.FC = () => {
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase()
       filtered = filtered.filter(
-        (c) =>
-          c.name.toLowerCase().includes(query) ||
-          c.brand.toLowerCase().includes(query) ||
-          c.origin.toLowerCase().includes(query)
+        (coffee) =>
+          coffee.name.toLowerCase().includes(query) ||
+          coffee.brand.toLowerCase().includes(query) ||
+          coffee.origin.toLowerCase().includes(query)
       )
     }
 

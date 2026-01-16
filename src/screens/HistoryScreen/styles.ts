@@ -13,6 +13,7 @@ export const createStyles = (theme: Theme) =>
       paddingHorizontal: theme.spacing.lg,
       paddingTop: theme.spacing.md,
       paddingBottom: theme.spacing.sm,
+      marginBottom: theme.spacing.md,
     },
     title: {
       ...theme.typography.h1,
