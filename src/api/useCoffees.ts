@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { coffeeService, CreateCoffeeInput, UpdateCoffeeInput } from '@/services/coffeeService'
 import { Coffee } from '@/types'
+import { insightKeys } from './useInsights'
 
 export const coffeeKeys = {
   all: ['coffees'] as const,
@@ -35,6 +36,7 @@ export const useCreateCoffee = () => {
       queryClient.setQueryData<Coffee[]>(coffeeKeys.list(newCoffee.userId), (oldCoffees) =>
         oldCoffees ? [newCoffee, ...oldCoffees] : [newCoffee]
       )
+      queryClient.invalidateQueries({ queryKey: insightKeys.user(newCoffee.userId) })
     },
   })
 }
@@ -64,6 +66,7 @@ export const useDeleteCoffee = () => {
       queryClient.setQueryData<Coffee[]>(coffeeKeys.list(userId), (oldCoffees) =>
         oldCoffees?.filter((coffee) => coffee.id !== id)
       )
+      queryClient.invalidateQueries({ queryKey: insightKeys.user(userId) })
     },
   })
 }
