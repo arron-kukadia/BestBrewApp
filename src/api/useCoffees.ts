@@ -16,6 +16,9 @@ export const useCoffees = (userId: string | undefined) => {
     queryKey: coffeeKeys.list(userId ?? ''),
     queryFn: () => coffeeService.listCoffees(userId!),
     enabled: !!userId,
+    staleTime: 1000 * 60 * 5,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
   })
 }
 

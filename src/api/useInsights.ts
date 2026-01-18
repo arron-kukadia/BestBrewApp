@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, keepPreviousData } from '@tanstack/react-query'
 import { insightService } from '@/services/insightService'
 import { Coffee } from '@/types'
 import { CoffeeHistorySummary, InsightsResponse } from '@/types/insight'
@@ -47,6 +47,7 @@ export const useInsights = ({ userId, coffees, enabled = true }: UseInsightsOpti
     gcTime: 1000 * 60 * 60 * 24,
     refetchOnWindowFocus: false,
     refetchOnMount: false,
+    placeholderData: keepPreviousData,
     retry: false,
   })
 }
