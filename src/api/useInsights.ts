@@ -1,8 +1,8 @@
 import { useMemo } from 'react'
 import { useQuery, keepPreviousData } from '@tanstack/react-query'
 import { insightService } from '@/services/insightService'
-import { CoffeeHistorySummary, InsightsResponse } from '@/types/insight'
 import { Coffee } from '@/types'
+import { CoffeeHistorySummary, InsightsResponse } from '@/types/insight'
 
 const transformCoffeeHistory = (coffees: Coffee[]): CoffeeHistorySummary[] => {
   return coffees.map((coffee) => ({
