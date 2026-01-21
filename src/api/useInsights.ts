@@ -16,7 +16,7 @@ const transformCoffeeHistory = (coffees: Coffee[]): CoffeeHistorySummary[] => {
 
 const getCoffeeHash = (coffees: Coffee[]): string => {
   return coffees
-    .map((c) => c.id)
+    .map((coffee) => coffee.id)
     .sort()
     .join(',')
 }

@@ -14,7 +14,7 @@ interface FlavourProfileChartProps {
   data: FlavourProfile
 }
 
-export const FlavourProfileChart: React.FC<FlavourProfileChartProps> = ({ data }) => {
+const FlavourProfileChartComponent: React.FC<FlavourProfileChartProps> = ({ data }) => {
   const theme = useTheme()
   const styles = createStyles(theme)
 
@@ -58,3 +58,20 @@ export const FlavourProfileChart: React.FC<FlavourProfileChartProps> = ({ data }
     </View>
   )
 }
+
+export const FlavourProfileChart = React.memo(FlavourProfileChartComponent, (prevProps, nextProps) => {
+  const prevData = prevProps.data
+  const nextData = nextProps.data
+
+  if (prevData.data.length !== nextData.data.length) return false
+  if (prevData.labels.length !== nextData.labels.length) return false
+
+  const dataEqual = prevData.data.every(
+    (value, index) => value === nextData.data[index]
+  )
+  const labelsEqual = prevData.labels.every(
+    (label, index) => label === nextData.labels[index]
+  )
+
+  return dataEqual && labelsEqual
+})
