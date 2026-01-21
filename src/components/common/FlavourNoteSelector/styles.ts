@@ -12,6 +12,10 @@ export const createStyles = (theme: Theme) =>
       ...theme.typography.bodySmMedium,
       color: theme.colors.text,
     },
+    helperText: {
+      ...theme.typography.bodySm,
+      color: theme.colors.textSecondary,
+    },
     chipsContainer: {
       flexDirection: 'row',
       flexWrap: 'wrap',

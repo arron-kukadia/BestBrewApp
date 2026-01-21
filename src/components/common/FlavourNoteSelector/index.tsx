@@ -36,6 +36,9 @@ export const FlavourNoteSelector: React.FC<FlavourNoteSelectorProps> = ({
   return (
     <View style={styles.container}>
       {label && <Text style={styles.label}>{label}</Text>}
+      <Text style={styles.helperText}>
+        Tap to select, then rate intensity: 1 (subtle) → 3 (bold)
+      </Text>
       <View style={styles.chipsContainer}>
         {options.map((option) => {
           const selected = isSelected(option)
