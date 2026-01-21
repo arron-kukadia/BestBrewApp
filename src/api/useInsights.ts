@@ -29,7 +29,6 @@ interface UseInsightsOptions {
 
 export const useInsights = ({ userId, coffees, enabled = true }: UseInsightsOptions) => {
   const coffeeHash = useMemo(() => getCoffeeHash(coffees), [coffees])
-  console.log('arron key', ['insights', userId, coffeeHash])
 
   return useQuery<InsightsResponse>({
     queryKey: ['insights', userId, coffeeHash],

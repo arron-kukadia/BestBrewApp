@@ -100,6 +100,7 @@ export const ResetPasswordScreen: React.FC<ResetPasswordScreenProps> = ({
               value={newPassword}
               onChangeText={setNewPassword}
               isPassword
+              isNewPassword
             />
           </View>
 
@@ -110,6 +111,7 @@ export const ResetPasswordScreen: React.FC<ResetPasswordScreenProps> = ({
               value={confirmPassword}
               onChangeText={setConfirmPassword}
               isPassword
+              isNewPassword
             />
           </View>
 

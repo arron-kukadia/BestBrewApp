@@ -7,6 +7,7 @@ import { createStyles } from './styles'
 interface InputProps extends Omit<TextInputProps, 'style'> {
   icon?: keyof typeof MaterialIcons.glyphMap
   isPassword?: boolean
+  isNewPassword?: boolean
   error?: boolean
   label?: string
   required?: boolean
@@ -15,6 +16,7 @@ interface InputProps extends Omit<TextInputProps, 'style'> {
 export const Input: React.FC<InputProps> = ({
   icon,
   isPassword = false,
+  isNewPassword = false,
   error = false,
   label,
   required,
@@ -23,6 +25,17 @@ export const Input: React.FC<InputProps> = ({
   const theme = useTheme()
   const styles = createStyles(theme)
   const [showPassword, setShowPassword] = useState(false)
+
+  const getPasswordProps = () => {
+    if (!isPassword) return {}
+    return {
+      secureTextEntry: !showPassword,
+      autoCapitalize: 'none' as const,
+      autoCorrect: false,
+      textContentType: isNewPassword ? ('newPassword' as const) : ('password' as const),
+      autoComplete: isNewPassword ? ('new-password' as const) : ('current-password' as const),
+    }
+  }
 
   return (
     <View style={styles.wrapper}>
@@ -44,8 +57,7 @@ export const Input: React.FC<InputProps> = ({
         <TextInput
           style={styles.input}
           placeholderTextColor={theme.colors.textTertiary}
-          secureTextEntry={isPassword && !showPassword}
-          autoCapitalize={isPassword ? 'none' : 'sentences'}
+          {...getPasswordProps()}
           {...textInputProps}
         />
         {isPassword && (

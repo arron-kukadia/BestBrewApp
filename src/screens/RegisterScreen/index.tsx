@@ -128,6 +128,7 @@ export const RegisterScreen: React.FC<RegisterScreenProps> = ({
                 value={password}
                 onChangeText={setPassword}
                 isPassword
+                isNewPassword
               />
             </View>
 
@@ -138,6 +139,7 @@ export const RegisterScreen: React.FC<RegisterScreenProps> = ({
                 value={confirmPassword}
                 onChangeText={setConfirmPassword}
                 isPassword
+                isNewPassword
               />
             </View>
 
