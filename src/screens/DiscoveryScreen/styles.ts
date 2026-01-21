@@ -26,8 +26,7 @@ export const createStyles = (theme: Theme) =>
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: theme.colors.surface,
-      borderRadius: theme.borderRadius.lg,
+      backgroundColor: theme.colors.background,
       padding: theme.spacing.lg,
     },
     loadingAnimation: {
