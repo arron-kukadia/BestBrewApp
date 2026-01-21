@@ -15,7 +15,7 @@ interface TopBrandsChartProps {
   data: BrandData[]
 }
 
-export const TopBrandsChart: React.FC<TopBrandsChartProps> = ({ data }) => {
+const TopBrandsChartComponent: React.FC<TopBrandsChartProps> = ({ data }) => {
   const theme = useTheme()
   const styles = createStyles(theme)
 
@@ -36,7 +36,7 @@ export const TopBrandsChart: React.FC<TopBrandsChartProps> = ({ data }) => {
           xAxisThickness={0}
           hideRules
           noOfSections={3}
-          maxValue={Math.max(...data.map((b) => b.value)) + 1}
+          maxValue={Math.max(...data.map((brand) => brand.value)) + 1}
           xAxisLabelTextStyle={styles.chartLabel}
           yAxisTextStyle={styles.chartLabel}
           height={120}
@@ -46,3 +46,15 @@ export const TopBrandsChart: React.FC<TopBrandsChartProps> = ({ data }) => {
     </View>
   )
 }
+
+export const TopBrandsChart = React.memo(TopBrandsChartComponent, (prevProps, nextProps) => {
+  const prevData = prevProps.data
+  const nextData = nextProps.data
+
+  if (prevData.length !== nextData.length) return false
+
+  return prevData.every((brand, index) => {
+    const nextBrand = nextData[index]
+    return brand.value === nextBrand.value && brand.label === nextBrand.label
+  })
+})
