@@ -8,12 +8,19 @@ export const createStyles = (theme: Theme) =>
     container: {
       backgroundColor: theme.colors.surface,
       borderRadius: theme.borderRadius.lg,
-      padding: theme.spacing.md,
+      overflow: 'hidden',
+      flexDirection: 'row',
     },
     pressed: {
       opacity: 0.9,
     },
+    image: {
+      width: 100,
+      height: '100%',
+    },
     content: {
+      flex: 1,
+      padding: theme.spacing.md,
       gap: theme.spacing.sm,
     },
     header: {

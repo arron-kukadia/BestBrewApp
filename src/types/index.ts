@@ -20,7 +20,7 @@ export interface Coffee {
   processMethod?: ProcessMethod
   rating: number
   notes: string
-  imageUrl?: string
+  imageUrl: string
   flavourNotes: FlavourNote[]
   price?: number
   currency?: Currency

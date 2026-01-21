@@ -7,10 +7,10 @@ export const createStyles = (theme: Theme) =>
   StyleSheet.create({
     container: {
       flexDirection: 'row',
-      alignItems: 'center',
       backgroundColor: theme.colors.surface,
       borderRadius: theme.borderRadius.lg,
-      padding: theme.spacing.md,
+      overflow: 'hidden',
+      alignItems: 'center',
     },
     iconContainer: {
       width: 48,
@@ -18,10 +18,18 @@ export const createStyles = (theme: Theme) =>
       borderRadius: theme.borderRadius.md,
       justifyContent: 'center',
       alignItems: 'center',
+      marginLeft: theme.spacing.md,
       marginRight: theme.spacing.md,
+      alignSelf: 'center',
+    },
+    image: {
+      width: 80,
+      height: '100%',
+      minHeight: 80,
     },
     content: {
       flex: 1,
+      padding: theme.spacing.md,
     },
     title: {
       ...theme.typography.bodyMedium,

@@ -9,6 +9,7 @@ export const configureAmplify = () => {
       Cognito: {
         userPoolId: process.env.EXPO_PUBLIC_AWS_USER_POOL_ID,
         userPoolClientId: process.env.EXPO_PUBLIC_AWS_USER_POOL_CLIENT_ID,
+        identityPoolId: process.env.EXPO_PUBLIC_AWS_IDENTITY_POOL_ID,
         signUpVerificationMethod: 'code',
         loginWith: {
           oauth: {
@@ -28,6 +29,12 @@ export const configureAmplify = () => {
         region: process.env.EXPO_PUBLIC_AWS_REGION || 'eu-north-1',
         defaultAuthMode: 'apiKey',
         apiKey: process.env.EXPO_PUBLIC_AWS_APPSYNC_API_KEY || '',
+      },
+    },
+    Storage: {
+      S3: {
+        bucket: process.env.EXPO_PUBLIC_AWS_S3_BUCKET || '',
+        region: process.env.EXPO_PUBLIC_AWS_REGION || 'eu-north-1',
       },
     },
   })

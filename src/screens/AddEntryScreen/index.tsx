@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, ScrollView, KeyboardAvoidingView, Platform, Alert } from 'react-native'
+import {
+  View,
+  Text,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
+  Alert,
+  Keyboard,
+} from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTheme } from '@/hooks/useTheme'
 import { useAuthStore } from '@/stores/authStore'
@@ -14,6 +22,9 @@ import { FlavourNoteSelector } from '@/components/common/FlavourNoteSelector'
 import { StarRating } from '@/components/common/StarRating'
 import { CollapsibleSection } from '@/components/common/CollapsibleSection'
 import { SuccessModal } from '@/components/common/SuccessModal'
+import { ImagePicker } from '@/components/common/ImagePicker'
+import { imageService } from '@/services/imageService'
+import { deleteLocalImage } from '@/helpers/image'
 import Animated, { FadeInRight, FadeOutRight } from 'react-native-reanimated'
 import { CoffeeFormData } from '@/types'
 import {
@@ -58,6 +69,7 @@ export const AddEntryScreen: React.FC<AddEntryScreenProps> = ({ onBack, onSucces
     customBagSize: '',
     roastDate: '',
     purchaseLocation: '',
+    imageUri: undefined,
   })
   const [isLoading, setIsLoading] = useState(false)
   const [showSuccess, setShowSuccess] = useState(false)
@@ -80,6 +92,7 @@ export const AddEntryScreen: React.FC<AddEntryScreenProps> = ({ onBack, onSucces
         customBagSize: existingCoffee.customBagSize || '',
         roastDate: existingCoffee.roastDate || '',
         purchaseLocation: existingCoffee.purchaseLocation || '',
+        imageUri: existingCoffee.imageUrl || undefined,
       })
     }
   }, [existingCoffee])
@@ -111,6 +124,10 @@ export const AddEntryScreen: React.FC<AddEntryScreenProps> = ({ onBack, onSucces
   }
 
   const validateForm = (): boolean => {
+    if (!formData.imageUri) {
+      Alert.alert('Error', 'Please add a photo of your coffee')
+      return false
+    }
     if (!formData.name.trim()) {
       Alert.alert('Error', 'Please enter a coffee name')
       return false
@@ -134,6 +151,11 @@ export const AddEntryScreen: React.FC<AddEntryScreenProps> = ({ onBack, onSucces
     return true
   }
 
+  const isLocalImage = (uri?: string): boolean => {
+    if (!uri) return false
+    return uri.startsWith('file://') || uri.startsWith('ph://')
+  }
+
   const handleSubmit = async () => {
     if (!validateForm()) return
 
@@ -141,6 +163,20 @@ export const AddEntryScreen: React.FC<AddEntryScreenProps> = ({ onBack, onSucces
     try {
       const now = new Date().toISOString().split('T')[0]
       const userId = user?.id || ''
+      const coffeeIdToUse = isEditMode ? coffeeId! : Date.now().toString()
+
+      let imageUrl: string | undefined
+      if (formData.imageUri && isLocalImage(formData.imageUri)) {
+        const uploadResult = await imageService.uploadCoffeeImage(
+          formData.imageUri,
+          userId,
+          coffeeIdToUse
+        )
+        imageUrl = uploadResult.imageUrl
+        await deleteLocalImage(formData.imageUri)
+      } else if (formData.imageUri) {
+        imageUrl = formData.imageUri
+      }
 
       if (isEditMode && coffeeId && existingCoffee) {
         const updates = {
@@ -161,13 +197,14 @@ export const AddEntryScreen: React.FC<AddEntryScreenProps> = ({ onBack, onSucces
           customBagSize: formData.bagSize === 'other' ? formData.customBagSize : undefined,
           roastDate: formData.roastDate || undefined,
           purchaseLocation: (formData.purchaseLocation || '').trim() || undefined,
+          imageUrl,
           updatedAt: now,
         }
         await updateMutation.mutateAsync(updates)
         setShowSuccess(true)
       } else {
         const coffeeInput: Record<string, unknown> = {
-          id: Date.now().toString(),
+          id: coffeeIdToUse,
           userId,
           brand: (formData.brand || '').trim(),
           name: (formData.name || '').trim(),
@@ -192,6 +229,7 @@ export const AddEntryScreen: React.FC<AddEntryScreenProps> = ({ onBack, onSucces
         if ((formData.purchaseLocation || '').trim()) {
           coffeeInput.purchaseLocation = (formData.purchaseLocation || '').trim()
         }
+        if (imageUrl) coffeeInput.imageUrl = imageUrl
         await createMutation.mutateAsync(
           coffeeInput as unknown as Parameters<typeof createMutation.mutateAsync>[0]
         )
@@ -225,7 +263,16 @@ export const AddEntryScreen: React.FC<AddEntryScreenProps> = ({ onBack, onSucces
           contentContainerStyle={styles.scrollContent}
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps="handled"
+          onScrollBeginDrag={Keyboard.dismiss}
         >
+          <View style={styles.section}>
+            <ImagePicker
+              imageUri={formData.imageUri}
+              onImageSelected={(uri) => updateField('imageUri', uri)}
+              onImageRemoved={() => updateField('imageUri', undefined)}
+            />
+          </View>
+
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Basic Info</Text>
             <Input

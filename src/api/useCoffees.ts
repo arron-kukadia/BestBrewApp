@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { coffeeService, CreateCoffeeInput, UpdateCoffeeInput } from '@/services/coffeeService'
+import { imageService } from '@/services/imageService'
 import { Coffee } from '@/types'
 import { insightKeys } from './useInsights'
 
@@ -62,8 +63,24 @@ export const useDeleteCoffee = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: ({ id, userId }: { id: string; userId: string }) =>
-      coffeeService.deleteCoffee(userId, id).then(() => ({ id, userId })),
+    mutationFn: async ({
+      id,
+      userId,
+      imageUrl,
+    }: {
+      id: string
+      userId: string
+      imageUrl?: string
+    }) => {
+      if (imageUrl) {
+        const key = imageService.getKeyFromUrl(imageUrl)
+        if (key) {
+          await imageService.deleteImage(key)
+        }
+      }
+      await coffeeService.deleteCoffee(userId, id)
+      return { id, userId }
+    },
     onSuccess: ({ id, userId }) => {
       queryClient.removeQueries({ queryKey: coffeeKeys.detail(id) })
       queryClient.setQueryData<Coffee[]>(coffeeKeys.list(userId), (oldCoffees) =>

@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Pressable, Platform } from 'react-native'
+import { View, Text, Pressable, Platform, Image } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
 import { useTheme } from '@/hooks/useTheme'
 import { StarDisplay } from '@/components/common/StarDisplay'
@@ -12,6 +12,7 @@ interface ActivityCardProps {
   rating?: number
   meta?: string
   color?: string
+  imageUri?: string
   onPress?: () => void
 }
 
@@ -22,6 +23,7 @@ export const ActivityCard: React.FC<ActivityCardProps> = ({
   rating,
   meta,
   color,
+  imageUri,
   onPress,
 }) => {
   const theme = useTheme()
@@ -30,9 +32,13 @@ export const ActivityCard: React.FC<ActivityCardProps> = ({
 
   const content = (
     <View style={styles.container}>
-      <View style={[styles.iconContainer, { backgroundColor: `${iconColor}15` }]}>
-        <MaterialIcons name={icon} size={24} color={iconColor} />
-      </View>
+      {imageUri ? (
+        <Image source={{ uri: imageUri }} style={styles.image} resizeMode="cover" />
+      ) : (
+        <View style={[styles.iconContainer, { backgroundColor: `${iconColor}15` }]}>
+          <MaterialIcons name={icon} size={24} color={iconColor} />
+        </View>
+      )}
       <View style={styles.content}>
         <Text style={styles.title} numberOfLines={1}>
           {title}

@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, ScrollView, Pressable, Alert } from 'react-native'
+import { View, Text, ScrollView, Pressable, Alert, Image } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { MaterialIcons } from '@expo/vector-icons'
 import { useRoute, useNavigation, RouteProp } from '@react-navigation/native'
@@ -59,9 +59,9 @@ export const CoffeeDetailScreen: React.FC = () => {
           text: 'Delete',
           style: 'destructive',
           onPress: () => {
-            if (user?.id) {
+            if (user?.id && coffee) {
               deleteMutation.mutate(
-                { id: coffeeId, userId: user.id },
+                { id: coffeeId, userId: user.id, imageUrl: coffee.imageUrl },
                 { onSuccess: () => navigation.goBack() }
               )
             }
@@ -124,10 +124,13 @@ export const CoffeeDetailScreen: React.FC = () => {
       </View>
 
       <ScrollView
-        style={styles.content}
         contentContainerStyle={styles.contentContainer}
         showsVerticalScrollIndicator={false}
       >
+        {coffee.imageUrl && (
+          <Image source={{ uri: coffee.imageUrl }} style={styles.heroImage} resizeMode="cover" />
+        )}
+
         <View style={styles.titleSection}>
           <Text style={styles.brand}>{coffee.brand}</Text>
           <Text style={styles.name}>{coffee.name}</Text>

@@ -23,9 +23,6 @@ export const createStyles = (theme: Theme) =>
     headerButton: {
       padding: theme.spacing.xs,
     },
-    content: {
-      flex: 1,
-    },
     contentContainer: {
       padding: theme.spacing.lg,
       paddingBottom: theme.spacing.xxl,
@@ -39,6 +36,12 @@ export const createStyles = (theme: Theme) =>
     notFoundText: {
       ...theme.typography.body,
       color: theme.colors.textSecondary,
+    },
+    heroImage: {
+      width: '100%',
+      aspectRatio: 1,
+      borderRadius: theme.borderRadius.lg,
+      marginBottom: theme.spacing.xl,
     },
     titleSection: {
       marginBottom: theme.spacing.xl,

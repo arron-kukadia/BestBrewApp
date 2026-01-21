@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Pressable } from 'react-native'
+import { View, Text, Pressable, Image } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
 import { useTheme } from '@/hooks/useTheme'
 import { StarDisplay } from '@/components/common/StarDisplay'
@@ -24,6 +24,9 @@ export const CoffeeCard: React.FC<CoffeeCardProps> = ({ coffee, onPress, onFavor
       onPress={onPress}
       testID="coffee-card"
     >
+      {coffee.imageUrl && (
+        <Image source={{ uri: coffee.imageUrl }} style={styles.image} resizeMode="cover" />
+      )}
       <View style={styles.content}>
         <View style={styles.header}>
           <View style={styles.titleRow}>

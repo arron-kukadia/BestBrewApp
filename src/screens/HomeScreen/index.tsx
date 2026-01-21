@@ -96,6 +96,7 @@ export const HomeScreen: React.FC = () => {
                       subtitle={coffee.brand}
                       rating={coffee.rating}
                       meta={formatRelativeDate(coffee.createdAt)}
+                      imageUri={coffee.imageUrl}
                       onPress={() => navigation.navigate('CoffeeDetail', { coffeeId: coffee.id })}
                     />
                   </Animated.View>
