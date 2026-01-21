@@ -1,8 +1,8 @@
 import React from 'react'
 import { View, Text } from 'react-native'
-import { RadarChart } from 'react-native-gifted-charts'
 import { useTheme } from '@/hooks/useTheme'
 import { SectionHeader } from '@/components/common/SectionHeader'
+import { RadarChartDisplay } from './RadarChartDisplay'
 import { createStyles } from './styles'
 
 interface FlavourProfile {
@@ -12,9 +12,10 @@ interface FlavourProfile {
 
 interface FlavourProfileChartProps {
   data: FlavourProfile
+  tasteProfile?: string
 }
 
-const FlavourProfileChartComponent: React.FC<FlavourProfileChartProps> = ({ data }) => {
+export const FlavourProfileChart: React.FC<FlavourProfileChartProps> = ({ data, tasteProfile }) => {
   const theme = useTheme()
   const styles = createStyles(theme)
 
@@ -22,56 +23,10 @@ const FlavourProfileChartComponent: React.FC<FlavourProfileChartProps> = ({ data
 
   return (
     <View style={styles.section}>
-      <SectionHeader title="Your Flavour Profile" />
-      <Text style={styles.chartDescription}>Flavours weighted by your ratings</Text>
       <View style={styles.radarContainer}>
-        <RadarChart
-          data={data.data}
-          isAnimated
-          animationDuration={300}
-          maxValue={100}
-          chartSize={200}
-          hideAsterLines
-          startAngle={90}
-          labels={data.labels}
-          labelsPositionOffset={5}
-          gridConfig={{
-            fill: theme.colors.surface,
-            gradientColor: theme.colors.surface,
-            opacity: 0.2,
-            strokeWidth: 0.2,
-          }}
-          polygonConfig={{
-            fill: theme.colors.primary + '40',
-            stroke: theme.colors.primary,
-            strokeWidth: 2,
-            isAnimated: true,
-            animationDuration: 300,
-          }}
-          labelConfig={{
-            fontSize: 11,
-            fontWeight: 'bold',
-            stroke: theme.colors.primary,
-          }}
-        />
+        <RadarChartDisplay data={data} />
+        {tasteProfile && <Text style={styles.profileText}>{tasteProfile}</Text>}
       </View>
     </View>
   )
 }
-
-export const FlavourProfileChart = React.memo(FlavourProfileChartComponent, (prevProps, nextProps) => {
-  const prevData = prevProps.data
-  const nextData = nextProps.data
-
-  if (prevData.data.length !== nextData.data.length) return false
-  if (prevData.labels.length !== nextData.labels.length) return false
-
-  const dataEqual = prevData.data.every(
-    (value, index) => value === nextData.data[index]
-  )
-  const labelsEqual = prevData.labels.every(
-    (label, index) => label === nextData.labels[index]
-  )
-
-  return dataEqual && labelsEqual
-})

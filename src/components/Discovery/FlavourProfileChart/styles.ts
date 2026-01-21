@@ -18,4 +18,9 @@ export const createStyles = (theme: Theme) =>
       borderRadius: theme.borderRadius.lg,
       padding: theme.spacing.lg,
     },
+    profileText: {
+      ...theme.typography.body,
+      color: theme.colors.text,
+      flex: 1,
+    },
   })
