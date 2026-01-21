@@ -26,6 +26,7 @@ export const createStyles = (theme: Theme) =>
     logo: {
       width: 80,
       height: 80,
+      borderRadius: theme.borderRadius.lg,
     },
     header: {
       ...theme.typography.h2,

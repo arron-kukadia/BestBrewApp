@@ -17,6 +17,7 @@ export const createStyles = (theme: Theme) =>
     logo: {
       width: 140,
       height: 140,
+      borderRadius: theme.borderRadius.lg,
     },
     contentSection: {
       paddingHorizontal: theme.spacing.xl,
