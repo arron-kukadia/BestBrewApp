@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { useQuery, keepPreviousData } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import { insightService } from '@/services/insightService'
 import { Coffee } from '@/types'
 import { CoffeeHistorySummary, InsightsResponse } from '@/types/insight'
@@ -29,6 +29,7 @@ interface UseInsightsOptions {
 
 export const useInsights = ({ userId, coffees, enabled = true }: UseInsightsOptions) => {
   const coffeeHash = useMemo(() => getCoffeeHash(coffees), [coffees])
+  console.log('arron key', ['insights', userId, coffeeHash])
 
   return useQuery<InsightsResponse>({
     queryKey: ['insights', userId, coffeeHash],
@@ -47,7 +48,7 @@ export const useInsights = ({ userId, coffees, enabled = true }: UseInsightsOpti
     gcTime: 1000 * 60 * 60 * 24,
     refetchOnWindowFocus: false,
     refetchOnMount: false,
-    placeholderData: keepPreviousData,
+    refetchOnReconnect: false,
     retry: false,
   })
 }

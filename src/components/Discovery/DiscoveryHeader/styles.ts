@@ -6,7 +6,6 @@ export const createStyles = (theme: Theme) =>
     container: {
       paddingHorizontal: theme.spacing.lg,
       paddingTop: theme.spacing.md,
-      paddingBottom: theme.spacing.sm,
     },
     title: {
       ...theme.typography.h1,

@@ -22,4 +22,20 @@ export const createStyles = (theme: Theme) =>
       alignItems: 'center',
       paddingHorizontal: theme.spacing.lg,
     },
+    loadingContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: theme.colors.surface,
+      borderRadius: theme.borderRadius.lg,
+      padding: theme.spacing.lg,
+    },
+    loadingAnimation: {
+      width: 200,
+      height: 150,
+    },
+    loadingText: {
+      ...theme.typography.bodySm,
+      color: theme.colors.textSecondary,
+    },
   })
