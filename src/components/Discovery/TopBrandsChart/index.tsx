@@ -37,6 +37,7 @@ const TopBrandsChartComponent: React.FC<TopBrandsChartProps> = ({ data }) => {
           hideRules
           noOfSections={3}
           maxValue={Math.max(...data.map((brand) => brand.value)) + 1}
+          formatYLabel={(label) => Math.round(Number(label)).toString()}
           xAxisLabelTextStyle={styles.chartLabel}
           yAxisTextStyle={styles.chartLabel}
           height={120}

@@ -32,6 +32,24 @@ export const DiscoveryScreen: React.FC = () => {
     enabled: hasEntries && coffees.length >= 2,
   })
 
+  const needsMoreCoffees = coffees.length < 2
+  const needsTasteNotes = flavourProfile.data.length < 3
+
+  const getHintMessage = () => {
+    if (needsMoreCoffees && needsTasteNotes) {
+      return 'Add at least 2 coffees with flavour notes to unlock AI insights and your taste profile chart.'
+    }
+    if (needsMoreCoffees) {
+      return 'Add at least 2 coffees to unlock AI insights about your preferences.'
+    }
+    if (needsTasteNotes) {
+      return 'Log flavour notes on your coffees to see your taste profile chart.'
+    }
+    return null
+  }
+
+  const hintMessage = getHintMessage()
+
   if (!hasEntries) {
     return (
       <SafeAreaView style={styles.container} edges={['top']}>
@@ -70,8 +88,13 @@ export const DiscoveryScreen: React.FC = () => {
         showsVerticalScrollIndicator={false}
       >
         <DiscoveryHeader />
+        {hintMessage && (
+          <View style={styles.hintContainer}>
+            <Text style={styles.hintText}>{hintMessage}</Text>
+          </View>
+        )}
         <FlavourProfileChart data={flavourProfile} tasteProfile={insightsData?.tasteProfile} />
-        {coffees.length >= 2 && (
+        {!needsMoreCoffees && (
           <InsightsSection data={insightsData} error={insightsError} onRetry={refetchInsights} />
         )}
         <TopBrandsChart data={topBrands} />

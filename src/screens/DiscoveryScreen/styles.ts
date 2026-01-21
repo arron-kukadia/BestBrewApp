@@ -37,4 +37,16 @@ export const createStyles = (theme: Theme) =>
       ...theme.typography.bodySm,
       color: theme.colors.textSecondary,
     },
+    hintContainer: {
+      marginHorizontal: theme.spacing.lg,
+      padding: theme.spacing.md,
+      backgroundColor: theme.colors.surface,
+      borderRadius: theme.borderRadius.md,
+      borderLeftWidth: 3,
+      borderLeftColor: theme.colors.primary,
+    },
+    hintText: {
+      ...theme.typography.bodySm,
+      color: theme.colors.textSecondary,
+    },
   })
