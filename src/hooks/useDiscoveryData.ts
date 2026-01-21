@@ -32,7 +32,7 @@ export const useDiscoveryData = (coffees: Coffee[], primaryColor: string): Disco
       .slice(0, 3)
       .map(([brand, count]) => ({
         value: count,
-        label: brand.length > 8 ? brand.slice(0, 8) + '…' : brand,
+        label: brand,
         frontColor: primaryColor,
       }))
   }, [coffees, primaryColor])

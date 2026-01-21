@@ -29,7 +29,7 @@ const TopBrandsChartComponent: React.FC<TopBrandsChartProps> = ({ data }) => {
           data={data}
           isAnimated
           animationDuration={300}
-          barWidth={40}
+          barWidth={50}
           barBorderRadius={6}
           frontColor={theme.colors.primary}
           yAxisThickness={0}
@@ -40,7 +40,7 @@ const TopBrandsChartComponent: React.FC<TopBrandsChartProps> = ({ data }) => {
           xAxisLabelTextStyle={styles.chartLabel}
           yAxisTextStyle={styles.chartLabel}
           height={120}
-          spacing={24}
+          spacing={34}
         />
       </View>
     </View>
