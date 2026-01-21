@@ -54,10 +54,11 @@ export const ActivityCard: React.FC<ActivityCardProps> = ({
           </View>
         )}
       </View>
-      {meta && <Text style={styles.meta}>{meta}</Text>}
-      {onPress && (
-        <MaterialIcons name="chevron-right" size={20} color={theme.colors.textTertiary} />
-      )}
+      <View style={styles.chevronContainer}>
+        {onPress && (
+          <MaterialIcons name="chevron-right" size={20} color={theme.colors.textTertiary} />
+        )}
+      </View>
     </View>
   )
 

@@ -49,21 +49,7 @@ export const CoffeeCard: React.FC<CoffeeCardProps> = ({ coffee, onPress, onFavor
             <MaterialIcons name="place" size={14} color={theme.colors.textTertiary} />
             <Text style={styles.detailText}>{coffee.origin}</Text>
           </View>
-          <View style={styles.detailRow}>
-            <MaterialIcons
-              name="local-fire-department"
-              size={14}
-              color={theme.colors.textTertiary}
-            />
-            <Text style={styles.detailText}>{ROAST_LEVEL_LABELS[coffee.roastLevel]}</Text>
-          </View>
         </View>
-
-        {coffee.flavourNotes && coffee.flavourNotes.length > 0 && (
-          <Text style={styles.flavourNotes} numberOfLines={1}>
-            {coffee.flavourNotes.map((note) => note.name).join(' • ')}
-          </Text>
-        )}
 
         <View style={styles.footer}>
           <StarDisplay rating={coffee.rating} size={16} />

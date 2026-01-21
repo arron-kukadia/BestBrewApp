@@ -30,7 +30,7 @@ export const createStyles = (theme: Theme) =>
     },
     image: {
       width: '100%',
-      height: 200,
+      aspectRatio: 1,
       borderRadius: theme.borderRadius.md,
     },
     removeButton: {

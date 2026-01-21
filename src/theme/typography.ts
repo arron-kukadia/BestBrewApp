@@ -38,6 +38,11 @@ export const typography: Record<string, TextStyle> = {
     fontWeight: '400',
     lineHeight: 20,
   },
+  bodyXs: {
+    fontSize: 12,
+    fontWeight: '400',
+    lineHeight: 20,
+  },
   bodySmMedium: {
     fontSize: 14,
     fontWeight: '500',

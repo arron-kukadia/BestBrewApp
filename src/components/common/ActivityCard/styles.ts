@@ -44,9 +44,9 @@ export const createStyles = (theme: Theme) =>
       flexDirection: 'row',
       marginTop: 4,
     },
-    meta: {
-      ...theme.typography.bodySm,
-      color: theme.colors.textTertiary,
-      marginRight: theme.spacing.sm,
+    chevronContainer: {
+      marginRight: theme.spacing.md,
+      flexDirection: 'row',
+      alignItems: 'center',
     },
   })
