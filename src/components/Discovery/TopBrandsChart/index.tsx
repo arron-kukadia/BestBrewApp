@@ -29,19 +29,19 @@ const TopBrandsChartComponent: React.FC<TopBrandsChartProps> = ({ data }) => {
           data={data}
           isAnimated
           animationDuration={300}
-          barWidth={50}
+          barWidth={40}
           barBorderRadius={6}
           frontColor={theme.colors.primary}
           yAxisThickness={0}
           xAxisThickness={0}
           hideRules
-          noOfSections={3}
+          noOfSections={1}
           maxValue={Math.max(...data.map((brand) => brand.value)) + 1}
           formatYLabel={(label) => Math.round(Number(label)).toString()}
           xAxisLabelTextStyle={styles.chartLabel}
           yAxisTextStyle={styles.chartLabel}
           height={120}
-          spacing={34}
+          spacing={30}
         />
       </View>
     </View>

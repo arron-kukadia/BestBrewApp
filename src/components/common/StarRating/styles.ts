@@ -12,6 +12,9 @@ export const createStyles = (theme: Theme) =>
       ...theme.typography.bodySmMedium,
       color: theme.colors.text,
     },
+    required: {
+      color: theme.colors.error,
+    },
     container: {
       flexDirection: 'row',
       gap: theme.spacing.xs,

@@ -14,6 +14,7 @@ interface SelectChipsProps<OptionValue> {
   options: SelectOption<OptionValue>[]
   selectedValue: OptionValue | null
   onSelect: (value: OptionValue) => void
+  required?: boolean
 }
 
 export function SelectChips<OptionValue>({
@@ -21,13 +22,19 @@ export function SelectChips<OptionValue>({
   options,
   selectedValue,
   onSelect,
+  required,
 }: SelectChipsProps<OptionValue>) {
   const theme = useTheme()
   const styles = createStyles(theme)
 
   return (
     <View style={styles.container}>
-      {label && <Text style={styles.label}>{label}</Text>}
+      {label && (
+        <Text style={styles.label}>
+          {label}
+          {required && <Text style={styles.required}> *</Text>}
+        </Text>
+      )}
       <View style={styles.chips}>
         {options.map((option) => (
           <Chip

@@ -231,18 +231,23 @@ export const AddEntryScreen: React.FC<AddEntryScreenProps> = ({ onBack, onSucces
             <Input
               icon="coffee"
               placeholder="Coffee Name"
+              label="Coffee Name"
+              required
               value={formData.name}
               onChangeText={(text) => updateField('name', text)}
             />
             <Input
               icon="storefront"
               placeholder="Brand / Roaster"
+              label="Brand / Roaster"
+              required
               value={formData.brand}
               onChangeText={(text) => updateField('brand', text)}
             />
             <Input
               icon="place"
-              placeholder="Origin (e.g. Ethiopia)"
+              placeholder="e.g. Ethiopia"
+              label="Origin"
               value={formData.origin}
               onChangeText={(text) => updateField('origin', text)}
             />
@@ -252,18 +257,21 @@ export const AddEntryScreen: React.FC<AddEntryScreenProps> = ({ onBack, onSucces
             <Text style={styles.sectionTitle}>Details</Text>
             <SelectChips
               label="Roast Level"
+              required
               options={ROAST_OPTIONS}
               selectedValue={formData.roastLevel}
               onSelect={(value) => updateField('roastLevel', value)}
             />
             <SelectChips
               label="Grind Type"
+              required
               options={GRIND_OPTIONS}
               selectedValue={formData.grindType}
               onSelect={(value) => updateField('grindType', value)}
             />
             <StarRating
               label="Your Rating"
+              required
               rating={formData.rating}
               onRatingChange={(rating) => updateField('rating', rating)}
             />

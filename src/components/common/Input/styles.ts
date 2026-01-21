@@ -5,7 +5,17 @@ type Theme = ReturnType<typeof useTheme>
 
 export const createStyles = (theme: Theme) =>
   StyleSheet.create({
-    container: {
+    wrapper: {
+      gap: theme.spacing.xs,
+    },
+    label: {
+      ...theme.typography.bodySmMedium,
+      color: theme.colors.text,
+    },
+    required: {
+      color: theme.colors.error,
+    },
+    inputContainer: {
       flexDirection: 'row',
       alignItems: 'center',
       backgroundColor: theme.colors.surface,

@@ -11,6 +11,7 @@ interface StarRatingProps {
   size?: number
   readonly?: boolean
   label?: string
+  required?: boolean
 }
 
 export const StarRating: React.FC<StarRatingProps> = ({
@@ -20,6 +21,7 @@ export const StarRating: React.FC<StarRatingProps> = ({
   size = 32,
   readonly = false,
   label,
+  required,
 }) => {
   const theme = useTheme()
   const styles = createStyles(theme)
@@ -32,7 +34,12 @@ export const StarRating: React.FC<StarRatingProps> = ({
 
   return (
     <View style={styles.wrapper} testID="star-rating">
-      {label && <Text style={styles.label}>{label}</Text>}
+      {label && (
+        <Text style={styles.label}>
+          {label}
+          {required && <Text style={styles.required}> *</Text>}
+        </Text>
+      )}
       <View style={styles.container}>
         {Array.from({ length: maxStars }, (_, index) => {
           const star = index + 1
