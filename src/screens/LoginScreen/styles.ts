@@ -24,8 +24,8 @@ export const createStyles = (theme: Theme) =>
       paddingTop: theme.spacing.xl,
     },
     logo: {
-      width: 150,
-      height: 150,
+      width: 80,
+      height: 80,
     },
     header: {
       ...theme.typography.h2,

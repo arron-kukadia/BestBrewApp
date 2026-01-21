@@ -15,8 +15,8 @@ export const createStyles = (theme: Theme) =>
       alignItems: 'center',
     },
     logo: {
-      width: 200,
-      height: 200,
+      width: 140,
+      height: 140,
     },
     contentSection: {
       paddingHorizontal: theme.spacing.xl,
