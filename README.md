@@ -94,17 +94,6 @@ src/
 └── types/               # TypeScript type definitions
 ```
 
-## Development Phases
-
-- [x] Phase 1-3: Foundation, Auth, Core Components
-- [x] Phase 4: Dashboard & History Screens
-- [x] Phase 5: Add Entry Screen and Coffee Detail Screen
-- [x] Phase 6: AWS Backend (DynamoDB/AppSync)
-- [x] Phase 7: AI Integration (taste profiling & insights)
-- [x] Phase 8: Discovery Screen with charts & AI insights
-- [ ] Phase 9: Add images to coffee entries and use AI to prefil fields
-- [ ] Phase 10: Testing and release to Play Store
-
 ## Scripts
 
 | Script                      | Description                      |
