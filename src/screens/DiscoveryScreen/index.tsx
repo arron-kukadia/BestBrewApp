@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, ScrollView, ActivityIndicator, Text } from 'react-native'
+import { View, ScrollView, Text } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTheme } from '@/hooks/useTheme'
 import { useAuthStore } from '@/stores/authStore'
@@ -7,12 +7,12 @@ import { useCoffees } from '@/api/useCoffees'
 import { useInsights } from '@/api/useInsights'
 import { useDiscoveryData } from '@/hooks/useDiscoveryData'
 import { EmptyState } from '@/components/common/EmptyState'
+import { Loader } from '@/components/common/Loader'
 import { DiscoveryHeader } from '@/components/Discovery/DiscoveryHeader'
 import { InsightsSection } from '@/components/Discovery/InsightsSection'
 import { TopBrandsChart } from '@/components/Discovery/TopBrandsChart'
 import { FlavourProfileChart } from '@/components/Discovery/FlavourProfileChart'
 import { createStyles } from './styles'
-import LottieView from 'lottie-react-native'
 
 export const DiscoveryScreen: React.FC = () => {
   const theme = useTheme()
@@ -68,14 +68,7 @@ export const DiscoveryScreen: React.FC = () => {
   if (insightsLoading) {
     return (
       <SafeAreaView style={styles.container} edges={['top']}>
-        <View style={styles.loadingContainer}>
-          <LottieView
-            source={require('@/assets/animations/loading.json')}
-            style={styles.loadingAnimation}
-            autoPlay
-          />
-          <Text style={styles.loadingText}>Analyzing your taste profile...</Text>
-        </View>
+        <Loader text="Analyzing your taste profile..." />
       </SafeAreaView>
     )
   }

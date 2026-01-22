@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { View, Text, RefreshControl, ActivityIndicator } from 'react-native'
+import { View, Text, RefreshControl } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { FlashList } from '@shopify/flash-list'
 import { useNavigation } from '@react-navigation/native'
@@ -13,6 +13,7 @@ import { SearchBar } from '@/components/common/SearchBar'
 import { FilterChips } from '@/components/common/FilterChips'
 import { CoffeeCard } from '@/components/common/CoffeeCard'
 import { EmptyState } from '@/components/common/EmptyState'
+import { Loader } from '@/components/common/Loader'
 import { Coffee } from '@/types'
 import { createStyles } from './styles'
 
@@ -118,9 +119,7 @@ export const HistoryScreen: React.FC = () => {
       </View>
 
       {isLoading ? (
-        <View style={styles.emptyContainer}>
-          <ActivityIndicator size="large" color={theme.colors.primary} />
-        </View>
+        <Loader />
       ) : filteredCoffees.length > 0 ? (
         <FlashList
           data={filteredCoffees}

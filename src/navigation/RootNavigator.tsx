@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback } from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { ActivityIndicator, View, StyleSheet } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import { Hub } from 'aws-amplify/utils'
 import { TabNavigator } from '@/navigation/TabNavigator'
 import { AuthNavigator } from '@/navigation/AuthNavigator'
@@ -8,6 +8,7 @@ import { AddEntryScreen } from '@/screens/AddEntryScreen'
 import { CoffeeDetailScreen } from '@/screens/CoffeeDetailScreen'
 import { RootStackParamList } from '@/types/index'
 import { useTheme } from '@/hooks/useTheme'
+import { Loader } from '@/components/common/Loader'
 import { useAuthStore } from '@/stores/authStore'
 import { authService } from '@/services/authService'
 
@@ -76,7 +77,7 @@ export const RootNavigator: React.FC = () => {
   if (isLoading) {
     return (
       <View style={[styles.loadingContainer, { backgroundColor: colors.background }]}>
-        <ActivityIndicator size="large" color={colors.primary} />
+        <Loader />
       </View>
     )
   }

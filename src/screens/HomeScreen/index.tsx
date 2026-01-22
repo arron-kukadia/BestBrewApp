@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { View, Text, ScrollView, ActivityIndicator } from 'react-native'
+import { View, Text, ScrollView } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
@@ -13,6 +13,7 @@ import { SectionHeader } from '@/components/common/SectionHeader'
 import { StatCard } from '@/components/common/StatCard'
 import { ActivityCard } from '@/components/common/ActivityCard'
 import { EmptyState } from '@/components/common/EmptyState'
+import { Loader } from '@/components/common/Loader'
 import { getGreeting, formatRelativeDate } from '@/helpers/date'
 import { createStyles } from './styles'
 
@@ -74,9 +75,7 @@ export const HomeScreen: React.FC = () => {
 
         <View style={styles.section}>
           {isLoading ? (
-            <View style={styles.loadingContainer}>
-              <ActivityIndicator size="large" color={theme.colors.primary} />
-            </View>
+            <Loader size="small" />
           ) : hasEntries ? (
             <>
               <SectionHeader
