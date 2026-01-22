@@ -10,6 +10,7 @@ import { useTheme } from '@/hooks/useTheme'
 import { useAnimationConfig } from '@/hooks/useAnimationConfig'
 import { useAuthStore } from '@/stores/authStore'
 import { ButtonWithIcon } from '@/components/common/ButtonWithIcon'
+import { Loader } from '@/components/common/Loader'
 import { coffeeService } from '@/services/coffeeService'
 import {
   useCustomFlavourNotes,
@@ -28,7 +29,7 @@ export const FlavourNotesScreen: React.FC = () => {
   const queryClient = useQueryClient()
   const user = useAuthStore((state) => state.user)
 
-  const { data: customNotes = [] } = useCustomFlavourNotes(user?.id)
+  const { data: customNotes = [], isLoading } = useCustomFlavourNotes(user?.id)
   const createMutation = useCreateCustomFlavourNote()
   const updateMutation = useUpdateCustomFlavourNote()
   const deleteMutation = useDeleteCustomFlavourNote()
@@ -106,18 +107,22 @@ export const FlavourNotesScreen: React.FC = () => {
     setEditingName('')
   }
 
-  const handleDelete = (note: CustomFlavourNote) => {
+  const handleDelete = async (note: CustomFlavourNote) => {
     if (!user?.id) return
 
     Alert.alert(
       'Delete Flavour Note',
-      `Delete "${note.name}"? Coffees already using this note will keep it, but you won't be able to select it for new entries.`,
+      `Delete "${note.name}"? This will also remove it from all coffees that use this note.`,
       [
         { text: 'Cancel', style: 'cancel' },
         {
           text: 'Delete',
           style: 'destructive',
-          onPress: () => deleteMutation.mutate({ userId: user.id, id: note.id }),
+          onPress: async () => {
+            await coffeeService.removeFlavourNoteFromCoffees(user.id, note.name)
+            deleteMutation.mutate({ userId: user.id, id: note.id })
+            queryClient.invalidateQueries({ queryKey: ['coffees'] })
+          },
         },
       ]
     )
@@ -223,13 +228,18 @@ export const FlavourNotesScreen: React.FC = () => {
           </Pressable>
         </View>
 
-        <FlashList
-          data={customNotes}
-          renderItem={renderNoteItem}
-          keyExtractor={(item) => item.id}
-          contentContainerStyle={styles.listContent}
-          ListEmptyComponent={renderEmptyState}
-        />
+        {isLoading ? (
+          <Loader />
+        ) : (
+          <FlashList
+            data={customNotes}
+            renderItem={renderNoteItem}
+            keyExtractor={(item) => item.id}
+            contentContainerStyle={styles.listContent}
+            ListEmptyComponent={renderEmptyState}
+            ItemSeparatorComponent={() => <View style={styles.separator} />}
+          />
+        )}
       </View>
     </SafeAreaView>
   )

@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, ScrollView, KeyboardAvoidingView, Platform, Keyboard } from 'react-native'
+import { View, Text, ScrollView, KeyboardAvoidingView, Platform } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Animated from 'react-native-reanimated'
 import { useTheme } from '@/hooks/useTheme'
@@ -24,7 +24,11 @@ import {
   FLAVOUR_OPTIONS,
 } from '@/constants/coffee'
 import { useAuthStore } from '@/stores/authStore'
-import { useCustomFlavourNotes, useCombinedFlavourOptions } from '@/api/useCustomFlavourNotes'
+import {
+  useCustomFlavourNotes,
+  useCombinedFlavourOptions,
+  useCreateCustomFlavourNote,
+} from '@/api/useCustomFlavourNotes'
 import { createStyles } from './styles'
 import { useCoffeeForm } from './useCoffeeForm'
 
@@ -40,7 +44,13 @@ export const AddEntryScreen: React.FC<AddEntryScreenProps> = ({ onBack, onSucces
   const { enteringRight, exitingRight } = useAnimationConfig()
   const user = useAuthStore((state) => state.user)
   const { data: customNotes } = useCustomFlavourNotes(user?.id)
+  const createNoteMutation = useCreateCustomFlavourNote()
   const flavourOptions = useCombinedFlavourOptions(FLAVOUR_OPTIONS, customNotes)
+
+  const handleAddFlavourNote = (name: string) => {
+    if (!user?.id) return
+    createNoteMutation.mutate({ id: Date.now().toString(), userId: user.id, name })
+  }
 
   const {
     formData,
@@ -80,7 +90,7 @@ export const AddEntryScreen: React.FC<AddEntryScreenProps> = ({ onBack, onSucces
           contentContainerStyle={styles.scrollContent}
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps="handled"
-          onScrollBeginDrag={Keyboard.dismiss}
+          keyboardDismissMode="on-drag"
         >
           <View style={styles.section}>
             <ImagePicker
@@ -159,6 +169,7 @@ export const AddEntryScreen: React.FC<AddEntryScreenProps> = ({ onBack, onSucces
               selectedNotes={formData.flavourNotes}
               onToggle={toggleFlavourNote}
               onIntensityChange={updateFlavourIntensity}
+              onAddNote={handleAddFlavourNote}
             />
           </View>
 

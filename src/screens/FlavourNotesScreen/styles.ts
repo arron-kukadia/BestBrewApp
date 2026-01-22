@@ -55,8 +55,10 @@ export const createStyles = (theme: Theme) =>
       opacity: 0.5,
     },
     listContent: {
-      gap: theme.spacing.sm,
       paddingBottom: theme.spacing.xl,
+    },
+    separator: {
+      height: theme.spacing.sm,
     },
     noteItem: {
       flexDirection: 'row',

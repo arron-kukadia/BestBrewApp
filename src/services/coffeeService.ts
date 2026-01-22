@@ -173,4 +173,27 @@ export const coffeeService = {
       throw error
     }
   },
+
+  removeFlavourNoteFromCoffees: async (userId: string, noteName: string): Promise<void> => {
+    try {
+      const coffees = await coffeeService.listCoffees(userId)
+      const coffeesToUpdate = coffees.filter((coffee) =>
+        coffee.flavourNotes?.some((note) => note.name === noteName)
+      )
+
+      await Promise.all(
+        coffeesToUpdate.map((coffee) => {
+          const updatedFlavourNotes = coffee.flavourNotes?.filter((note) => note.name !== noteName)
+          return coffeeService.updateCoffee({
+            id: coffee.id,
+            userId: coffee.userId,
+            flavourNotes: updatedFlavourNotes,
+          })
+        })
+      )
+    } catch (error) {
+      console.error('Error removing flavour note from coffees:', error)
+      throw error
+    }
+  },
 }
