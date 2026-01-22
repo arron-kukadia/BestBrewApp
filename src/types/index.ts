@@ -7,6 +7,13 @@ export interface FlavourNote {
   intensity: 1 | 2 | 3
 }
 
+export interface CustomFlavourNote {
+  id: string
+  userId: string
+  name: string
+  createdAt: string
+}
+
 export type Currency = 'GBP' | 'USD' | 'EUR'
 
 export interface Coffee {
@@ -91,6 +98,7 @@ export type RootStackParamList = {
   MainTabs: undefined
   AddEntry: { coffeeId?: string } | undefined
   CoffeeDetail: { coffeeId: string }
+  FlavourNotes: undefined
   Auth: undefined
   Login: undefined
   Register: undefined

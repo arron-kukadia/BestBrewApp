@@ -6,6 +6,7 @@ import { TabNavigator } from '@/navigation/TabNavigator'
 import { AuthNavigator } from '@/navigation/AuthNavigator'
 import { AddEntryScreen } from '@/screens/AddEntryScreen'
 import { CoffeeDetailScreen } from '@/screens/CoffeeDetailScreen'
+import { FlavourNotesScreen } from '@/screens/FlavourNotesScreen'
 import { RootStackParamList } from '@/types/index'
 import { useTheme } from '@/hooks/useTheme'
 import { Loader } from '@/components/common/Loader'
@@ -102,6 +103,7 @@ export const RootNavigator: React.FC = () => {
             )}
           </Stack.Screen>
           <Stack.Screen name="CoffeeDetail" component={CoffeeDetailScreen} />
+          <Stack.Screen name="FlavourNotes" component={FlavourNotesScreen} />
         </>
       ) : (
         <Stack.Screen name="Auth" component={AuthNavigator} />

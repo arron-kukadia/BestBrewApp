@@ -22,6 +22,8 @@ import {
   BAG_SIZE_OPTIONS,
   FLAVOUR_OPTIONS,
 } from '@/constants/coffee'
+import { useAuthStore } from '@/stores/authStore'
+import { useCustomFlavourNotes, useCombinedFlavourOptions } from '@/api/useCustomFlavourNotes'
 import { createStyles } from './styles'
 import { useCoffeeForm } from './useCoffeeForm'
 
@@ -34,6 +36,9 @@ interface AddEntryScreenProps {
 export const AddEntryScreen: React.FC<AddEntryScreenProps> = ({ onBack, onSuccess, coffeeId }) => {
   const theme = useTheme()
   const styles = createStyles(theme)
+  const user = useAuthStore((state) => state.user)
+  const { data: customNotes } = useCustomFlavourNotes(user?.id)
+  const flavourOptions = useCombinedFlavourOptions(FLAVOUR_OPTIONS, customNotes)
 
   const {
     formData,
@@ -148,7 +153,7 @@ export const AddEntryScreen: React.FC<AddEntryScreenProps> = ({ onBack, onSucces
             />
             <FlavourNoteSelector
               label="Flavour Notes"
-              options={FLAVOUR_OPTIONS}
+              options={flavourOptions}
               selectedNotes={formData.flavourNotes}
               onToggle={toggleFlavourNote}
               onIntensityChange={updateFlavourIntensity}

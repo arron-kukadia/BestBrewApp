@@ -4,6 +4,12 @@ import { SettingsScreen } from './index'
 import { useAuthStore } from '@/stores/authStore'
 
 jest.mock('@/stores/authStore')
+jest.mock('@react-navigation/native', () => ({
+  ...jest.requireActual('@react-navigation/native'),
+  useNavigation: () => ({
+    navigate: jest.fn(),
+  }),
+}))
 
 describe('SettingsScreen', () => {
   beforeEach(() => {

@@ -62,3 +62,17 @@ export const getCoffeeTable = `
     }
   }
 `
+
+export const listCustomFlavourNotes = `
+  query ListCustomFlavourNotes($filter: TableCustomFlavourNoteFilterInput, $limit: Int, $nextToken: String) {
+    listCustomFlavourNotes(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        userId
+        name
+        createdAt
+      }
+      nextToken
+    }
+  }
+`

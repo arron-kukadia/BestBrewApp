@@ -144,4 +144,33 @@ export const coffeeService = {
       throw error
     }
   },
+
+  renameFlavourNoteInCoffees: async (
+    userId: string,
+    oldName: string,
+    newName: string
+  ): Promise<void> => {
+    try {
+      const coffees = await coffeeService.listCoffees(userId)
+      const coffeesToUpdate = coffees.filter((coffee) =>
+        coffee.flavourNotes?.some((note) => note.name === oldName)
+      )
+
+      await Promise.all(
+        coffeesToUpdate.map((coffee) => {
+          const updatedFlavourNotes = coffee.flavourNotes?.map((note) =>
+            note.name === oldName ? { ...note, name: newName } : note
+          )
+          return coffeeService.updateCoffee({
+            id: coffee.id,
+            userId: coffee.userId,
+            flavourNotes: updatedFlavourNotes,
+          })
+        })
+      )
+    } catch (error) {
+      console.error('Error renaming flavour note in coffees:', error)
+      throw error
+    }
+  },
 }

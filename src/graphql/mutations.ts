@@ -67,3 +67,33 @@ export const deleteCoffeeTable = `
     }
   }
 `
+
+export const createCustomFlavourNote = `
+  mutation CreateCustomFlavourNote($input: CreateCustomFlavourNoteInput!) {
+    createCustomFlavourNote(input: $input) {
+      id
+      userId
+      name
+      createdAt
+    }
+  }
+`
+
+export const updateCustomFlavourNote = `
+  mutation UpdateCustomFlavourNote($input: UpdateCustomFlavourNoteInput!) {
+    updateCustomFlavourNote(input: $input) {
+      id
+      userId
+      name
+      createdAt
+    }
+  }
+`
+
+export const deleteCustomFlavourNote = `
+  mutation DeleteCustomFlavourNote($input: DeleteCustomFlavourNoteInput!) {
+    deleteCustomFlavourNote(input: $input) {
+      id
+    }
+  }
+`
