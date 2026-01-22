@@ -1,8 +1,9 @@
-import { useMemo } from 'react'
+import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { insightService } from '@/services/insightService'
 import { Coffee } from '@/types'
 import { CoffeeHistorySummary, InsightsResponse } from '@/types/insight'
+import { getStoredInsights, storeInsights } from '@/stores/insightStorage'
 
 const transformCoffeeHistory = (coffees: Coffee[]): CoffeeHistorySummary[] => {
   return coffees.map((coffee) => ({
@@ -14,13 +15,6 @@ const transformCoffeeHistory = (coffees: Coffee[]): CoffeeHistorySummary[] => {
   }))
 }
 
-const getCoffeeHash = (coffees: Coffee[]): string => {
-  return coffees
-    .map((coffee) => coffee.id)
-    .sort()
-    .join(',')
-}
-
 interface UseInsightsOptions {
   userId: string | undefined
   coffees: Coffee[]
@@ -28,21 +22,25 @@ interface UseInsightsOptions {
 }
 
 export const useInsights = ({ userId, coffees, enabled = true }: UseInsightsOptions) => {
-  const coffeeHash = useMemo(() => getCoffeeHash(coffees), [coffees])
+  const [cachedData] = useState(() => getStoredInsights())
 
   return useQuery<InsightsResponse>({
-    queryKey: ['insights', userId, coffeeHash],
+    queryKey: ['insights', userId],
     queryFn: async () => {
       if (!userId || coffees.length < 2) {
         throw new Error('Need at least 2 coffees')
       }
 
-      return insightService.getInsights({
+      const response = await insightService.getInsights({
         userId,
         coffeeHistory: transformCoffeeHistory(coffees),
       })
+
+      storeInsights(response)
+      return response
     },
-    enabled: enabled && !!userId && coffees.length >= 2,
+    initialData: cachedData ?? undefined,
+    enabled: enabled && !!userId && coffees.length >= 2 && !cachedData,
     staleTime: Infinity,
     gcTime: 1000 * 60 * 60 * 24,
     refetchOnWindowFocus: false,

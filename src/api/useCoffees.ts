@@ -3,6 +3,7 @@ import { coffeeService, CreateCoffeeInput, UpdateCoffeeInput } from '@/services/
 import { imageService } from '@/services/imageService'
 import { Coffee } from '@/types'
 import { insightKeys } from './useInsights'
+import { clearStoredInsights } from '@/stores/insightStorage'
 
 export const coffeeKeys = {
   all: ['coffees'] as const,
@@ -40,6 +41,7 @@ export const useCreateCoffee = () => {
       queryClient.setQueryData<Coffee[]>(coffeeKeys.list(newCoffee.userId), (oldCoffees) =>
         oldCoffees ? [newCoffee, ...oldCoffees] : [newCoffee]
       )
+      clearStoredInsights()
       queryClient.invalidateQueries({ queryKey: insightKeys.user(newCoffee.userId) })
     },
   })
@@ -86,6 +88,7 @@ export const useDeleteCoffee = () => {
       queryClient.setQueryData<Coffee[]>(coffeeKeys.list(userId), (oldCoffees) =>
         oldCoffees?.filter((coffee) => coffee.id !== id)
       )
+      clearStoredInsights()
       queryClient.invalidateQueries({ queryKey: insightKeys.user(userId) })
     },
   })
