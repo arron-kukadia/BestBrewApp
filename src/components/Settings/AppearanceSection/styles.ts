@@ -15,23 +15,29 @@ export const createStyles = (theme: Theme) =>
       color: theme.colors.textSecondary,
       marginBottom: theme.spacing.xs,
     },
-    menuItem: {
+    themeOptions: {
       flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      paddingVertical: theme.spacing.md,
-      paddingHorizontal: theme.spacing.sm,
-      backgroundColor: theme.colors.surfaceVariant,
-      borderRadius: theme.borderRadius.md,
+      gap: theme.spacing.sm,
       marginTop: theme.spacing.sm,
     },
-    menuItemContent: {
+    themeOption: {
+      flex: 1,
       flexDirection: 'row',
       alignItems: 'center',
-      gap: theme.spacing.sm,
+      justifyContent: 'center',
+      gap: theme.spacing.xs,
+      paddingVertical: theme.spacing.md,
+      borderRadius: theme.borderRadius.md,
+      backgroundColor: theme.colors.surfaceVariant,
     },
-    menuItemText: {
-      ...theme.typography.body,
-      color: theme.colors.text,
+    themeOptionActive: {
+      backgroundColor: theme.colors.primaryLight,
+    },
+    themeOptionText: {
+      ...theme.typography.bodySmMedium,
+      color: theme.colors.textSecondary,
+    },
+    themeOptionTextActive: {
+      color: theme.colors.primary,
     },
   })

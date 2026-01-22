@@ -8,6 +8,8 @@ export const createStyles = (theme: Theme) =>
     container: {
       flex: 1,
       backgroundColor: theme.colors.background,
+    },
+    scrollContent: {
       padding: theme.spacing.lg,
     },
     title: {
@@ -19,62 +21,8 @@ export const createStyles = (theme: Theme) =>
       color: theme.colors.textSecondary,
       marginTop: theme.spacing.xs,
     },
-    section: {
+    content: {
       marginTop: theme.spacing.lg,
-      padding: theme.spacing.md,
-      backgroundColor: theme.colors.surface,
-      borderRadius: theme.borderRadius.lg,
-    },
-    sectionTitle: {
-      ...theme.typography.bodySmMedium,
-      color: theme.colors.textSecondary,
-      marginBottom: theme.spacing.xs,
-    },
-    userName: {
-      ...theme.typography.bodyMedium,
-      color: theme.colors.text,
-      marginBottom: theme.spacing.xs,
-    },
-    email: {
-      ...theme.typography.body,
-      color: theme.colors.textSecondary,
-    },
-    themeOptions: {
-      flexDirection: 'row',
-      gap: theme.spacing.sm,
-      marginTop: theme.spacing.sm,
-    },
-    themeOption: {
-      flex: 1,
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'center',
-      gap: theme.spacing.xs,
-      paddingVertical: theme.spacing.md,
-      borderRadius: theme.borderRadius.md,
-      backgroundColor: theme.colors.surfaceVariant,
-    },
-    themeOptionActive: {
-      backgroundColor: theme.colors.primaryLight,
-    },
-    themeOptionText: {
-      ...theme.typography.bodySmMedium,
-      color: theme.colors.textSecondary,
-    },
-    themeOptionTextActive: {
-      color: theme.colors.primary,
-    },
-    logoutContainer: {
-      marginTop: 'auto',
-      paddingBottom: theme.spacing.xl,
-      gap: theme.spacing.md,
-    },
-    deleteButton: {
-      alignItems: 'center',
-      paddingVertical: theme.spacing.sm,
-    },
-    deleteButtonText: {
-      ...theme.typography.bodySmMedium,
-      color: theme.colors.error,
+      gap: theme.spacing.lg,
     },
   })

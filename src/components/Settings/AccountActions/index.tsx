@@ -4,7 +4,7 @@ import { useTheme } from '@/hooks/useTheme'
 import { useAuthStore } from '@/stores/authStore'
 import { authService } from '@/services/authService'
 import { Button } from '@/components/common/Button'
-import { createStyles } from '@/screens/SettingsScreen/styles'
+import { createStyles } from './styles'
 
 export const AccountActions: React.FC = () => {
   const theme = useTheme()
@@ -65,7 +65,7 @@ export const AccountActions: React.FC = () => {
   }
 
   return (
-    <View style={styles.logoutContainer}>
+    <View style={styles.container}>
       <Button title="Sign Out" onPress={handleLogout} variant="outline" />
       <Pressable style={styles.deleteButton} onPress={handleDeleteAccount}>
         <Text style={styles.deleteButtonText}>Delete Account</Text>

@@ -2,7 +2,7 @@ import React from 'react'
 import { View, Text } from 'react-native'
 import { useTheme } from '@/hooks/useTheme'
 import { useAuthStore } from '@/stores/authStore'
-import { createStyles } from '@/screens/SettingsScreen/styles'
+import { createStyles } from './styles'
 
 export const AccountSection: React.FC = () => {
   const theme = useTheme()

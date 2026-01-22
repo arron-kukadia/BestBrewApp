@@ -15,23 +15,13 @@ export const createStyles = (theme: Theme) =>
       color: theme.colors.textSecondary,
       marginBottom: theme.spacing.xs,
     },
-    menuItem: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      paddingVertical: theme.spacing.md,
-      paddingHorizontal: theme.spacing.sm,
-      backgroundColor: theme.colors.surfaceVariant,
-      borderRadius: theme.borderRadius.md,
-      marginTop: theme.spacing.sm,
-    },
-    menuItemContent: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      gap: theme.spacing.sm,
-    },
-    menuItemText: {
-      ...theme.typography.body,
+    userName: {
+      ...theme.typography.bodyMedium,
       color: theme.colors.text,
+      marginBottom: theme.spacing.xs,
+    },
+    email: {
+      ...theme.typography.body,
+      color: theme.colors.textSecondary,
     },
   })

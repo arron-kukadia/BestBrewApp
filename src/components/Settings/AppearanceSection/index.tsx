@@ -2,7 +2,7 @@ import React from 'react'
 import { View, Text, Pressable } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
 import { useTheme } from '@/hooks/useTheme'
-import { createStyles } from '@/screens/SettingsScreen/styles'
+import { createStyles } from './styles'
 
 type ThemeMode = 'light' | 'dark' | 'system'
 

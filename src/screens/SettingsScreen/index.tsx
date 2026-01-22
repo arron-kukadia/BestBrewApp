@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, ScrollView } from 'react-native'
+import { Text, ScrollView, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTheme } from '@/hooks/useTheme'
 import { AccountSection } from '@/components/Settings/AccountSection'
@@ -14,14 +14,16 @@ export const SettingsScreen: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
         <Text style={styles.title}>Settings</Text>
         <Text style={styles.subtitle}>Customize your experience</Text>
 
-        <AccountSection />
-        <AppearanceSection />
-        <PreferencesSection />
-        <AccountActions />
+        <View style={styles.content}>
+          <AccountSection />
+          <AppearanceSection />
+          <PreferencesSection />
+          <AccountActions />
+        </View>
       </ScrollView>
     </SafeAreaView>
   )
