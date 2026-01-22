@@ -1,5 +1,6 @@
 import React from 'react'
 import { View, Text, Pressable } from 'react-native'
+import Animated, { FadeInUp } from 'react-native-reanimated'
 import { MaterialIcons } from '@expo/vector-icons'
 import { useTheme } from '@/hooks/useTheme'
 import { SectionHeader } from '@/components/common/SectionHeader'
@@ -36,18 +37,20 @@ export const InsightsSection: React.FC<InsightsSectionProps> = ({ data, error, o
         <View style={styles.section}>
           <SectionHeader title="Recommendations" />
           <View style={styles.insightsContainer}>
-            {data.insights.map((insight: Insight) => (
-              <View key={insight.id} style={styles.insightCard}>
-                <MaterialIcons
-                  name={insight.icon as keyof typeof MaterialIcons.glyphMap}
-                  size={24}
-                  color={theme.colors.primary}
-                />
-                <View style={styles.insightContent}>
-                  <Text style={styles.insightTitle}>{insight.title}</Text>
-                  <Text style={styles.insightDescription}>{insight.description}</Text>
+            {data.insights.map((insight: Insight, index: number) => (
+              <Animated.View key={insight.id} entering={FadeInUp.duration(400).delay(index * 100)}>
+                <View style={styles.insightCard}>
+                  <MaterialIcons
+                    name={insight.icon as keyof typeof MaterialIcons.glyphMap}
+                    size={24}
+                    color={theme.colors.primary}
+                  />
+                  <View style={styles.insightContent}>
+                    <Text style={styles.insightTitle}>{insight.title}</Text>
+                    <Text style={styles.insightDescription}>{insight.description}</Text>
+                  </View>
                 </View>
-              </View>
+              </Animated.View>
             ))}
           </View>
         </View>

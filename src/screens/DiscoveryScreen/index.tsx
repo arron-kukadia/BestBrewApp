@@ -1,5 +1,6 @@
 import React from 'react'
 import { View, ScrollView, Text } from 'react-native'
+import Animated, { FadeInUp } from 'react-native-reanimated'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTheme } from '@/hooks/useTheme'
 import { useAuthStore } from '@/stores/authStore'
@@ -81,11 +82,13 @@ export const DiscoveryScreen: React.FC = () => {
       >
         <DiscoveryHeader />
         {hintMessage && (
-          <View style={styles.hintContainer}>
+          <Animated.View entering={FadeInUp.duration(400)} style={styles.hintContainer}>
             <Text style={styles.hintText}>{hintMessage}</Text>
-          </View>
+          </Animated.View>
         )}
-        <FlavourProfileChart data={flavourProfile} tasteProfile={insightsData?.tasteProfile} />
+        <Animated.View entering={FadeInUp.duration(400).delay(100)}>
+          <FlavourProfileChart data={flavourProfile} tasteProfile={insightsData?.tasteProfile} />
+        </Animated.View>
         {!needsMoreCoffees && (
           <InsightsSection data={insightsData} error={insightsError} onRetry={refetchInsights} />
         )}
