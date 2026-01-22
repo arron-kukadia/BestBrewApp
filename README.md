@@ -3,6 +3,10 @@
 A modern coffee tracking app to log, rate, and discover your perfect coffee.
 NOTE: This app is currently in development and is not yet available for download. AI has been used to assist with the development of this app.
 
+## Trello Board
+
+https://trello.com/b/NVC5Lenu/bestbrew-app
+
 ## Tech Stack
 
 - **Framework:** React Native with Expo (managed workflow)
