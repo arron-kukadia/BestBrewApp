@@ -27,7 +27,7 @@ export const configureAmplify = () => {
       GraphQL: {
         endpoint: process.env.EXPO_PUBLIC_AWS_APPSYNC_ENDPOINT || '',
         region: process.env.EXPO_PUBLIC_AWS_REGION || 'eu-north-1',
-        defaultAuthMode: 'apiKey',
+        defaultAuthMode: 'userPool',
         apiKey: process.env.EXPO_PUBLIC_AWS_APPSYNC_API_KEY || '',
       },
     },
