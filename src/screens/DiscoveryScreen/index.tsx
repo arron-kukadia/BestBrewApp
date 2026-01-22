@@ -10,7 +10,6 @@ import { EmptyState } from '@/components/common/EmptyState'
 import { Loader } from '@/components/common/Loader'
 import { DiscoveryHeader } from '@/components/Discovery/DiscoveryHeader'
 import { InsightsSection } from '@/components/Discovery/InsightsSection'
-import { TopBrandsChart } from '@/components/Discovery/TopBrandsChart'
 import { FlavourProfileChart } from '@/components/Discovery/FlavourProfileChart'
 import { createStyles } from './styles'
 
@@ -19,7 +18,7 @@ export const DiscoveryScreen: React.FC = () => {
   const styles = createStyles(theme)
   const user = useAuthStore((state) => state.user)
   const { data: coffees = [] } = useCoffees(user?.id)
-  const { topBrands, flavourProfile, hasEntries } = useDiscoveryData(coffees, theme.colors.primary)
+  const { flavourProfile, hasEntries } = useDiscoveryData(coffees, theme.colors.primary)
 
   const {
     data: insightsData,
@@ -90,7 +89,6 @@ export const DiscoveryScreen: React.FC = () => {
         {!needsMoreCoffees && (
           <InsightsSection data={insightsData} error={insightsError} onRetry={refetchInsights} />
         )}
-        <TopBrandsChart data={topBrands} />
       </ScrollView>
     </SafeAreaView>
   )

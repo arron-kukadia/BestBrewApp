@@ -1,41 +1,18 @@
 import { useMemo } from 'react'
 import { Coffee } from '@/types'
 
-interface BrandData {
-  value: number
-  label: string
-  frontColor: string
-}
-
 interface FlavourProfile {
   data: number[]
   labels: string[]
 }
 
 interface DiscoveryData {
-  topBrands: BrandData[]
   flavourProfile: FlavourProfile
   hasEntries: boolean
 }
 
 export const useDiscoveryData = (coffees: Coffee[], primaryColor: string): DiscoveryData => {
   const hasEntries = coffees.length > 0
-
-  const topBrands = useMemo(() => {
-    if (coffees.length === 0) return []
-    const brandCounts: Record<string, number> = {}
-    coffees.forEach((coffee) => {
-      brandCounts[coffee.brand] = (brandCounts[coffee.brand] || 0) + 1
-    })
-    return Object.entries(brandCounts)
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 3)
-      .map(([brand, count]) => ({
-        value: count,
-        label: brand,
-        frontColor: primaryColor,
-      }))
-  }, [coffees, primaryColor])
 
   const flavourProfile = useMemo(() => {
     if (coffees.length === 0) return { data: [], labels: [] }
@@ -64,5 +41,5 @@ export const useDiscoveryData = (coffees: Coffee[], primaryColor: string): Disco
     }
   }, [coffees])
 
-  return { topBrands, flavourProfile, hasEntries }
+  return { flavourProfile, hasEntries }
 }
