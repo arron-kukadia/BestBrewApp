@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react'
 import { View, Text, RefreshControl } from 'react-native'
+import Animated, { FadeInUp } from 'react-native-reanimated'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { FlashList } from '@shopify/flash-list'
 import { useNavigation } from '@react-navigation/native'
@@ -90,12 +91,14 @@ export const HistoryScreen: React.FC = () => {
     return filtered
   }, [coffees, searchQuery, sortBy])
 
-  const renderCoffeeCard = ({ item }: { item: Coffee }) => (
-    <CoffeeCard
-      coffee={item}
-      onPress={() => navigation.navigate('CoffeeDetail', { coffeeId: item.id })}
-      onFavoritePress={() => handleToggleFavorite(item)}
-    />
+  const renderCoffeeCard = ({ item, index }: { item: Coffee; index: number }) => (
+    <Animated.View entering={FadeInUp.duration(400).delay(index * 50)}>
+      <CoffeeCard
+        coffee={item}
+        onPress={() => navigation.navigate('CoffeeDetail', { coffeeId: item.id })}
+        onFavoritePress={() => handleToggleFavorite(item)}
+      />
+    </Animated.View>
   )
 
   return (
