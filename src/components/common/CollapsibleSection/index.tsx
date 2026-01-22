@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { View, Text, Pressable } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
-import Animated, { FadeInUp, FadeOutUp } from 'react-native-reanimated'
+import Animated from 'react-native-reanimated'
 import { useTheme } from '@/hooks/useTheme'
+import { useAnimationConfig } from '@/hooks/useAnimationConfig'
 import { createStyles } from './styles'
 
 interface CollapsibleSectionProps {
@@ -18,6 +19,7 @@ export const CollapsibleSection: React.FC<CollapsibleSectionProps> = ({
 }) => {
   const theme = useTheme()
   const styles = createStyles(theme)
+  const { entering, exitingUp } = useAnimationConfig()
   const [isExpanded, setIsExpanded] = useState(defaultExpanded)
 
   return (
@@ -31,11 +33,7 @@ export const CollapsibleSection: React.FC<CollapsibleSectionProps> = ({
         />
       </Pressable>
       {isExpanded && (
-        <Animated.View
-          entering={FadeInUp.duration(200)}
-          exiting={FadeOutUp.duration(150)}
-          style={styles.content}
-        >
+        <Animated.View entering={entering(200)} exiting={exitingUp(150)} style={styles.content}>
           {children}
         </Animated.View>
       )}

@@ -1,11 +1,12 @@
 import React, { useCallback } from 'react'
 import { View, Text, RefreshControl } from 'react-native'
-import Animated, { FadeInUp } from 'react-native-reanimated'
+import Animated from 'react-native-reanimated'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { FlashList } from '@shopify/flash-list'
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { useTheme } from '@/hooks/useTheme'
+import { useAnimationConfig } from '@/hooks/useAnimationConfig'
 import { useAuthStore } from '@/stores/authStore'
 import { useCoffeeStore } from '@/stores/coffeeStore'
 import { useCoffees, useToggleFavorite } from '@/api/useCoffees'
@@ -29,6 +30,7 @@ type NavigationProp = NativeStackNavigationProp<RootStackParamList>
 export const HistoryScreen: React.FC = () => {
   const theme = useTheme()
   const styles = createStyles(theme)
+  const { entering } = useAnimationConfig()
   const navigation = useNavigation<NavigationProp>()
 
   const user = useAuthStore((state) => state.user)
@@ -91,15 +93,18 @@ export const HistoryScreen: React.FC = () => {
     return filtered
   }, [coffees, searchQuery, sortBy])
 
-  const renderCoffeeCard = ({ item, index }: { item: Coffee; index: number }) => (
-    <Animated.View entering={FadeInUp.duration(400).delay(index * 50)}>
-      <CoffeeCard
-        coffee={item}
-        onPress={() => navigation.navigate('CoffeeDetail', { coffeeId: item.id })}
-        onFavoritePress={() => handleToggleFavorite(item)}
-      />
-    </Animated.View>
-  )
+  const renderCoffeeCard = ({ item, index }: { item: Coffee; index: number }) => {
+    const delay = index * 50
+    return (
+      <Animated.View entering={entering(400, delay)}>
+        <CoffeeCard
+          coffee={item}
+          onPress={() => navigation.navigate('CoffeeDetail', { coffeeId: item.id })}
+          onFavoritePress={() => handleToggleFavorite(item)}
+        />
+      </Animated.View>
+    )
+  }
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>

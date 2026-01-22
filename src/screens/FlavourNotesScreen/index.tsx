@@ -4,9 +4,10 @@ import { FlashList } from '@shopify/flash-list'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useNavigation } from '@react-navigation/native'
 import { MaterialIcons } from '@expo/vector-icons'
-import Animated, { FadeInUp, FadeOutDown } from 'react-native-reanimated'
+import Animated from 'react-native-reanimated'
 import { useQueryClient } from '@tanstack/react-query'
 import { useTheme } from '@/hooks/useTheme'
+import { useAnimationConfig } from '@/hooks/useAnimationConfig'
 import { useAuthStore } from '@/stores/authStore'
 import { ButtonWithIcon } from '@/components/common/ButtonWithIcon'
 import { coffeeService } from '@/services/coffeeService'
@@ -22,6 +23,7 @@ import { createStyles } from './styles'
 export const FlavourNotesScreen: React.FC = () => {
   const theme = useTheme()
   const styles = createStyles(theme)
+  const { entering, exiting } = useAnimationConfig()
   const navigation = useNavigation()
   const queryClient = useQueryClient()
   const user = useAuthStore((state) => state.user)
@@ -121,55 +123,55 @@ export const FlavourNotesScreen: React.FC = () => {
     )
   }
 
-  const renderNoteItem = ({ item, index }: { item: CustomFlavourNote; index: number }) => (
-    <Animated.View
-      entering={FadeInUp.duration(300).delay(index * 50)}
-      exiting={FadeOutDown.duration(200)}
-    >
-      <View style={styles.noteItem}>
-        {editingNote?.id === item.id ? (
-          <>
-            <TextInput
-              style={styles.noteInput}
-              value={editingName}
-              onChangeText={setEditingName}
-              autoFocus
-              autoCapitalize="words"
-              onSubmitEditing={handleSaveEdit}
-            />
-            <View style={styles.noteActions}>
-              <Pressable style={styles.actionButton} onPress={handleSaveEdit}>
-                <MaterialIcons name="check" size={22} color={theme.colors.primary} />
-              </Pressable>
-              <Pressable style={styles.actionButton} onPress={handleCancelEdit}>
-                <MaterialIcons name="close" size={22} color={theme.colors.textSecondary} />
-              </Pressable>
-            </View>
-          </>
-        ) : (
-          <>
-            <Text style={styles.noteText}>{item.name}</Text>
-            <View style={styles.noteActions}>
-              <Pressable
-                style={styles.actionButton}
-                onPress={() => handleStartEdit(item)}
-                testID={`edit-${item.id}`}
-              >
-                <MaterialIcons name="edit" size={22} color={theme.colors.textSecondary} />
-              </Pressable>
-              <Pressable
-                style={styles.actionButton}
-                onPress={() => handleDelete(item)}
-                testID={`delete-${item.id}`}
-              >
-                <MaterialIcons name="delete" size={22} color={theme.colors.error} />
-              </Pressable>
-            </View>
-          </>
-        )}
-      </View>
-    </Animated.View>
-  )
+  const renderNoteItem = ({ item, index }: { item: CustomFlavourNote; index: number }) => {
+    const delay = index * 50
+    return (
+      <Animated.View entering={entering(300, delay)} exiting={exiting(200)}>
+        <View style={styles.noteItem}>
+          {editingNote?.id === item.id ? (
+            <>
+              <TextInput
+                style={styles.noteInput}
+                value={editingName}
+                onChangeText={setEditingName}
+                autoFocus
+                autoCapitalize="words"
+                onSubmitEditing={handleSaveEdit}
+              />
+              <View style={styles.noteActions}>
+                <Pressable style={styles.actionButton} onPress={handleSaveEdit}>
+                  <MaterialIcons name="check" size={22} color={theme.colors.primary} />
+                </Pressable>
+                <Pressable style={styles.actionButton} onPress={handleCancelEdit}>
+                  <MaterialIcons name="close" size={22} color={theme.colors.textSecondary} />
+                </Pressable>
+              </View>
+            </>
+          ) : (
+            <>
+              <Text style={styles.noteText}>{item.name}</Text>
+              <View style={styles.noteActions}>
+                <Pressable
+                  style={styles.actionButton}
+                  onPress={() => handleStartEdit(item)}
+                  testID={`edit-${item.id}`}
+                >
+                  <MaterialIcons name="edit" size={22} color={theme.colors.textSecondary} />
+                </Pressable>
+                <Pressable
+                  style={styles.actionButton}
+                  onPress={() => handleDelete(item)}
+                  testID={`delete-${item.id}`}
+                >
+                  <MaterialIcons name="delete" size={22} color={theme.colors.error} />
+                </Pressable>
+              </View>
+            </>
+          )}
+        </View>
+      </Animated.View>
+    )
+  }
 
   const renderEmptyState = () => (
     <View style={styles.emptyContainer}>

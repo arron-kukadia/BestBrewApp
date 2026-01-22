@@ -1,8 +1,9 @@
 import React from 'react'
 import { View, Text, Pressable } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
-import Animated, { FadeInUp, FadeOutUp } from 'react-native-reanimated'
+import Animated from 'react-native-reanimated'
 import { useTheme } from '@/hooks/useTheme'
+import { useAnimationConfig } from '@/hooks/useAnimationConfig'
 import { FlavourNote } from '@/types'
 import { INTENSITY_LEVELS } from '@/constants/coffee'
 import { createStyles } from './styles'
@@ -24,6 +25,7 @@ export const FlavourNoteSelector: React.FC<FlavourNoteSelectorProps> = ({
 }) => {
   const theme = useTheme()
   const styles = createStyles(theme)
+  const { entering, exitingUp } = useAnimationConfig()
 
   const getSelectedNote = (name: string): FlavourNote | undefined => {
     return selectedNotes.find((n) => n.name === name)
@@ -62,8 +64,8 @@ export const FlavourNoteSelector: React.FC<FlavourNoteSelectorProps> = ({
               </Pressable>
               {selected && (
                 <Animated.View
-                  entering={FadeInUp.duration(150)}
-                  exiting={FadeOutUp.duration(150)}
+                  entering={entering(150)}
+                  exiting={exitingUp(150)}
                   style={styles.intensityRow}
                 >
                   {INTENSITY_LEVELS.map((level) => (

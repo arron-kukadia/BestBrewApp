@@ -1,8 +1,9 @@
 import React from 'react'
 import { View, ScrollView, Text } from 'react-native'
-import Animated, { FadeInUp } from 'react-native-reanimated'
+import Animated from 'react-native-reanimated'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTheme } from '@/hooks/useTheme'
+import { useAnimationConfig } from '@/hooks/useAnimationConfig'
 import { useAuthStore } from '@/stores/authStore'
 import { useCoffees } from '@/api/useCoffees'
 import { useInsights } from '@/api/useInsights'
@@ -17,6 +18,7 @@ import { createStyles } from './styles'
 export const DiscoveryScreen: React.FC = () => {
   const theme = useTheme()
   const styles = createStyles(theme)
+  const { entering } = useAnimationConfig()
   const user = useAuthStore((state) => state.user)
   const { data: coffees = [] } = useCoffees(user?.id)
   const { flavourProfile, hasEntries } = useDiscoveryData(coffees, theme.colors.primary)
@@ -82,11 +84,11 @@ export const DiscoveryScreen: React.FC = () => {
       >
         <DiscoveryHeader />
         {hintMessage && (
-          <Animated.View entering={FadeInUp.duration(400)} style={styles.hintContainer}>
+          <Animated.View entering={entering(400)} style={styles.hintContainer}>
             <Text style={styles.hintText}>{hintMessage}</Text>
           </Animated.View>
         )}
-        <Animated.View entering={FadeInUp.duration(400).delay(100)}>
+        <Animated.View entering={entering(400, 100)}>
           <FlavourProfileChart data={flavourProfile} tasteProfile={insightsData?.tasteProfile} />
         </Animated.View>
         {!needsMoreCoffees && (

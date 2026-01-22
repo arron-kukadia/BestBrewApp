@@ -4,8 +4,9 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs'
-import Animated, { FadeInUp } from 'react-native-reanimated'
+import Animated from 'react-native-reanimated'
 import { useTheme } from '@/hooks/useTheme'
+import { useAnimationConfig } from '@/hooks/useAnimationConfig'
 import { useAuthStore } from '@/stores/authStore'
 import { useCoffees } from '@/api/useCoffees'
 import { RootStackParamList, MainTabParamList } from '@/types'
@@ -23,6 +24,7 @@ type TabNavigationProp = BottomTabNavigationProp<MainTabParamList>
 export const HomeScreen: React.FC = () => {
   const theme = useTheme()
   const styles = createStyles(theme)
+  const { entering } = useAnimationConfig()
   const navigation = useNavigation<NavigationProp>()
   const tabNavigation = useNavigation<TabNavigationProp>()
   const user = useAuthStore((state) => state.user)
@@ -84,22 +86,22 @@ export const HomeScreen: React.FC = () => {
                 onActionPress={() => tabNavigation.navigate('History')}
               />
               <View style={styles.activityList}>
-                {recentCoffees.map((coffee, index) => (
-                  <Animated.View
-                    key={coffee.id}
-                    entering={FadeInUp.duration(400).delay(index * 100)}
-                  >
-                    <ActivityCard
-                      icon="coffee"
-                      title={coffee.name}
-                      subtitle={coffee.brand}
-                      rating={coffee.rating}
-                      meta={formatRelativeDate(coffee.createdAt)}
-                      imageUri={coffee.imageUrl}
-                      onPress={() => navigation.navigate('CoffeeDetail', { coffeeId: coffee.id })}
-                    />
-                  </Animated.View>
-                ))}
+                {recentCoffees.map((coffee, index) => {
+                  const delay = index * 100
+                  return (
+                    <Animated.View key={coffee.id} entering={entering(400, delay)}>
+                      <ActivityCard
+                        icon="coffee"
+                        title={coffee.name}
+                        subtitle={coffee.brand}
+                        rating={coffee.rating}
+                        meta={formatRelativeDate(coffee.createdAt)}
+                        imageUri={coffee.imageUrl}
+                        onPress={() => navigation.navigate('CoffeeDetail', { coffeeId: coffee.id })}
+                      />
+                    </Animated.View>
+                  )
+                })}
               </View>
             </>
           ) : (

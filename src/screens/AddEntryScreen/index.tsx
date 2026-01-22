@@ -1,8 +1,9 @@
 import React from 'react'
 import { View, Text, ScrollView, KeyboardAvoidingView, Platform, Keyboard } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import Animated, { FadeInRight, FadeOutRight } from 'react-native-reanimated'
+import Animated from 'react-native-reanimated'
 import { useTheme } from '@/hooks/useTheme'
+import { useAnimationConfig } from '@/hooks/useAnimationConfig'
 import { ButtonWithIcon } from '@/components/common/ButtonWithIcon'
 import { Button } from '@/components/common/Button'
 import { Input } from '@/components/common/Input'
@@ -36,6 +37,7 @@ interface AddEntryScreenProps {
 export const AddEntryScreen: React.FC<AddEntryScreenProps> = ({ onBack, onSuccess, coffeeId }) => {
   const theme = useTheme()
   const styles = createStyles(theme)
+  const { enteringRight, exitingRight } = useAnimationConfig()
   const user = useAuthStore((state) => state.user)
   const { data: customNotes } = useCustomFlavourNotes(user?.id)
   const flavourOptions = useCombinedFlavourOptions(FLAVOUR_OPTIONS, customNotes)
@@ -184,10 +186,7 @@ export const AddEntryScreen: React.FC<AddEntryScreenProps> = ({ onBack, onSucces
               }}
             />
             {formData.bagSize === 'other' && (
-              <Animated.View
-                entering={FadeInRight.duration(200)}
-                exiting={FadeOutRight.duration(150)}
-              >
+              <Animated.View entering={enteringRight(200)} exiting={exitingRight(150)}>
                 <Input
                   icon="scale"
                   placeholder="Custom weight (e.g., 340g)"
