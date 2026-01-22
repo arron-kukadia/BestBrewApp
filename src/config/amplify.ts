@@ -14,7 +14,7 @@ export const configureAmplify = () => {
         loginWith: {
           oauth: {
             domain: process.env.EXPO_PUBLIC_AWS_OAUTH_DOMAIN,
-            scopes: ['email', 'profile', 'openid'],
+            scopes: ['email', 'profile', 'openid', 'aws.cognito.signin.user.admin'],
             redirectSignIn: [redirectUri],
             redirectSignOut: [redirectUri],
             responseType: 'code',
