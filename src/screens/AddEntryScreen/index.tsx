@@ -3,7 +3,7 @@ import { View, Text, ScrollView, KeyboardAvoidingView, Platform, Keyboard } from
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Animated, { FadeInRight, FadeOutRight } from 'react-native-reanimated'
 import { useTheme } from '@/hooks/useTheme'
-import { BackButton } from '@/components/common/BackButton'
+import { ButtonWithIcon } from '@/components/common/ButtonWithIcon'
 import { Button } from '@/components/common/Button'
 import { Input } from '@/components/common/Input'
 import { PriceInput } from '@/components/common/PriceInput'
@@ -53,9 +53,18 @@ export const AddEntryScreen: React.FC<AddEntryScreenProps> = ({ onBack, onSucces
         style={styles.keyboardView}
       >
         <View style={styles.header}>
-          <BackButton onPress={onBack} />
+          <ButtonWithIcon onPress={onBack} iconName="arrow-back" />
           <Text style={styles.title}>{isEditMode ? 'Edit Coffee' : 'Add Coffee'}</Text>
-          <View style={styles.headerSpacer} />
+          {isEditMode ? (
+            <ButtonWithIcon
+              onPress={handleSubmit}
+              iconName="check"
+              color={theme.colors.primary}
+              testID="submit-edit-button"
+            />
+          ) : (
+            <View style={styles.headerSpacer} />
+          )}
         </View>
 
         <ScrollView

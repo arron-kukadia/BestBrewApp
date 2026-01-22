@@ -6,7 +6,7 @@ import { authService } from '@/services/authService'
 import { useAuthStore } from '@/stores/authStore'
 import { Button } from '@/components/common/Button'
 import { IconCircle } from '@/components/common/IconCircle'
-import { BackButton } from '@/components/common/BackButton'
+import { ButtonWithIcon } from '@/components/common/ButtonWithIcon'
 import { createStyles } from './styles'
 
 interface ConfirmSignUpScreenProps {
@@ -63,7 +63,7 @@ export const ConfirmSignUpScreen: React.FC<ConfirmSignUpScreenProps> = ({
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.keyboardView}
       >
-        <BackButton onPress={onBack} />
+        <ButtonWithIcon onPress={onBack} iconName="arrow-back" />
 
         <View style={styles.contentSection}>
           <IconCircle icon="mark-email-read" size="large" />

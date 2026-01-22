@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, ScrollView, Pressable, Alert, Image } from 'react-native'
+import { View, Text, ScrollView, Alert, Image } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { MaterialIcons } from '@expo/vector-icons'
 import { useRoute, useNavigation, RouteProp } from '@react-navigation/native'
@@ -7,7 +7,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { useTheme } from '@/hooks/useTheme'
 import { useAuthStore } from '@/stores/authStore'
 import { useCoffees, useDeleteCoffee, useToggleFavorite } from '@/api/useCoffees'
-import { BackButton } from '@/components/common/BackButton'
+import { ButtonWithIcon } from '@/components/common/ButtonWithIcon'
 import { StarRating } from '@/components/common/StarRating'
 import { Chip } from '@/components/common/Chip'
 import { RootStackParamList } from '@/types'
@@ -75,7 +75,7 @@ export const CoffeeDetailScreen: React.FC = () => {
     return (
       <SafeAreaView style={styles.container} edges={['top']}>
         <View style={styles.header}>
-          <BackButton onPress={() => navigation.goBack()} />
+          <ButtonWithIcon onPress={() => navigation.goBack()} iconName="arrow-back" />
         </View>
         <View style={styles.notFound}>
           <MaterialIcons name="error-outline" size={48} color={theme.colors.textTertiary} />
@@ -101,25 +101,25 @@ export const CoffeeDetailScreen: React.FC = () => {
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <View style={styles.header}>
-        <BackButton onPress={() => navigation.goBack()} />
+        <ButtonWithIcon onPress={() => navigation.goBack()} iconName="arrow-back" />
         <View style={styles.headerActions}>
-          <Pressable
+          <ButtonWithIcon
             onPress={() => navigation.navigate('AddEntry', { coffeeId: coffee.id })}
-            hitSlop={8}
-            style={styles.headerButton}
-          >
-            <MaterialIcons name="edit" size={24} color={theme.colors.text} />
-          </Pressable>
-          <Pressable onPress={handleToggleFavorite} hitSlop={8} style={styles.headerButton}>
-            <MaterialIcons
-              name={coffee.isFavorite ? 'favorite' : 'favorite-border'}
-              size={24}
-              color={coffee.isFavorite ? theme.colors.error : theme.colors.text}
-            />
-          </Pressable>
-          <Pressable onPress={handleDelete} hitSlop={8} style={styles.headerButton}>
-            <MaterialIcons name="delete-outline" size={24} color={theme.colors.error} />
-          </Pressable>
+            iconName="edit"
+            testID="edit-button"
+          />
+          <ButtonWithIcon
+            onPress={handleToggleFavorite}
+            iconName={coffee.isFavorite ? 'favorite' : 'favorite-border'}
+            color={coffee.isFavorite ? theme.colors.error : undefined}
+            testID="favorite-button"
+          />
+          <ButtonWithIcon
+            onPress={handleDelete}
+            iconName="delete-outline"
+            color={theme.colors.error}
+            testID="delete-button"
+          />
         </View>
       </View>
 

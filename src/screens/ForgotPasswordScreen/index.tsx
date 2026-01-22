@@ -6,7 +6,7 @@ import { authService } from '@/services/authService'
 import { Button } from '@/components/common/Button'
 import { Input } from '@/components/common/Input'
 import { IconCircle } from '@/components/common/IconCircle'
-import { BackButton } from '@/components/common/BackButton'
+import { ButtonWithIcon } from '@/components/common/ButtonWithIcon'
 import { createStyles } from './styles'
 
 interface ForgotPasswordScreenProps {
@@ -49,7 +49,7 @@ export const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = ({
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.keyboardView}
       >
-        <BackButton onPress={onBack} />
+        <ButtonWithIcon onPress={onBack} iconName="arrow-back" />
 
         <View style={styles.contentSection}>
           <IconCircle icon="lock-reset" size="large" />

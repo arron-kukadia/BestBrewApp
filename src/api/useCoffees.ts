@@ -57,6 +57,8 @@ export const useUpdateCoffee = () => {
       queryClient.setQueryData<Coffee[]>(coffeeKeys.list(updatedCoffee.userId), (oldCoffees) =>
         oldCoffees?.map((coffee) => (coffee.id === updatedCoffee.id ? updatedCoffee : coffee))
       )
+      clearStoredInsights()
+      queryClient.invalidateQueries({ queryKey: insightKeys.user(updatedCoffee.userId) })
     },
   })
 }
