@@ -14,7 +14,7 @@ export const createStyles = (theme: Theme) =>
       borderRadius: theme.borderRadius.md,
       borderWidth: 2,
       borderColor: theme.colors.border,
-      borderStyle: 'dashed',
+      borderStyle: 'solid',
       justifyContent: 'center',
       alignItems: 'center',
       gap: theme.spacing.sm,

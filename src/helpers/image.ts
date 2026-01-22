@@ -1,9 +1,9 @@
 import { ImageManipulator, SaveFormat } from 'expo-image-manipulator'
-import * as FileSystem from 'expo-file-system/legacy'
+import { File } from 'expo-file-system/next'
+import { Image } from 'react-native'
 
 interface CompressImageOptions {
-  maxWidth?: number
-  maxHeight?: number
+  maxDimension?: number
   quality?: number
 }
 
@@ -13,14 +13,28 @@ interface CompressedImage {
   height: number
 }
 
+const getImageDimensions = (uri: string): Promise<{ width: number; height: number }> => {
+  return new Promise((resolve, reject) => {
+    Image.getSize(uri, (width, height) => resolve({ width, height }), reject)
+  })
+}
+
 export const compressImage = async (
   uri: string,
   options: CompressImageOptions = {}
 ): Promise<CompressedImage> => {
-  const { maxWidth = 1200, maxHeight = 1200, quality = 0.7 } = options
+  const { maxDimension = 1200, quality = 0.7 } = options
 
+  const { width, height } = await getImageDimensions(uri)
   const context = ImageManipulator.manipulate(uri)
-  context.resize({ width: maxWidth, height: maxHeight })
+
+  if (width > maxDimension || height > maxDimension) {
+    if (width > height) {
+      context.resize({ width: maxDimension })
+    } else {
+      context.resize({ height: maxDimension })
+    }
+  }
 
   const imageRef = await context.renderAsync()
   const result = await imageRef.saveAsync({
@@ -37,9 +51,9 @@ export const compressImage = async (
 
 export const getImageFileSize = async (uri: string): Promise<number> => {
   try {
-    const fileInfo = await FileSystem.getInfoAsync(uri)
-    if (fileInfo.exists && 'size' in fileInfo) {
-      return fileInfo.size
+    const file = new File(uri)
+    if (file.exists) {
+      return file.size ?? 0
     }
     return 0
   } catch {
@@ -49,9 +63,9 @@ export const getImageFileSize = async (uri: string): Promise<number> => {
 
 export const deleteLocalImage = async (uri: string): Promise<void> => {
   try {
-    const fileInfo = await FileSystem.getInfoAsync(uri)
-    if (fileInfo.exists) {
-      await FileSystem.deleteAsync(uri, { idempotent: true })
+    const file = new File(uri)
+    if (file.exists) {
+      file.delete()
     }
   } catch (error) {
     console.error('Error deleting local image:', error)

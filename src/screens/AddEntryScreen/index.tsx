@@ -14,6 +14,7 @@ import { StarRating } from '@/components/common/StarRating'
 import { CollapsibleSection } from '@/components/common/CollapsibleSection'
 import { SuccessModal } from '@/components/common/SuccessModal'
 import { ImagePicker } from '@/components/common/ImagePicker'
+import { Loader } from '@/components/common/Loader'
 import {
   ROAST_OPTIONS,
   GRIND_OPTIONS,
@@ -241,6 +242,12 @@ export const AddEntryScreen: React.FC<AddEntryScreenProps> = ({ onBack, onSucces
         }
         onClose={handleSuccessClose}
       />
+
+      {isLoading && (
+        <View style={styles.loadingOverlay}>
+          <Loader text="Saving..." />
+        </View>
+      )}
     </SafeAreaView>
   )
 }

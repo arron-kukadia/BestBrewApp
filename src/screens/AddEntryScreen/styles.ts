@@ -61,4 +61,10 @@ export const createStyles = (theme: Theme) =>
     buttonContainer: {
       marginTop: theme.spacing.md,
     },
+    loadingOverlay: {
+      ...StyleSheet.absoluteFillObject,
+      backgroundColor: theme.colors.background + 'E6',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
   })
