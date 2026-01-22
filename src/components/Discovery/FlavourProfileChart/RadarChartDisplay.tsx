@@ -11,54 +11,48 @@ interface RadarChartDisplayProps {
   data: FlavourProfile
 }
 
-export const RadarChartDisplay = React.memo<RadarChartDisplayProps>(
-  ({ data }) => {
-    const theme = useTheme()
+const RadarChartDisplayComponent: React.FC<RadarChartDisplayProps> = ({ data }) => {
+  const theme = useTheme()
 
-    return (
-      <RadarChart
-        data={data.data}
-        maxValue={100}
-        chartSize={200}
-        hideAsterLines
-        startAngle={90}
-        labels={data.labels}
-        labelsPositionOffset={5}
-        gridConfig={{
-          fill: theme.colors.surface,
-          gradientColor: theme.colors.surface,
-          opacity: 0.2,
-          strokeWidth: 0.2,
-        }}
-        polygonConfig={{
-          fill: theme.colors.primary + '40',
-          stroke: theme.colors.primary,
-          strokeWidth: 2,
-          isAnimated: true,
-          animationDuration: 300,
-        }}
-        labelConfig={{
-          fontSize: 11,
-          fontWeight: 'bold',
-          stroke: theme.colors.primary,
-        }}
-      />
-    )
-  },
-  (prevProps, nextProps) => {
-    const prevData = prevProps.data
-    const nextData = nextProps.data
+  return (
+    <RadarChart
+      data={data.data}
+      maxValue={100}
+      chartSize={250}
+      hideAsterLines
+      startAngle={90}
+      labels={data.labels}
+      gridConfig={{
+        fill: theme.colors.surface,
+        gradientColor: theme.colors.surface,
+        opacity: 0.2,
+        strokeWidth: 0.3,
+      }}
+      polygonConfig={{
+        fill: theme.colors.primary + '40',
+        stroke: theme.colors.primary,
+        strokeWidth: 2,
+        isAnimated: true,
+        animationDuration: 300,
+      }}
+      labelConfig={{
+        fontSize: 11,
+        fontWeight: 'bold',
+        stroke: theme.colors.primary,
+      }}
+    />
+  )
+}
 
-    if (prevData.data.length !== nextData.data.length) return false
-    if (prevData.labels.length !== nextData.labels.length) return false
+export const RadarChartDisplay = React.memo(RadarChartDisplayComponent, (prevProps, nextProps) => {
+  const prevData = prevProps.data
+  const nextData = nextProps.data
 
-    const dataEqual = prevData.data.every(
-      (value, index) => value === nextData.data[index]
-    )
-    const labelsEqual = prevData.labels.every(
-      (label, index) => label === nextData.labels[index]
-    )
+  if (prevData.data.length !== nextData.data.length) return false
+  if (prevData.labels.length !== nextData.labels.length) return false
 
-    return dataEqual && labelsEqual
-  }
-)
+  const dataEqual = prevData.data.every((value, index) => value === nextData.data[index])
+  const labelsEqual = prevData.labels.every((label, index) => label === nextData.labels[index])
+
+  return dataEqual && labelsEqual
+})

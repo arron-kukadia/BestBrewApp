@@ -1,7 +1,6 @@
 import React from 'react'
 import { View, Text } from 'react-native'
 import { useTheme } from '@/hooks/useTheme'
-import { SectionHeader } from '@/components/common/SectionHeader'
 import { RadarChartDisplay } from './RadarChartDisplay'
 import { createStyles } from './styles'
 
