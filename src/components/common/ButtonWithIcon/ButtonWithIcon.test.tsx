@@ -14,15 +14,15 @@ describe('ButtonWithIcon', () => {
   it('renders with custom testID', () => {
     render(<ButtonWithIcon onPress={jest.fn()} iconName="edit" testID="custom-button" />)
 
-    expect(screen.getByTestId('custom-button')).toBeTruthy()
+    expect(screen.getByTestId('custom-button')).toBeOnTheScreen()
   })
 
   it('renders different icon names', () => {
     const { rerender } = render(<ButtonWithIcon onPress={jest.fn()} iconName="check" />)
-    expect(screen.getByTestId('icon-button')).toBeTruthy()
+    expect(screen.getByTestId('icon-button')).toBeOnTheScreen()
 
     rerender(<ButtonWithIcon onPress={jest.fn()} iconName="delete-outline" />)
-    expect(screen.getByTestId('icon-button')).toBeTruthy()
+    expect(screen.getByTestId('icon-button')).toBeOnTheScreen()
   })
 
   it('does not call onPress multiple times for single press', async () => {

@@ -14,23 +14,23 @@ describe('Loader', () => {
   it('renders with text', () => {
     render(<Loader text="Loading..." />)
 
-    expect(screen.getByText('Loading...')).toBeTruthy()
+    expect(screen.getByText('Loading...')).toBeOnTheScreen()
   })
 
   it('renders with custom text message', () => {
     render(<Loader text="Analyzing your taste profile..." />)
 
-    expect(screen.getByText('Analyzing your taste profile...')).toBeTruthy()
+    expect(screen.getByText('Analyzing your taste profile...')).toBeOnTheScreen()
   })
 
   it('renders with different sizes', () => {
     const { rerender } = render(<Loader size="small" />)
-    expect(screen.root).toBeTruthy()
+    expect(screen.root).toBeOnTheScreen()
 
     rerender(<Loader size="medium" />)
-    expect(screen.root).toBeTruthy()
+    expect(screen.root).toBeOnTheScreen()
 
     rerender(<Loader size="large" />)
-    expect(screen.root).toBeTruthy()
+    expect(screen.root).toBeOnTheScreen()
   })
 })
