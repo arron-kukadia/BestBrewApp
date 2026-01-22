@@ -79,6 +79,7 @@ export const AddEntryScreen: React.FC<AddEntryScreenProps> = ({ onBack, onSucces
               icon="coffee"
               placeholder="Coffee Name"
               label="Coffee Name"
+              autoCapitalize="words"
               required
               value={formData.name}
               onChangeText={(text) => updateField('name', text)}
@@ -87,6 +88,7 @@ export const AddEntryScreen: React.FC<AddEntryScreenProps> = ({ onBack, onSucces
               icon="storefront"
               placeholder="Brand / Roaster"
               label="Brand / Roaster"
+              autoCapitalize="words"
               required
               value={formData.brand}
               onChangeText={(text) => updateField('brand', text)}
@@ -95,6 +97,7 @@ export const AddEntryScreen: React.FC<AddEntryScreenProps> = ({ onBack, onSucces
               icon="place"
               placeholder="e.g. Ethiopia"
               label="Origin"
+              autoCapitalize="words"
               value={formData.origin}
               onChangeText={(text) => updateField('origin', text)}
             />
@@ -107,14 +110,25 @@ export const AddEntryScreen: React.FC<AddEntryScreenProps> = ({ onBack, onSucces
               required
               options={ROAST_OPTIONS}
               selectedValue={formData.roastLevel}
-              onSelect={(value) => updateField('roastLevel', value)}
+              onSelect={(value) => {
+                if (value === formData.roastLevel) {
+                  return updateField('roastLevel', null)
+                }
+
+                return updateField('roastLevel', value)
+              }}
             />
             <SelectChips
               label="Grind Type"
               required
               options={GRIND_OPTIONS}
               selectedValue={formData.grindType}
-              onSelect={(value) => updateField('grindType', value)}
+              onSelect={(value) => {
+                if (value === formData.grindType) {
+                  return updateField('grindType', null)
+                }
+                return updateField('grindType', value)
+              }}
             />
             <StarRating
               label="Your Rating"
@@ -136,13 +150,23 @@ export const AddEntryScreen: React.FC<AddEntryScreenProps> = ({ onBack, onSucces
               label="Process Method"
               options={PROCESS_OPTIONS}
               selectedValue={formData.processMethod}
-              onSelect={(value) => updateField('processMethod', value)}
+              onSelect={(value) => {
+                if (value === formData.processMethod) {
+                  return updateField('processMethod', null)
+                }
+                return updateField('processMethod', value)
+              }}
             />
             <SelectChips
               label="Bag Size"
               options={BAG_SIZE_OPTIONS}
               selectedValue={formData.bagSize}
-              onSelect={(value) => updateField('bagSize', value)}
+              onSelect={(value) => {
+                if (value === formData.bagSize) {
+                  return updateField('bagSize', null)
+                }
+                return updateField('bagSize', value)
+              }}
             />
             {formData.bagSize === 'other' && (
               <Animated.View
