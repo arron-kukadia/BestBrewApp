@@ -4,7 +4,6 @@ import { MaterialIcons } from '@expo/vector-icons'
 import { useTheme } from '@/hooks/useTheme'
 import { StarDisplay } from '@/components/common/StarDisplay'
 import { Coffee } from '@/types'
-import { ROAST_LEVEL_LABELS } from '@/constants/coffee'
 import { formatRelativeDate } from '@/helpers/date'
 import { createStyles } from './styles'
 
@@ -24,9 +23,7 @@ export const CoffeeCard: React.FC<CoffeeCardProps> = ({ coffee, onPress, onFavor
       onPress={onPress}
       testID="coffee-card"
     >
-      {coffee.imageUrl && (
-        <Image source={{ uri: coffee.imageUrl }} style={styles.image} resizeMode="cover" />
-      )}
+      {coffee.imageUrl && <Image source={{ uri: coffee.imageUrl }} style={styles.image} />}
       <View style={styles.content}>
         <View style={styles.header}>
           <View style={styles.titleRow}>

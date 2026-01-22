@@ -15,8 +15,9 @@ export const createStyles = (theme: Theme) =>
       opacity: 0.9,
     },
     image: {
-      width: 100,
+      width: 120,
       height: '100%',
+      resizeMode: 'cover',
     },
     content: {
       flex: 1,
@@ -58,7 +59,6 @@ export const createStyles = (theme: Theme) =>
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-      marginTop: theme.spacing.xs,
     },
     date: {
       ...theme.typography.bodySm,

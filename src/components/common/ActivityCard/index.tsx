@@ -33,7 +33,7 @@ export const ActivityCard: React.FC<ActivityCardProps> = ({
   const content = (
     <View style={styles.container}>
       {imageUri ? (
-        <Image source={{ uri: imageUri }} style={styles.image} resizeMode="cover" />
+        <Image source={{ uri: imageUri }} style={styles.image} />
       ) : (
         <View style={[styles.iconContainer, { backgroundColor: `${iconColor}15` }]}>
           <MaterialIcons name={icon} size={24} color={iconColor} />

@@ -25,7 +25,7 @@ export const createStyles = (theme: Theme) =>
     image: {
       width: 80,
       height: '100%',
-      minHeight: 80,
+      resizeMode: 'cover',
     },
     content: {
       flex: 1,
