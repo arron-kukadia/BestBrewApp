@@ -11,14 +11,16 @@ import { createStyles } from './styles'
 
 interface ConfirmSignUpScreenProps {
   email: string
-  password: string
+  password?: string
   onBack: () => void
+  onSuccess?: () => void
 }
 
 export const ConfirmSignUpScreen: React.FC<ConfirmSignUpScreenProps> = ({
   email,
   password,
   onBack,
+  onSuccess,
 }) => {
   const theme = useTheme()
   const styles = createStyles(theme)
@@ -26,6 +28,7 @@ export const ConfirmSignUpScreen: React.FC<ConfirmSignUpScreenProps> = ({
   const setUser = useAuthStore((state) => state.setUser)
   const [code, setCode] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [isResending, setIsResending] = useState(false)
 
   const handleConfirm = async () => {
     if (!code.trim()) {
@@ -36,17 +39,24 @@ export const ConfirmSignUpScreen: React.FC<ConfirmSignUpScreenProps> = ({
     setIsLoading(true)
     try {
       await authService.confirmSignUp({ email, code: code.trim() })
-      await authService.signIn({ email, password })
-      const user = await authService.getCurrentUser()
-      if (user) {
-        const attributes = await authService.getUserAttributes()
-        setUser({
-          id: user.userId,
-          email: attributes?.email || user.signInDetails?.loginId || email,
-          name: attributes?.given_name,
-          subscriptionStatus: 'free',
-          createdAt: new Date().toISOString(),
-        })
+
+      if (password) {
+        await authService.signIn({ email, password })
+        const user = await authService.getCurrentUser()
+        if (user) {
+          const attributes = await authService.getUserAttributes()
+          setUser({
+            id: user.userId,
+            email: attributes?.email || user.signInDetails?.loginId || email,
+            name: attributes?.given_name,
+            subscriptionStatus: 'free',
+            createdAt: new Date().toISOString(),
+          })
+        }
+      } else {
+        Alert.alert('Success', 'Your email has been verified. Please sign in.', [
+          { text: 'OK', onPress: onSuccess },
+        ])
       }
     } catch (error: unknown) {
       const message =
@@ -54,6 +64,20 @@ export const ConfirmSignUpScreen: React.FC<ConfirmSignUpScreenProps> = ({
       Alert.alert('Verification Failed', message)
     } finally {
       setIsLoading(false)
+    }
+  }
+
+  const handleResendCode = async () => {
+    setIsResending(true)
+    try {
+      await authService.resendSignUpCode(email)
+      Alert.alert('Code Sent', 'A new verification code has been sent to your email.')
+    } catch (error: unknown) {
+      const message =
+        error instanceof Error ? error.message : 'Failed to resend code. Please try again.'
+      Alert.alert('Error', message)
+    } finally {
+      setIsResending(false)
     }
   }
 
@@ -86,6 +110,13 @@ export const ConfirmSignUpScreen: React.FC<ConfirmSignUpScreenProps> = ({
           </View>
 
           <Button title="Verify" onPress={handleConfirm} isLoading={isLoading} />
+
+          <Button
+            title="Resend Code"
+            onPress={handleResendCode}
+            variant="secondary"
+            isLoading={isResending}
+          />
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>

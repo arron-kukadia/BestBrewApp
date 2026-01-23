@@ -44,6 +44,11 @@ export const AuthNavigator: React.FC = () => {
           <LoginScreen
             onNavigateToRegister={() => navigation.navigate('Register')}
             onNavigateToForgotPassword={() => navigation.navigate('ForgotPassword')}
+            onNavigateToConfirmSignUp={(email) => {
+              setConfirmEmail(email)
+              setConfirmPassword('')
+              navigation.navigate('ConfirmSignUp', { email })
+            }}
           />
         )}
       </Stack.Screen>
@@ -65,6 +70,7 @@ export const AuthNavigator: React.FC = () => {
             email={confirmEmail}
             password={confirmPassword}
             onBack={() => navigation.goBack()}
+            onSuccess={() => navigation.navigate('Login')}
           />
         )}
       </Stack.Screen>

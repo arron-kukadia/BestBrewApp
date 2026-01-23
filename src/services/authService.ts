@@ -3,6 +3,7 @@ import {
   signUp,
   signOut,
   confirmSignUp,
+  resendSignUpCode,
   resetPassword,
   confirmResetPassword,
   getCurrentUser,
@@ -58,6 +59,11 @@ export const authService = {
       username: email,
       confirmationCode: code,
     })
+    return result
+  },
+
+  resendSignUpCode: async (email: string) => {
+    const result = await resendSignUpCode({ username: email })
     return result
   },
 

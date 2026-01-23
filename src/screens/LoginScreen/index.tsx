@@ -22,11 +22,13 @@ import { createStyles } from './styles'
 interface LoginScreenProps {
   onNavigateToRegister: () => void
   onNavigateToForgotPassword: () => void
+  onNavigateToConfirmSignUp: (email: string) => void
 }
 
 export const LoginScreen: React.FC<LoginScreenProps> = ({
   onNavigateToRegister,
   onNavigateToForgotPassword,
+  onNavigateToConfirmSignUp,
 }) => {
   const theme = useTheme()
   const styles = createStyles(theme)
@@ -45,17 +47,36 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
 
     setIsLoading(true)
     try {
-      await authService.signIn({ email: email.trim(), password })
-      const user = await authService.getCurrentUser()
-      if (user) {
-        const attributes = await authService.getUserAttributes()
-        setUser({
-          id: user.userId,
-          email: attributes?.email || user.signInDetails?.loginId || email,
-          name: attributes?.given_name,
-          subscriptionStatus: 'free',
-          createdAt: new Date().toISOString(),
-        })
+      const signInResult = await authService.signIn({ email: email.trim(), password })
+
+      if (signInResult.nextStep?.signInStep === 'CONFIRM_SIGN_UP') {
+        try {
+          await authService.resendSignUpCode(email.trim())
+          Alert.alert(
+            'Account Not Verified',
+            'A new verification code has been sent to your email.',
+            [{ text: 'OK', onPress: () => onNavigateToConfirmSignUp(email.trim()) }]
+          )
+        } catch {
+          Alert.alert('Account Not Verified', 'Please verify your email to continue.', [
+            { text: 'OK', onPress: () => onNavigateToConfirmSignUp(email.trim()) },
+          ])
+        }
+        return
+      }
+
+      if (signInResult.isSignedIn) {
+        const user = await authService.getCurrentUser()
+        if (user) {
+          const attributes = await authService.getUserAttributes()
+          setUser({
+            id: user.userId,
+            email: attributes?.email || user.signInDetails?.loginId || email,
+            name: attributes?.given_name,
+            subscriptionStatus: 'free',
+            createdAt: new Date().toISOString(),
+          })
+        }
       }
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : 'Login failed. Please try again.'
