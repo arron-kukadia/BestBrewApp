@@ -75,7 +75,7 @@ export const ConfirmSignUpScreen: React.FC<ConfirmSignUpScreenProps> = ({
           <View style={styles.inputContainer}>
             <TextInput
               style={styles.codeInput}
-              placeholder="Enter verification code"
+              placeholder="Enter code"
               placeholderTextColor={theme.colors.textTertiary}
               value={code}
               onChangeText={setCode}

@@ -36,11 +36,9 @@ export const createStyles = (theme: Theme) =>
       marginBottom: theme.spacing.xl,
     },
     section: {
-      marginBottom: theme.spacing.xl,
+      gap: theme.spacing.md,
     },
     loadingContainer: {
-      paddingVertical: theme.spacing.xl * 2,
-      alignItems: 'center',
       justifyContent: 'center',
     },
     activityList: {

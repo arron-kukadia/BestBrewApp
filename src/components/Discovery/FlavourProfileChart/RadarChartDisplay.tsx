@@ -16,6 +16,7 @@ const RadarChartDisplayComponent: React.FC<RadarChartDisplayProps> = ({ data }) 
 
   return (
     <RadarChart
+      key={theme.isDark ? 'dark' : 'light'}
       data={data.data}
       maxValue={100}
       chartSize={250}

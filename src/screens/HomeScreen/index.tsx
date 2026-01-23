@@ -79,15 +79,15 @@ export const HomeScreen: React.FC = () => {
         </View>
 
         <View style={styles.section}>
+          <SectionHeader
+            title="Recent Activity"
+            actionText="See all"
+            onActionPress={() => tabNavigation.navigate('History')}
+          />
           {isLoading ? (
             <Loader size="small" />
           ) : hasEntries ? (
             <>
-              <SectionHeader
-                title="Recent Activity"
-                actionText="See all"
-                onActionPress={() => tabNavigation.navigate('History')}
-              />
               <View style={styles.activityList}>
                 {recentCoffees.map((coffee, index) => {
                   const delay = index * 100
