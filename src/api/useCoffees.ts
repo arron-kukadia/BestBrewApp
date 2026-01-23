@@ -38,9 +38,7 @@ export const useCreateCoffee = () => {
   return useMutation({
     mutationFn: (input: CreateCoffeeInput) => coffeeService.createCoffee(input),
     onSuccess: (newCoffee) => {
-      queryClient.setQueryData<Coffee[]>(coffeeKeys.list(newCoffee.userId), (oldCoffees) =>
-        oldCoffees ? [newCoffee, ...oldCoffees] : [newCoffee]
-      )
+      queryClient.invalidateQueries({ queryKey: coffeeKeys.list(newCoffee.userId) })
       clearStoredInsights()
       queryClient.invalidateQueries({ queryKey: insightKeys.user(newCoffee.userId) })
     },
@@ -53,10 +51,8 @@ export const useUpdateCoffee = () => {
   return useMutation({
     mutationFn: (input: UpdateCoffeeInput) => coffeeService.updateCoffee(input),
     onSuccess: (updatedCoffee) => {
-      queryClient.setQueryData<Coffee>(coffeeKeys.detail(updatedCoffee.id), updatedCoffee)
-      queryClient.setQueryData<Coffee[]>(coffeeKeys.list(updatedCoffee.userId), (oldCoffees) =>
-        oldCoffees?.map((coffee) => (coffee.id === updatedCoffee.id ? updatedCoffee : coffee))
-      )
+      queryClient.invalidateQueries({ queryKey: coffeeKeys.detail(updatedCoffee.id) })
+      queryClient.invalidateQueries({ queryKey: coffeeKeys.list(updatedCoffee.userId) })
       clearStoredInsights()
       queryClient.invalidateQueries({ queryKey: insightKeys.user(updatedCoffee.userId) })
     },
@@ -77,10 +73,7 @@ export const useDeleteCoffee = () => {
       imageUrl?: string
     }) => {
       if (imageUrl) {
-        const key = imageService.getKeyFromUrl(imageUrl)
-        if (key) {
-          await imageService.deleteImage(key)
-        }
+        await imageService.deleteImage(imageUrl)
       }
       await coffeeService.deleteCoffee(userId, id)
       return { id, userId }
@@ -103,9 +96,15 @@ export const useToggleFavorite = () => {
     mutationFn: ({ id, userId, isFavorite }: { id: string; userId: string; isFavorite: boolean }) =>
       coffeeService.updateCoffee({ id, userId, isFavorite }),
     onSuccess: (updatedCoffee) => {
-      queryClient.setQueryData<Coffee>(coffeeKeys.detail(updatedCoffee.id), updatedCoffee)
+      queryClient.setQueryData<Coffee>(coffeeKeys.detail(updatedCoffee.id), (old) =>
+        old ? { ...old, isFavorite: updatedCoffee.isFavorite } : old
+      )
       queryClient.setQueryData<Coffee[]>(coffeeKeys.list(updatedCoffee.userId), (oldCoffees) =>
-        oldCoffees?.map((coffee) => (coffee.id === updatedCoffee.id ? updatedCoffee : coffee))
+        oldCoffees?.map((coffee) =>
+          coffee.id === updatedCoffee.id
+            ? { ...coffee, isFavorite: updatedCoffee.isFavorite }
+            : coffee
+        )
       )
     },
   })

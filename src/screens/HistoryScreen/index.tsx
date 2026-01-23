@@ -87,7 +87,10 @@ export const HistoryScreen: React.FC = () => {
       case 'saved':
       case 'recent':
       default:
-        filtered.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+        filtered.sort((a, b) => {
+          const dateCompare = new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          return dateCompare !== 0 ? dateCompare : Number(b.id) - Number(a.id)
+        })
     }
 
     return filtered
