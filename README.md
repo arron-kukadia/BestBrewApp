@@ -93,8 +93,6 @@ npm run start:dev
 3. **Image Handling:** Images uploaded to S3, Lambda generates signed URLs on fetch
 4. **AI Insights:** Lambda function processes coffee data through OpenAI for recommendations
 
-## Project Structure
-
 ## License
 
 Private - All rights reserved
