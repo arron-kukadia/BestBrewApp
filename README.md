@@ -74,6 +74,25 @@ npm run build:dev:android
 npm run start:dev
 ```
 
+## AWS Architecture
+
+### Services
+
+| Service | Purpose |
+|---------|---------|
+| **Cognito** | User authentication (email/password + Google OAuth) with User Pool and Identity Pool |
+| **AppSync** | GraphQL API for all data operations with pipeline resolvers |
+| **DynamoDB** | NoSQL database storing coffee entries and custom flavour notes |
+| **S3** | Image storage for coffee photos with signed URL access |
+| **Lambda** | Serverless functions for S3 URL signing and AI insights (OpenAI GPT-4o-mini) |
+
+### Data Flow
+
+1. **Authentication:** Cognito handles sign-up/sign-in and provides tokens for API access
+2. **Data Operations:** AppSync GraphQL queries/mutations interact with DynamoDB
+3. **Image Handling:** Images uploaded to S3, Lambda generates signed URLs on fetch
+4. **AI Insights:** Lambda function processes coffee data through OpenAI for recommendations
+
 ## Project Structure
 
 ```
