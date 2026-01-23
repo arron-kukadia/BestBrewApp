@@ -21,6 +21,7 @@ jest.mock('react-native-reanimated', () => {
     useSharedValue: jest.fn((init) => ({ value: init })),
     useAnimatedStyle: jest.fn(() => ({})),
     useAnimatedProps: jest.fn(() => ({})),
+    useReducedMotion: jest.fn(() => false),
     withTiming: jest.fn((val) => val),
     withSpring: jest.fn((val) => val),
     runOnJS: jest.fn((fn) => fn),
@@ -34,6 +35,15 @@ jest.mock('react-native-reanimated', () => {
 jest.mock('@react-native-async-storage/async-storage', () =>
   require('@react-native-async-storage/async-storage/jest/async-storage-mock')
 )
+
+jest.mock('react-native-mmkv', () => ({
+  createMMKV: jest.fn(() => ({
+    getString: jest.fn(),
+    set: jest.fn(),
+    delete: jest.fn(),
+    contains: jest.fn(() => false),
+  })),
+}))
 
 jest.mock('@expo/vector-icons', () => {
   const { View } = require('react-native')

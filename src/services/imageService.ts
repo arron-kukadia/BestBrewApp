@@ -1,4 +1,4 @@
-import { uploadData, remove, getUrl } from 'aws-amplify/storage'
+import { uploadData, remove } from 'aws-amplify/storage'
 import { compressImage, deleteLocalImage } from '@/helpers/image'
 
 interface UploadResult {
@@ -30,10 +30,8 @@ export const imageService = {
       await deleteLocalImage(compressed.uri)
     }
 
-    const { url } = await getUrl({ path: key })
-
     return {
-      imageUrl: url.toString(),
+      imageUrl: key,
       key,
     }
   },
@@ -44,15 +42,5 @@ export const imageService = {
     } catch (error) {
       console.warn('Failed to delete image:', error)
     }
-  },
-
-  getImageUrl: async (key: string): Promise<string> => {
-    const { url } = await getUrl({ path: key })
-    return url.toString()
-  },
-
-  getKeyFromUrl: (imageUrl: string): string | null => {
-    const match = imageUrl.match(/\.amazonaws\.com\/(.+?)(\?|$)/)
-    return match ? match[1] : null
   },
 }

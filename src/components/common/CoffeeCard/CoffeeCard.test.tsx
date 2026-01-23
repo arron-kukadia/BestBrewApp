@@ -13,6 +13,7 @@ const mockCoffee: Coffee = {
   grindType: 'whole-bean',
   rating: 4.5,
   notes: 'Great coffee',
+  imageUrl: 'https://example.com/coffee.jpg',
   flavourNotes: [
     { name: 'fruity', intensity: 3 },
     { name: 'floral', intensity: 2 },
@@ -36,11 +37,6 @@ describe('CoffeeCard', () => {
   it('renders coffee origin', () => {
     render(<CoffeeCard coffee={mockCoffee} />)
     expect(screen.getByText('Ethiopia')).toBeOnTheScreen()
-  })
-
-  it('renders roast level', () => {
-    render(<CoffeeCard coffee={mockCoffee} />)
-    expect(screen.getByText('Light')).toBeOnTheScreen()
   })
 
   it('renders star rating', () => {

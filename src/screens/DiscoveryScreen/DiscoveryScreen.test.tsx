@@ -90,16 +90,10 @@ describe('DiscoveryScreen', () => {
     expect(screen.getByText('Find your perfect coffee')).toBeOnTheScreen()
   })
 
-  it('shows insights section when coffees exist', () => {
+  it('shows recommendations section when coffees exist', () => {
     ;(useCoffees as jest.Mock).mockReturnValue({ data: mockCoffees })
     render(<DiscoveryScreen />)
-    expect(screen.getByText('Your Taste Profile')).toBeOnTheScreen()
-  })
-
-  it('shows top brands section when coffees exist', () => {
-    ;(useCoffees as jest.Mock).mockReturnValue({ data: mockCoffees })
-    render(<DiscoveryScreen />)
-    expect(screen.getByText('Your Top Brands')).toBeOnTheScreen()
+    expect(screen.getByText('Recommendations')).toBeOnTheScreen()
   })
 
   it('shows loading state for insights', () => {

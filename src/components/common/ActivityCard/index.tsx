@@ -53,6 +53,11 @@ export const ActivityCard: React.FC<ActivityCardProps> = ({
             <StarDisplay rating={rating} size={14} />
           </View>
         )}
+        {meta && (
+          <Text style={styles.meta} numberOfLines={1}>
+            {meta}
+          </Text>
+        )}
       </View>
       <View style={styles.chevronContainer}>
         {onPress && (

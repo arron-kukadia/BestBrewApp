@@ -44,6 +44,11 @@ export const createStyles = (theme: Theme) =>
       flexDirection: 'row',
       marginTop: 4,
     },
+    meta: {
+      ...theme.typography.bodySm,
+      color: theme.colors.textTertiary,
+      marginTop: 2,
+    },
     chevronContainer: {
       marginRight: theme.spacing.md,
       flexDirection: 'row',

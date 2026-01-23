@@ -29,6 +29,7 @@ jest.mock('react-native-reanimated', () => {
     View,
     FadeInUp: { duration: () => ({ delay: () => ({}) }) },
     FadeOutDown: { duration: () => ({}) },
+    useReducedMotion: jest.fn(() => false),
   }
 })
 jest.mock('@shopify/flash-list', () => ({

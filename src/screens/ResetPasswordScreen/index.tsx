@@ -74,7 +74,7 @@ export const ResetPasswordScreen: React.FC<ResetPasswordScreenProps> = ({
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.keyboardView}
       >
-        <ButtonWithIcon onPress={onBack} iconName="arrow-back" />
+        <ButtonWithIcon onPress={onBack} iconName="arrow-back" testID="back-button" />
 
         <View style={styles.contentSection}>
           <IconCircle icon="lock-reset" size="large" />

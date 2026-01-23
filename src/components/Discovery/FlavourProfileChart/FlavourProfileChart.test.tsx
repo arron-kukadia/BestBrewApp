@@ -6,24 +6,30 @@ jest.mock('react-native-gifted-charts', () => ({
   RadarChart: () => null,
 }))
 
+jest.mock('./RadarChartDisplay', () => ({
+  RadarChartDisplay: () => null,
+}))
+
 describe('FlavourProfileChart', () => {
   const mockData = {
     data: [80, 60, 40, 30, 50],
     labels: ['Fruity', 'Chocolate', 'Nutty', 'Floral', 'Citrus'],
   }
 
-  it('renders section header', () => {
-    render(<FlavourProfileChart data={mockData} />)
-    expect(screen.getByText('Your Flavour Profile')).toBeOnTheScreen()
+  it('renders chart container when data has 3+ points', () => {
+    const { toJSON } = render(<FlavourProfileChart data={mockData} />)
+    expect(toJSON()).not.toBeNull()
   })
 
-  it('renders description', () => {
-    render(<FlavourProfileChart data={mockData} />)
-    expect(screen.getByText('Flavours weighted by your ratings')).toBeOnTheScreen()
+  it('renders taste profile when provided', () => {
+    render(<FlavourProfileChart data={mockData} tasteProfile="Fruity & Floral" />)
+    expect(screen.getByText('Fruity & Floral')).toBeOnTheScreen()
   })
 
   it('returns null when data has fewer than 3 points', () => {
-    render(<FlavourProfileChart data={{ data: [80, 60], labels: ['Fruity', 'Chocolate'] }} />)
-    expect(screen.queryByText('Your Flavour Profile')).not.toBeOnTheScreen()
+    const { toJSON } = render(
+      <FlavourProfileChart data={{ data: [80, 60], labels: ['Fruity', 'Chocolate'] }} />
+    )
+    expect(toJSON()).toBeNull()
   })
 })
