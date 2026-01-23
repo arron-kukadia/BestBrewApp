@@ -16,7 +16,6 @@ interface CoffeeCardProps {
 export const CoffeeCard: React.FC<CoffeeCardProps> = ({ coffee, onPress, onFavoritePress }) => {
   const theme = useTheme()
   const styles = createStyles(theme)
-
   return (
     <Pressable
       style={({ pressed }) => [styles.container, pressed && styles.pressed]}
@@ -38,13 +37,17 @@ export const CoffeeCard: React.FC<CoffeeCardProps> = ({ coffee, onPress, onFavor
               />
             </Pressable>
           </View>
-          <Text style={styles.brand}>{coffee.brand}</Text>
+          <Text numberOfLines={1} style={styles.brand}>
+            {coffee.brand}
+          </Text>
         </View>
 
         <View style={styles.details}>
           <View style={styles.detailRow}>
             <MaterialIcons name="place" size={14} color={theme.colors.textTertiary} />
-            <Text style={styles.detailText}>{coffee.origin}</Text>
+            <Text style={styles.detailText} numberOfLines={1}>
+              {coffee.origin}
+            </Text>
           </View>
         </View>
 

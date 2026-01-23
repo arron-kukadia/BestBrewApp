@@ -54,6 +54,7 @@ export const createStyles = (theme: Theme) =>
     detailText: {
       ...theme.typography.bodySm,
       color: theme.colors.textTertiary,
+      marginRight: theme.spacing.xl,
     },
     footer: {
       flexDirection: 'row',
@@ -61,7 +62,7 @@ export const createStyles = (theme: Theme) =>
       alignItems: 'center',
     },
     date: {
-      ...theme.typography.bodySm,
+      ...theme.typography.bodyXs,
       color: theme.colors.textTertiary,
     },
     flavourNotes: {
