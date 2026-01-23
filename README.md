@@ -95,35 +95,6 @@ npm run start:dev
 
 ## Project Structure
 
-```
-src/
-├── api/                 # TanStack Query hooks
-├── components/
-│   ├── common/          # Reusable UI components
-│   ├── Discovery/       # Discovery screen components
-│   └── Settings/        # Settings screen components
-├── graphql/             # AppSync queries & mutations
-├── helpers/             # Utility functions
-├── hooks/               # Custom React hooks
-├── navigation/          # Navigation configuration
-├── screens/             # App screens
-├── services/            # API service layers
-├── stores/              # Zustand state stores
-├── theme/               # Colors, typography, spacing
-└── types/               # TypeScript type definitions
-```
-
-## Scripts
-
-| Script                      | Description                      |
-| --------------------------- | -------------------------------- |
-| `npm start`                 | Start Expo development server    |
-| `npm run start:dev`         | Start with dev client            |
-| `npm run build:dev:ios`     | Build iOS development client     |
-| `npm run build:dev:android` | Build Android development client |
-| `npm test`                  | Run tests                        |
-| `npm run lint`              | Run ESLint                       |
-
 ## License
 
 Private - All rights reserved
