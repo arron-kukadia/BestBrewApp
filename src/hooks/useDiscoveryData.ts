@@ -11,7 +11,7 @@ interface DiscoveryData {
   hasEntries: boolean
 }
 
-export const useDiscoveryData = (coffees: Coffee[], primaryColor: string): DiscoveryData => {
+export const useDiscoveryData = (coffees: Coffee[]): DiscoveryData => {
   const hasEntries = coffees.length > 0
 
   const flavourProfile = useMemo(() => {

@@ -21,7 +21,7 @@ export const DiscoveryScreen: React.FC = () => {
   const { entering } = useAnimationConfig()
   const user = useAuthStore((state) => state.user)
   const { data: coffees = [] } = useCoffees(user?.id)
-  const { flavourProfile, hasEntries } = useDiscoveryData(coffees, theme.colors.primary)
+  const { flavourProfile, hasEntries } = useDiscoveryData(coffees)
 
   const {
     data: insightsData,

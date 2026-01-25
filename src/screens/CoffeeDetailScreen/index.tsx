@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { View, Text, ScrollView, Alert, Image } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { MaterialIcons } from '@expo/vector-icons'
@@ -39,7 +39,7 @@ export const CoffeeDetailScreen: React.FC = () => {
 
   const coffee = coffees.find((c) => c.id === coffeeId)
 
-  const handleToggleFavorite = () => {
+  const handleToggleFavorite = useCallback(() => {
     if (user?.id && coffee) {
       toggleFavoriteMutation.mutate({
         id: coffee.id,
@@ -47,9 +47,9 @@ export const CoffeeDetailScreen: React.FC = () => {
         isFavorite: !coffee.isFavorite,
       })
     }
-  }
+  }, [user?.id, coffee, toggleFavoriteMutation])
 
-  const handleDelete = () => {
+  const handleDelete = useCallback(() => {
     Alert.alert(
       'Delete Coffee',
       `Are you sure you want to delete "${coffee?.name}"? This cannot be undone.`,
@@ -69,7 +69,7 @@ export const CoffeeDetailScreen: React.FC = () => {
         },
       ]
     )
-  }
+  }, [coffee, user?.id, coffeeId, deleteMutation, navigation])
 
   if (!coffee) {
     return (

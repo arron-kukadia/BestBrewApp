@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 import { View, Text, Pressable, Platform, Image } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
 import { useTheme } from '@/hooks/useTheme'
@@ -16,7 +16,7 @@ interface ActivityCardProps {
   onPress?: () => void
 }
 
-export const ActivityCard: React.FC<ActivityCardProps> = ({
+const ActivityCardComponent: React.FC<ActivityCardProps> = ({
   icon,
   title,
   subtitle,
@@ -80,3 +80,5 @@ export const ActivityCard: React.FC<ActivityCardProps> = ({
 
   return content
 }
+
+export const ActivityCard = memo(ActivityCardComponent)

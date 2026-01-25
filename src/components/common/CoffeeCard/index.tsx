@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 import { View, Text, Pressable, Image } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
 import { useTheme } from '@/hooks/useTheme'
@@ -13,7 +13,7 @@ interface CoffeeCardProps {
   onFavoritePress?: () => void
 }
 
-export const CoffeeCard: React.FC<CoffeeCardProps> = ({ coffee, onPress, onFavoritePress }) => {
+const CoffeeCardComponent: React.FC<CoffeeCardProps> = ({ coffee, onPress, onFavoritePress }) => {
   const theme = useTheme()
   const styles = createStyles(theme)
   return (
@@ -59,3 +59,5 @@ export const CoffeeCard: React.FC<CoffeeCardProps> = ({ coffee, onPress, onFavor
     </Pressable>
   )
 }
+
+export const CoffeeCard = memo(CoffeeCardComponent)
