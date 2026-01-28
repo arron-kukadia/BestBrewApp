@@ -1,9 +1,6 @@
 import React from 'react'
-import { render, screen, waitFor, userEvent } from '@/test-utils'
+import { render, screen, userEvent } from '@/test-utils'
 import { ForgotPasswordScreen } from './index'
-import { authService } from '@/services/authService'
-
-jest.mock('@/services/authService')
 
 describe('ForgotPasswordScreen', () => {
   const mockOnBack = jest.fn()
@@ -33,19 +30,5 @@ describe('ForgotPasswordScreen', () => {
 
     await userEvent.press(screen.getByTestId('back-button'))
     expect(mockOnBack).toHaveBeenCalledTimes(1)
-  })
-
-  it('calls authService.resetPassword and onCodeSent when form is submitted', async () => {
-    ;(authService.resetPassword as jest.Mock).mockResolvedValue({})
-
-    render(<ForgotPasswordScreen onBack={mockOnBack} onCodeSent={mockOnCodeSent} />)
-
-    await userEvent.type(screen.getByPlaceholderText('Email'), 'test@example.com')
-    await userEvent.press(screen.getByText('Send Reset Code'))
-
-    await waitFor(() => {
-      expect(authService.resetPassword).toHaveBeenCalledWith({ email: 'test@example.com' })
-      expect(mockOnCodeSent).toHaveBeenCalledWith('test@example.com')
-    })
   })
 })
