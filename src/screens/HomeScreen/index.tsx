@@ -87,26 +87,24 @@ export const HomeScreen: React.FC = () => {
           {isLoading ? (
             <Loader size="small" />
           ) : hasEntries ? (
-            <>
-              <View style={styles.activityList}>
-                {recentCoffees.map((coffee, index) => {
-                  const delay = index * 100
-                  return (
-                    <Animated.View key={coffee.id} entering={entering(400, delay)}>
-                      <ActivityCard
-                        icon="coffee"
-                        title={coffee.name}
-                        subtitle={coffee.brand}
-                        rating={coffee.rating}
-                        meta={formatRelativeDate(coffee.createdAt)}
-                        imageUri={coffee.imageUrl}
-                        onPress={() => navigation.navigate('CoffeeDetail', { coffeeId: coffee.id })}
-                      />
-                    </Animated.View>
-                  )
-                })}
-              </View>
-            </>
+            <View style={styles.activityList}>
+              {recentCoffees.map((coffee, index) => {
+                const delay = index * 100
+                return (
+                  <Animated.View key={coffee.id} entering={entering(400, delay)}>
+                    <ActivityCard
+                      icon="coffee"
+                      title={coffee.name}
+                      subtitle={coffee.brand}
+                      rating={coffee.rating}
+                      meta={formatRelativeDate(coffee.createdAt)}
+                      imageUri={coffee.imageUrl}
+                      onPress={() => navigation.navigate('CoffeeDetail', { coffeeId: coffee.id })}
+                    />
+                  </Animated.View>
+                )
+              })}
+            </View>
           ) : (
             <EmptyState
               icon="coffee"

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Alert } from 'react-native'
 import { useAuthStore } from '@/stores/authStore'
 import { useCoffees, useCreateCoffee, useUpdateCoffee } from '@/api/useCoffees'
@@ -43,8 +43,11 @@ export const useCoffeeForm = (coffeeId?: string, onSuccess?: () => void) => {
   const [isLoading, setIsLoading] = useState(false)
   const [showSuccess, setShowSuccess] = useState(false)
 
+  const hasPopulated = useRef(false)
+
   useEffect(() => {
-    if (existingCoffee) {
+    if (existingCoffee && !hasPopulated.current) {
+      hasPopulated.current = true
       setFormData({
         brand: existingCoffee.brand,
         name: existingCoffee.name,

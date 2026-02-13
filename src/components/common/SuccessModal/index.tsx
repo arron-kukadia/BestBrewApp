@@ -35,7 +35,6 @@ export const SuccessModal: React.FC<SuccessModalProps> = ({
             ref={animationRef}
             source={require('@/assets/animations/success.json')}
             style={styles.animation}
-            autoPlay
             loop={false}
           />
           <Text style={styles.title}>{title}</Text>
