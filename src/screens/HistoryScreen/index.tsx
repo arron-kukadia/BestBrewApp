@@ -16,6 +16,7 @@ import { FilterChips } from '@/components/common/FilterChips'
 import { CoffeeCard } from '@/components/common/CoffeeCard'
 import { EmptyState } from '@/components/common/EmptyState'
 import { Loader } from '@/components/common/Loader'
+import { ItemSeparator } from '@/components/common/ItemSeparator'
 import { Coffee } from '@/types'
 import { createStyles } from './styles'
 
@@ -136,7 +137,7 @@ export const HistoryScreen: React.FC = () => {
           data={filteredCoffees}
           renderItem={renderCoffeeCard}
           contentContainerStyle={styles.listContent}
-          ItemSeparatorComponent={() => <View style={styles.separator} />}
+          ItemSeparatorComponent={ItemSeparator}
           showsVerticalScrollIndicator={false}
           refreshControl={
             <RefreshControl
