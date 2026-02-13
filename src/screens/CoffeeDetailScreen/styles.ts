@@ -20,9 +20,6 @@ export const createStyles = (theme: Theme) =>
       flexDirection: 'row',
       gap: theme.spacing.md,
     },
-    headerButton: {
-      padding: theme.spacing.xs,
-    },
     contentContainer: {
       padding: theme.spacing.lg,
       paddingBottom: theme.spacing.xxl,
@@ -69,69 +66,6 @@ export const createStyles = (theme: Theme) =>
     },
     detailsGrid: {
       gap: theme.spacing.md,
-    },
-    detailItem: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      gap: theme.spacing.md,
-      backgroundColor: theme.colors.surface,
-      padding: theme.spacing.md,
-      borderRadius: theme.borderRadius.lg,
-    },
-    detailContent: {
-      flex: 1,
-    },
-    detailLabel: {
-      ...theme.typography.bodySm,
-      color: theme.colors.textSecondary,
-    },
-    detailValue: {
-      ...theme.typography.bodyMedium,
-      color: theme.colors.text,
-    },
-    flavourNotesContainer: {
-      justifyContent: 'center',
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-      gap: theme.spacing.md,
-    },
-    flavourNoteItem: {
-      alignItems: 'center',
-      gap: theme.spacing.xs,
-    },
-    intensityDots: {
-      flexDirection: 'row',
-      gap: 4,
-    },
-    intensityDot: {
-      width: 8,
-      height: 8,
-      borderRadius: 4,
-      backgroundColor: theme.colors.border,
-    },
-    intensityDotActive: {
-      backgroundColor: theme.colors.primary,
-    },
-    purchaseGrid: {
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-      gap: theme.spacing.md,
-    },
-    purchaseItem: {
-      backgroundColor: theme.colors.surface,
-      padding: theme.spacing.md,
-      borderRadius: theme.borderRadius.lg,
-      minWidth: '45%',
-      flex: 1,
-    },
-    purchaseLabel: {
-      ...theme.typography.bodySm,
-      color: theme.colors.textSecondary,
-      marginBottom: theme.spacing.xs,
-    },
-    purchaseValue: {
-      ...theme.typography.bodyMedium,
-      color: theme.colors.text,
     },
     notesText: {
       ...theme.typography.body,
