@@ -16,6 +16,7 @@
     "build:preview": "eas build --profile preview --platform all",
     "build:preview:ios": "eas build --profile preview --platform ios",
     "build:preview:android": "eas build --profile preview --platform android",
+    "submit:android": "eas submit --platform android",
     "dev-client": "expo start --dev-client",
     "prod-client": "expo start --production",
     "test": "jest",

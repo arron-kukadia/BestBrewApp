@@ -84,6 +84,10 @@ jest.mock('@/api/useCoffees', () => ({
   },
 }))
 
+jest.mock('@/hooks/useImageUrl', () => ({
+  useImageUrl: (imageKey) => imageKey,
+}))
+
 jest.mock('@/services/authService', () => ({
   authService: {
     signIn: jest.fn(),

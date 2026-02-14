@@ -3,6 +3,7 @@ import { View, Text, Image, Pressable, Alert } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
 import * as ExpoImagePicker from 'expo-image-picker'
 import { useTheme } from '@/hooks/useTheme'
+import { useImageUrl } from '@/hooks/useImageUrl'
 import { createStyles } from './styles'
 
 interface ImagePickerProps {
@@ -18,6 +19,7 @@ export const ImagePicker: React.FC<ImagePickerProps> = ({
 }) => {
   const theme = useTheme()
   const styles = createStyles(theme)
+  const resolvedImageUri = useImageUrl(imageUri)
 
   const requestPermissions = async (): Promise<boolean> => {
     const cameraPermission = await ExpoImagePicker.requestCameraPermissionsAsync()
@@ -98,7 +100,11 @@ export const ImagePicker: React.FC<ImagePickerProps> = ({
     return (
       <View style={styles.container}>
         <View style={styles.imageContainer}>
-          <Image source={{ uri: imageUri }} style={styles.image} resizeMode="cover" />
+          <Image
+            source={{ uri: resolvedImageUri || imageUri }}
+            style={styles.image}
+            resizeMode="cover"
+          />
           <Pressable style={styles.removeButton} onPress={handleRemoveImage} hitSlop={8}>
             <MaterialIcons name="close" size={16} color="#FFFFFF" />
           </Pressable>

@@ -2,6 +2,7 @@ import React, { memo } from 'react'
 import { View, Text, Pressable, Platform, Image } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
 import { useTheme } from '@/hooks/useTheme'
+import { useImageUrl } from '@/hooks/useImageUrl'
 import { StarDisplay } from '@/components/common/StarDisplay'
 import { createStyles } from './styles'
 
@@ -29,11 +30,12 @@ const ActivityCardComponent: React.FC<ActivityCardProps> = ({
   const theme = useTheme()
   const styles = createStyles(theme)
   const iconColor = color || theme.colors.primary
+  const resolvedImageUri = useImageUrl(imageUri)
 
   const content = (
     <View style={styles.container}>
-      {imageUri ? (
-        <Image source={{ uri: imageUri }} style={styles.image} />
+      {resolvedImageUri ? (
+        <Image source={{ uri: resolvedImageUri }} style={styles.image} />
       ) : (
         <View style={[styles.iconContainer, { backgroundColor: `${iconColor}15` }]}>
           <MaterialIcons name={icon} size={24} color={iconColor} />

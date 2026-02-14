@@ -27,7 +27,7 @@ const INITIAL_FORM_DATA: CoffeeFormData = {
 
 const isLocalImage = (uri?: string): boolean => {
   if (!uri) return false
-  return uri.startsWith('file://') || uri.startsWith('ph://')
+  return uri.startsWith('file://') || uri.startsWith('ph://') || uri.startsWith('content://')
 }
 
 export const useCoffeeForm = (coffeeId?: string, onSuccess?: () => void) => {
@@ -131,11 +131,7 @@ export const useCoffeeForm = (coffeeId?: string, onSuccess?: () => void) => {
 
       let imageUrl: string | undefined
       if (formData.imageUri && isLocalImage(formData.imageUri)) {
-        const uploadResult = await imageService.uploadCoffeeImage(
-          formData.imageUri,
-          userId,
-          coffeeIdToUse
-        )
+        const uploadResult = await imageService.uploadCoffeeImage(formData.imageUri, coffeeIdToUse)
         imageUrl = uploadResult.imageUrl
         await deleteLocalImage(formData.imageUri)
       } else if (formData.imageUri) {

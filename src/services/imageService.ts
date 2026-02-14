@@ -1,4 +1,5 @@
-import { uploadData, remove } from 'aws-amplify/storage'
+import { uploadData, remove, getUrl } from 'aws-amplify/storage'
+import { fetchAuthSession } from 'aws-amplify/auth'
 import { compressImage, deleteLocalImage } from '@/helpers/image'
 
 interface UploadResult {
@@ -6,14 +7,20 @@ interface UploadResult {
   key: string
 }
 
+const getIdentityId = async (): Promise<string> => {
+  const session = await fetchAuthSession()
+  const identityId = session.identityId
+  if (!identityId) {
+    throw new Error('No identity ID available')
+  }
+  return identityId
+}
+
 export const imageService = {
-  uploadCoffeeImage: async (
-    localUri: string,
-    userId: string,
-    coffeeId: string
-  ): Promise<UploadResult> => {
+  uploadCoffeeImage: async (localUri: string, coffeeId: string): Promise<UploadResult> => {
+    const identityId = await getIdentityId()
     const compressed = await compressImage(localUri)
-    const key = `public/coffees/${userId}/${coffeeId}.jpg`
+    const key = `public/coffees/${identityId}/${coffeeId}.jpg`
 
     const response = await fetch(compressed.uri)
     const blob = await response.blob()
@@ -42,5 +49,10 @@ export const imageService = {
     } catch (error) {
       console.warn('Failed to delete image:', error)
     }
+  },
+
+  getSignedUrl: async (key: string): Promise<string> => {
+    const result = await getUrl({ path: key })
+    return result.url.toString()
   },
 }

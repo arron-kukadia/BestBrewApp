@@ -2,6 +2,7 @@ import React, { memo } from 'react'
 import { View, Text, Pressable, Image } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
 import { useTheme } from '@/hooks/useTheme'
+import { useImageUrl } from '@/hooks/useImageUrl'
 import { StarDisplay } from '@/components/common/StarDisplay'
 import { Coffee } from '@/types'
 import { formatRelativeDate } from '@/helpers/date'
@@ -16,13 +17,14 @@ interface CoffeeCardProps {
 const CoffeeCardComponent: React.FC<CoffeeCardProps> = ({ coffee, onPress, onFavoritePress }) => {
   const theme = useTheme()
   const styles = createStyles(theme)
+  const resolvedImageUrl = useImageUrl(coffee.imageUrl)
   return (
     <Pressable
       style={({ pressed }) => [styles.container, pressed && styles.pressed]}
       onPress={onPress}
       testID="coffee-card"
     >
-      {coffee.imageUrl && <Image source={{ uri: coffee.imageUrl }} style={styles.image} />}
+      {resolvedImageUrl && <Image source={{ uri: resolvedImageUrl }} style={styles.image} />}
       <View style={styles.content}>
         <View style={styles.header}>
           <View style={styles.titleRow}>

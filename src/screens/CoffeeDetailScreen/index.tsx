@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { MaterialIcons } from '@expo/vector-icons'
 import { useRoute, RouteProp } from '@react-navigation/native'
 import { useTheme } from '@/hooks/useTheme'
+import { useImageUrl } from '@/hooks/useImageUrl'
 import { ButtonWithIcon } from '@/components/common/ButtonWithIcon'
 import { StarRating } from '@/components/common/StarRating'
 import { DetailItem } from '@/components/CoffeeDetail/DetailItem'
@@ -25,6 +26,7 @@ export const CoffeeDetailScreen: React.FC = () => {
 
   const { coffee, handleToggleFavorite, handleDelete, handleEdit, handleGoBack } =
     useCoffeeDetail(coffeeId)
+  const resolvedImageUrl = useImageUrl(coffee?.imageUrl)
 
   if (!coffee) {
     return (
@@ -65,8 +67,8 @@ export const CoffeeDetailScreen: React.FC = () => {
         contentContainerStyle={styles.contentContainer}
         showsVerticalScrollIndicator={false}
       >
-        {coffee.imageUrl && (
-          <Image source={{ uri: coffee.imageUrl }} style={styles.heroImage} resizeMode="cover" />
+        {resolvedImageUrl && (
+          <Image source={{ uri: resolvedImageUrl }} style={styles.heroImage} resizeMode="cover" />
         )}
 
         <View style={styles.titleSection}>
