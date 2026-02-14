@@ -33,7 +33,7 @@ export const useCoffeeForm = (coffeeId?: string, onSuccess?: () => void) => {
   const updateMutation = useUpdateCoffee()
 
   const isEditMode = !!coffeeId
-  const existingCoffee = isEditMode ? coffees.find((c) => c.id === coffeeId) : null
+  const existingCoffee = isEditMode ? coffees.find((coffee) => coffee.id === coffeeId) : null
 
   const [formData, setFormData] = useState<CoffeeFormData>(INITIAL_FORM_DATA)
   const [isLoading, setIsLoading] = useState(false)

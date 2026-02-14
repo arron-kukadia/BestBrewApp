@@ -30,5 +30,5 @@ export const useImageUrl = (imageValue?: string): string | undefined => {
 
   if (!imageValue) return undefined
   if (!s3Key) return imageValue
-  return signedUrl
+  return signedUrl ?? imageValue
 }

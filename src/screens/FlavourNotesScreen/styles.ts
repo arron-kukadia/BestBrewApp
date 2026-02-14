@@ -20,6 +20,9 @@ export const createStyles = (theme: Theme) =>
       ...theme.typography.h2,
       color: theme.colors.text,
     },
+    keyboardView: {
+      flex: 1,
+    },
     content: {
       flex: 1,
       padding: theme.spacing.lg,
@@ -75,8 +78,9 @@ export const createStyles = (theme: Theme) =>
     },
     noteInput: {
       flex: 1,
-      height: 40,
+      minHeight: 40,
       paddingHorizontal: theme.spacing.sm,
+      paddingVertical: theme.spacing.sm,
       backgroundColor: theme.colors.surfaceVariant,
       borderRadius: theme.borderRadius.sm,
       color: theme.colors.text,

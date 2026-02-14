@@ -31,7 +31,7 @@ export const createStyles = (theme: Theme) =>
     },
     scrollContent: {
       padding: theme.spacing.lg,
-      paddingBottom: theme.spacing.xl * 2,
+      paddingBottom: theme.spacing.xl * 4,
     },
     section: {
       marginBottom: theme.spacing.xl,

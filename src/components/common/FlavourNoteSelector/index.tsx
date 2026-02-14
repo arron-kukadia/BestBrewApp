@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, Text, Pressable, TextInput } from 'react-native'
+import { View, Text, Pressable, TextInput, Keyboard } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
 import Animated from 'react-native-reanimated'
 import { useTheme } from '@/hooks/useTheme'
@@ -42,6 +42,7 @@ export const FlavourNoteSelector: React.FC<FlavourNoteSelectorProps> = ({
     }
     setNewNoteName('')
     setIsAdding(false)
+    Keyboard.dismiss()
   }
 
   const getSelectedNote = (name: string): FlavourNote | undefined => {

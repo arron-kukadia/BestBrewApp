@@ -15,7 +15,7 @@ export const useCoffeeDetail = (coffeeId: string) => {
   const deleteMutation = useDeleteCoffee()
   const toggleFavoriteMutation = useToggleFavorite()
 
-  const coffee = coffees.find((c) => c.id === coffeeId)
+  const coffee = coffees.find((coffee) => coffee.id === coffeeId)
 
   const handleToggleFavorite = useCallback(() => {
     if (user?.id && coffee) {

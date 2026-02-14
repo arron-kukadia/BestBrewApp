@@ -1,5 +1,14 @@
 import React, { useState } from 'react'
-import { View, Text, TextInput, Pressable, Alert } from 'react-native'
+import {
+  View,
+  Text,
+  TextInput,
+  Pressable,
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+  Keyboard,
+} from 'react-native'
 import { FlashList } from '@shopify/flash-list'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useNavigation } from '@react-navigation/native'
@@ -57,7 +66,10 @@ export const FlavourNotesScreen: React.FC = () => {
         name: trimmedName,
       },
       {
-        onSuccess: () => setNewNoteName(''),
+        onSuccess: () => {
+          setNewNoteName('')
+          Keyboard.dismiss()
+        },
       }
     )
   }
@@ -200,47 +212,52 @@ export const FlavourNotesScreen: React.FC = () => {
         <Text style={styles.title}>Custom Flavour Notes</Text>
       </View>
 
-      <View style={styles.content}>
-        <Text style={styles.description}>
-          Create your own flavour notes to use alongside the default options when logging coffees.
-        </Text>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.keyboardView}
+      >
+        <View style={styles.content}>
+          <Text style={styles.description}>
+            Create your own flavour notes to use alongside the default options when logging coffees.
+          </Text>
 
-        <View style={styles.addRow}>
-          <TextInput
-            style={styles.addInput}
-            placeholder="Add new flavour note..."
-            placeholderTextColor={theme.colors.textSecondary}
-            value={newNoteName}
-            onChangeText={setNewNoteName}
-            onSubmitEditing={handleAdd}
-            returnKeyType="done"
-            autoCapitalize="words"
-          />
-          <Pressable
-            style={[
-              styles.addButton,
-              (!newNoteName.trim() || createMutation.isPending) && styles.addButtonDisabled,
-            ]}
-            onPress={handleAdd}
-            disabled={!newNoteName.trim() || createMutation.isPending}
-          >
-            <MaterialIcons name="add" size={24} color={theme.colors.surface} />
-          </Pressable>
+          <View style={styles.addRow}>
+            <TextInput
+              style={styles.addInput}
+              placeholder="Add new flavour note..."
+              placeholderTextColor={theme.colors.textSecondary}
+              value={newNoteName}
+              onChangeText={setNewNoteName}
+              onSubmitEditing={handleAdd}
+              returnKeyType="done"
+              autoCapitalize="words"
+            />
+            <Pressable
+              style={[
+                styles.addButton,
+                (!newNoteName.trim() || createMutation.isPending) && styles.addButtonDisabled,
+              ]}
+              onPress={handleAdd}
+              disabled={!newNoteName.trim() || createMutation.isPending}
+            >
+              <MaterialIcons name="add" size={24} color={theme.colors.surface} />
+            </Pressable>
+          </View>
+
+          {isLoading ? (
+            <Loader />
+          ) : (
+            <FlashList
+              data={customNotes}
+              renderItem={renderNoteItem}
+              keyExtractor={(item) => item.id}
+              contentContainerStyle={styles.listContent}
+              ListEmptyComponent={renderEmptyState}
+              ItemSeparatorComponent={() => <View style={styles.separator} />}
+            />
+          )}
         </View>
-
-        {isLoading ? (
-          <Loader />
-        ) : (
-          <FlashList
-            data={customNotes}
-            renderItem={renderNoteItem}
-            keyExtractor={(item) => item.id}
-            contentContainerStyle={styles.listContent}
-            ListEmptyComponent={renderEmptyState}
-            ItemSeparatorComponent={() => <View style={styles.separator} />}
-          />
-        )}
-      </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   )
 }

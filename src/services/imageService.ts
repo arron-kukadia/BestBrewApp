@@ -60,7 +60,7 @@ export const imageService = {
 
   deleteImage: async (imageUrl: string): Promise<void> => {
     try {
-      const s3Key = extractS3Key(imageUrl) ?? imageUrl
+      const s3Key = extractS3Key(imageUrl) ?? decodeURIComponent(imageUrl)
       await remove({ path: s3Key })
     } catch (error) {
       console.warn('Failed to delete image:', error)
@@ -68,7 +68,7 @@ export const imageService = {
   },
 
   getSignedUrl: async (key: string): Promise<string> => {
-    const s3Key = extractS3Key(key) ?? key
+    const s3Key = extractS3Key(key) ?? decodeURIComponent(key)
     const result = await getUrl({ path: s3Key })
     return result.url.toString()
   },
