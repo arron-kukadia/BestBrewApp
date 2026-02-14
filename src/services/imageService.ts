@@ -1,4 +1,4 @@
-import { uploadData, remove, getUrl } from 'aws-amplify/storage'
+import { uploadData, remove, getUrl, list } from 'aws-amplify/storage'
 import { fetchAuthSession } from 'aws-amplify/auth'
 import { compressImage, deleteLocalImage } from '@/helpers/image'
 import { isValidId } from '@/helpers/sanitize'
@@ -71,5 +71,17 @@ export const imageService = {
     const s3Key = extractS3Key(key) ?? decodeURIComponent(key)
     const result = await getUrl({ path: s3Key })
     return result.url.toString()
+  },
+
+  deleteAllUserImages: async (): Promise<void> => {
+    try {
+      const identityId = await getIdentityId()
+      const prefix = `public/coffees/${identityId}/`
+      const result = await list({ path: prefix })
+
+      await Promise.all(result.items.map((item) => remove({ path: item.path })))
+    } catch (error) {
+      console.warn('Failed to delete user images:', error)
+    }
   },
 }

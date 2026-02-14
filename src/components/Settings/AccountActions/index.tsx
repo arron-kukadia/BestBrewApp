@@ -3,6 +3,7 @@ import { View, Text, Pressable, Alert } from 'react-native'
 import { useTheme } from '@/hooks/useTheme'
 import { useAuthStore } from '@/stores/authStore'
 import { authService } from '@/services/authService'
+import { imageService } from '@/services/imageService'
 import { Button } from '@/components/common/Button'
 import { createStyles } from './styles'
 
@@ -49,6 +50,7 @@ export const AccountActions: React.FC = () => {
                   style: 'destructive',
                   onPress: async () => {
                     try {
+                      await imageService.deleteAllUserImages()
                       await authService.deleteAccount()
                       setUser(null)
                     } catch {

@@ -5,6 +5,11 @@ import { AccountActions } from './index'
 import { useAuthStore } from '@/stores/authStore'
 
 jest.mock('@/stores/authStore')
+jest.mock('@/services/imageService', () => ({
+  imageService: {
+    deleteAllUserImages: jest.fn().mockResolvedValue(undefined),
+  },
+}))
 jest.spyOn(Alert, 'alert')
 
 describe('AccountActions', () => {
