@@ -8,6 +8,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   Keyboard,
+  ActivityIndicator,
 } from 'react-native'
 import { FlashList } from '@shopify/flash-list'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -97,18 +98,23 @@ export const FlavourNotesScreen: React.FC = () => {
       return
     }
 
+    const previousName = editingNote.name
+    const noteId = editingNote.id
+
+    setEditingNote(null)
+    setEditingName('')
+    Keyboard.dismiss()
+
     updateMutation.mutate(
       {
-        id: editingNote.id,
+        id: noteId,
         userId: user.id,
         name: trimmedName,
       },
       {
         onSuccess: async () => {
-          await coffeeService.renameFlavourNoteInCoffees(user.id, editingNote.name, trimmedName)
+          await coffeeService.renameFlavourNoteInCoffees(user.id, previousName, trimmedName)
           queryClient.invalidateQueries({ queryKey: ['coffees'] })
-          setEditingNote(null)
-          setEditingName('')
         },
       }
     )
@@ -156,8 +162,16 @@ export const FlavourNotesScreen: React.FC = () => {
                 onSubmitEditing={handleSaveEdit}
               />
               <View style={styles.noteActions}>
-                <Pressable style={styles.actionButton} onPress={handleSaveEdit}>
-                  <MaterialIcons name="check" size={22} color={theme.colors.primary} />
+                <Pressable
+                  style={styles.actionButton}
+                  onPress={handleSaveEdit}
+                  disabled={updateMutation.isPending}
+                >
+                  {updateMutation.isPending ? (
+                    <ActivityIndicator size="small" color={theme.colors.primary} />
+                  ) : (
+                    <MaterialIcons name="check" size={22} color={theme.colors.primary} />
+                  )}
                 </Pressable>
                 <Pressable style={styles.actionButton} onPress={handleCancelEdit}>
                   <MaterialIcons name="close" size={22} color={theme.colors.textSecondary} />
@@ -240,7 +254,11 @@ export const FlavourNotesScreen: React.FC = () => {
               onPress={handleAdd}
               disabled={!newNoteName.trim() || createMutation.isPending}
             >
-              <MaterialIcons name="add" size={24} color={theme.colors.surface} />
+              {createMutation.isPending ? (
+                <ActivityIndicator size="small" color={theme.colors.surface} />
+              ) : (
+                <MaterialIcons name="add" size={24} color={theme.colors.surface} />
+              )}
             </Pressable>
           </View>
 
@@ -254,6 +272,7 @@ export const FlavourNotesScreen: React.FC = () => {
               contentContainerStyle={styles.listContent}
               ListEmptyComponent={renderEmptyState}
               ItemSeparatorComponent={() => <View style={styles.separator} />}
+              keyboardShouldPersistTaps="handled"
             />
           )}
         </View>
