@@ -38,4 +38,9 @@ export const createStyles = (theme: Theme) =>
     eyeIcon: {
       padding: theme.spacing.xs,
     },
+    charCount: {
+      ...theme.typography.bodySmMedium,
+      color: theme.colors.textTertiary,
+      textAlign: 'right',
+    },
   })

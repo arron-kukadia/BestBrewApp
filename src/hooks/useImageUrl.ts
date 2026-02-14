@@ -1,23 +1,7 @@
-import { useState, useEffect } from 'react'
-import { imageService } from '@/services/imageService'
+import { useQuery } from '@tanstack/react-query'
+import { imageService, extractS3Key, isLocalUri } from '@/services/imageService'
 
-const S3_BUCKET = process.env.EXPO_PUBLIC_AWS_S3_BUCKET || ''
-
-const extractS3Key = (value: string): string | null => {
-  if (!value.startsWith('http')) return null
-  try {
-    const url = new URL(value)
-    if (!url.hostname.includes(S3_BUCKET)) return null
-    const path = decodeURIComponent(url.pathname)
-    return path.startsWith('/') ? path.slice(1) : path
-  } catch {
-    return null
-  }
-}
-
-const isLocalUri = (uri: string): boolean => {
-  return uri.startsWith('file://') || uri.startsWith('content://') || uri.startsWith('ph://')
-}
+const STALE_TIME = 50 * 60 * 1000
 
 const getS3Key = (value: string): string | null => {
   if (isLocalUri(value)) return null
@@ -25,35 +9,26 @@ const getS3Key = (value: string): string | null => {
   return extractS3Key(value)
 }
 
+export const imageUrlKeys = {
+  all: ['imageUrls'] as const,
+  signed: (s3Key: string) => [...imageUrlKeys.all, s3Key] as const,
+}
+
 export const useImageUrl = (imageValue?: string): string | undefined => {
-  const [signedUrl, setSignedUrl] = useState<string | undefined>(undefined)
+  const s3Key = imageValue ? getS3Key(imageValue) : null
 
-  useEffect(() => {
-    if (!imageValue) {
-      setSignedUrl(undefined)
-      return
-    }
+  const { data: signedUrl } = useQuery({
+    queryKey: imageUrlKeys.signed(s3Key!),
+    queryFn: () => imageService.getSignedUrl(s3Key!),
+    enabled: !!s3Key,
+    staleTime: STALE_TIME,
+    gcTime: STALE_TIME,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    retry: 1,
+  })
 
-    const s3Key = getS3Key(imageValue)
-    if (!s3Key) {
-      setSignedUrl(imageValue)
-      return
-    }
-
-    let cancelled = false
-    imageService
-      .getSignedUrl(s3Key)
-      .then((url) => {
-        if (!cancelled) setSignedUrl(url)
-      })
-      .catch((error) => {
-        console.warn('[useImageUrl] Failed to resolve:', s3Key, error)
-      })
-
-    return () => {
-      cancelled = true
-    }
-  }, [imageValue])
-
+  if (!imageValue) return undefined
+  if (!s3Key) return imageValue
   return signedUrl
 }

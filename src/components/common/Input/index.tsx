@@ -11,6 +11,7 @@ interface InputProps extends Omit<TextInputProps, 'style'> {
   error?: boolean
   label?: string
   required?: boolean
+  showCharCount?: boolean
 }
 
 export const Input: React.FC<InputProps> = ({
@@ -20,6 +21,7 @@ export const Input: React.FC<InputProps> = ({
   error = false,
   label,
   required,
+  showCharCount = false,
   ...textInputProps
 }) => {
   const theme = useTheme()
@@ -74,6 +76,11 @@ export const Input: React.FC<InputProps> = ({
           </Pressable>
         )}
       </View>
+      {showCharCount && textInputProps.maxLength && (
+        <Text style={styles.charCount}>
+          {textInputProps.value?.length ?? 0}/{textInputProps.maxLength}
+        </Text>
+      )}
     </View>
   )
 }

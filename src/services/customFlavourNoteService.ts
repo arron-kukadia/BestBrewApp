@@ -2,6 +2,7 @@ import { generateClient, GraphQLResult } from 'aws-amplify/api'
 import { CustomFlavourNote } from '@/types'
 import * as queries from '@/graphql/queries'
 import * as mutations from '@/graphql/mutations'
+import { sanitizeFormField } from '@/helpers/sanitize'
 
 const client = generateClient()
 
@@ -54,9 +55,10 @@ export const customFlavourNoteService = {
     input: CreateCustomFlavourNoteInput
   ): Promise<CustomFlavourNote> => {
     try {
+      const sanitizedInput = { ...input, name: sanitizeFormField('flavourNoteName', input.name) }
       const response = (await client.graphql({
         query: mutations.createCustomFlavourNote,
-        variables: { input },
+        variables: { input: sanitizedInput },
       })) as GraphQLResult<CreateCustomFlavourNoteResponse>
       if (!response.data?.createCustomFlavourNote) {
         throw new Error('Failed to create custom flavour note')
@@ -72,9 +74,10 @@ export const customFlavourNoteService = {
     input: UpdateCustomFlavourNoteInput
   ): Promise<CustomFlavourNote> => {
     try {
+      const sanitizedInput = { ...input, name: sanitizeFormField('flavourNoteName', input.name) }
       const response = (await client.graphql({
         query: mutations.updateCustomFlavourNote,
-        variables: { input },
+        variables: { input: sanitizedInput },
       })) as GraphQLResult<UpdateCustomFlavourNoteResponse>
       if (!response.data?.updateCustomFlavourNote) {
         throw new Error('Failed to update custom flavour note')

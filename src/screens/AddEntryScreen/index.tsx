@@ -29,6 +29,7 @@ import {
   useCombinedFlavourOptions,
   useCreateCustomFlavourNote,
 } from '@/api/useCustomFlavourNotes'
+import { getMaxLength } from '@/helpers/sanitize'
 import { createStyles } from './styles'
 import { useCoffeeForm } from './useCoffeeForm'
 
@@ -234,6 +235,8 @@ export const AddEntryScreen: React.FC<AddEntryScreenProps> = ({ onBack, onSucces
               onChangeText={(text) => updateField('notes', text)}
               multiline
               numberOfLines={4}
+              maxLength={getMaxLength('notes')}
+              showCharCount
             />
           </View>
 

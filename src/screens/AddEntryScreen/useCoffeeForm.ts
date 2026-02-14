@@ -2,9 +2,10 @@ import { useState, useEffect, useRef } from 'react'
 import { Alert } from 'react-native'
 import { useAuthStore } from '@/stores/authStore'
 import { useCoffees, useCreateCoffee, useUpdateCoffee } from '@/api/useCoffees'
-import { imageService } from '@/services/imageService'
+import { imageService, isLocalUri } from '@/services/imageService'
 import { deleteLocalImage } from '@/helpers/image'
 import { CoffeeFormData } from '@/types'
+import { sanitizeFormField, sanitizePrice, sanitizeRating } from '@/helpers/sanitize'
 
 const INITIAL_FORM_DATA: CoffeeFormData = {
   brand: '',
@@ -23,11 +24,6 @@ const INITIAL_FORM_DATA: CoffeeFormData = {
   roastDate: '',
   purchaseLocation: '',
   imageUri: undefined,
-}
-
-const isLocalImage = (uri?: string): boolean => {
-  if (!uri) return false
-  return uri.startsWith('file://') || uri.startsWith('ph://') || uri.startsWith('content://')
 }
 
 export const useCoffeeForm = (coffeeId?: string, onSuccess?: () => void) => {
@@ -56,7 +52,7 @@ export const useCoffeeForm = (coffeeId?: string, onSuccess?: () => void) => {
         grindType: existingCoffee.grindType,
         processMethod: existingCoffee.processMethod || null,
         rating: existingCoffee.rating,
-        notes: existingCoffee.notes,
+        notes: existingCoffee.notes || '',
         flavourNotes: existingCoffee.flavourNotes,
         price: existingCoffee.price?.toString() || '',
         currency: existingCoffee.currency || 'GBP',
@@ -92,6 +88,21 @@ export const useCoffeeForm = (coffeeId?: string, onSuccess?: () => void) => {
     }))
   }
 
+  const sanitizeForm = (): CoffeeFormData => ({
+    ...formData,
+    brand: sanitizeFormField('brand', formData.brand),
+    name: sanitizeFormField('name', formData.name),
+    origin: sanitizeFormField('origin', formData.origin),
+    notes: sanitizeFormField('notes', formData.notes),
+    purchaseLocation: sanitizeFormField('purchaseLocation', formData.purchaseLocation),
+    customBagSize: sanitizeFormField('customBagSize', formData.customBagSize),
+    rating: sanitizeRating(formData.rating),
+    flavourNotes: formData.flavourNotes.map((note) => ({
+      ...note,
+      name: sanitizeFormField('flavourNoteName', note.name),
+    })),
+  })
+
   const validateForm = (): boolean => {
     if (!formData.imageUri) {
       Alert.alert('Error', 'Please add a photo of your coffee')
@@ -123,71 +134,87 @@ export const useCoffeeForm = (coffeeId?: string, onSuccess?: () => void) => {
   const handleSubmit = async () => {
     if (!validateForm()) return
 
+    const sanitized = sanitizeForm()
+
     setIsLoading(true)
     try {
       const now = new Date().toISOString().split('T')[0]
       const userId = user?.id || ''
       const coffeeIdToUse = isEditMode ? coffeeId! : Date.now().toString()
 
-      let imageUrl: string | undefined
-      if (formData.imageUri && isLocalImage(formData.imageUri)) {
-        const uploadResult = await imageService.uploadCoffeeImage(formData.imageUri, coffeeIdToUse)
-        imageUrl = uploadResult.imageUrl
-        await deleteLocalImage(formData.imageUri)
-      } else if (formData.imageUri) {
-        imageUrl = formData.imageUri
-      }
-
       if (isEditMode && coffeeId && existingCoffee) {
-        const updates = {
+        const updates: Record<string, unknown> = {
           id: coffeeId,
           userId,
-          brand: (formData.brand || '').trim(),
-          name: (formData.name || '').trim(),
-          origin: (formData.origin || '').trim() || 'Unknown',
-          roastLevel: formData.roastLevel!,
-          grindType: formData.grindType!,
-          processMethod: formData.processMethod || undefined,
-          rating: formData.rating,
-          notes: (formData.notes || '').trim(),
-          flavourNotes: formData.flavourNotes,
-          price: formData.price ? parseFloat(formData.price) : undefined,
-          currency: formData.currency,
-          bagSize: formData.bagSize || undefined,
-          customBagSize: formData.bagSize === 'other' ? formData.customBagSize : undefined,
-          roastDate: formData.roastDate || undefined,
-          purchaseLocation: (formData.purchaseLocation || '').trim() || undefined,
-          imageUrl,
+          brand: sanitized.brand,
+          name: sanitized.name,
+          origin: sanitized.origin || 'Unknown',
+          roastLevel: sanitized.roastLevel!,
+          grindType: sanitized.grindType!,
+          processMethod: sanitized.processMethod || undefined,
+          rating: sanitized.rating,
+          notes: sanitized.notes,
+          flavourNotes: sanitized.flavourNotes,
+          price: sanitized.price ? sanitizePrice(sanitized.price) : undefined,
+          currency: sanitized.currency,
+          bagSize: sanitized.bagSize || undefined,
+          customBagSize: sanitized.bagSize === 'other' ? sanitized.customBagSize : undefined,
+          roastDate: sanitized.roastDate || undefined,
+          purchaseLocation: sanitized.purchaseLocation || undefined,
           updatedAt: now,
         }
-        await updateMutation.mutateAsync(updates)
+
+        if (sanitized.imageUri && isLocalUri(sanitized.imageUri)) {
+          const uploadResult = await imageService.uploadCoffeeImage(
+            sanitized.imageUri,
+            coffeeIdToUse
+          )
+          updates.imageUrl = uploadResult.key
+          await deleteLocalImage(sanitized.imageUri)
+          if (existingCoffee.imageUrl) {
+            await imageService.deleteImage(existingCoffee.imageUrl)
+          }
+        }
+
+        await updateMutation.mutateAsync(
+          updates as unknown as Parameters<typeof updateMutation.mutateAsync>[0]
+        )
         setShowSuccess(true)
       } else {
+        let imageUrl: string | undefined
+        if (sanitized.imageUri && isLocalUri(sanitized.imageUri)) {
+          const uploadResult = await imageService.uploadCoffeeImage(
+            sanitized.imageUri,
+            coffeeIdToUse
+          )
+          imageUrl = uploadResult.key
+          await deleteLocalImage(sanitized.imageUri)
+        }
         const coffeeInput: Record<string, unknown> = {
           id: coffeeIdToUse,
           userId,
-          brand: (formData.brand || '').trim(),
-          name: (formData.name || '').trim(),
-          origin: (formData.origin || '').trim() || 'Unknown',
-          roastLevel: formData.roastLevel!,
-          grindType: formData.grindType!,
-          rating: formData.rating,
-          flavourNotes: formData.flavourNotes,
+          brand: sanitized.brand,
+          name: sanitized.name,
+          origin: sanitized.origin || 'Unknown',
+          roastLevel: sanitized.roastLevel!,
+          grindType: sanitized.grindType!,
+          rating: sanitized.rating,
+          flavourNotes: sanitized.flavourNotes,
           isFavorite: false,
           createdAt: now,
           updatedAt: now,
         }
-        if (formData.processMethod) coffeeInput.processMethod = formData.processMethod
-        if ((formData.notes || '').trim()) coffeeInput.notes = (formData.notes || '').trim()
-        if (formData.price) coffeeInput.price = parseFloat(formData.price)
-        if (formData.price) coffeeInput.currency = formData.currency
-        if (formData.bagSize) coffeeInput.bagSize = formData.bagSize
-        if (formData.bagSize === 'other' && formData.customBagSize) {
-          coffeeInput.customBagSize = formData.customBagSize
+        if (sanitized.processMethod) coffeeInput.processMethod = sanitized.processMethod
+        if (sanitized.notes) coffeeInput.notes = sanitized.notes
+        if (sanitized.price) coffeeInput.price = sanitizePrice(sanitized.price)
+        if (sanitized.price) coffeeInput.currency = sanitized.currency
+        if (sanitized.bagSize) coffeeInput.bagSize = sanitized.bagSize
+        if (sanitized.bagSize === 'other' && sanitized.customBagSize) {
+          coffeeInput.customBagSize = sanitized.customBagSize
         }
-        if (formData.roastDate) coffeeInput.roastDate = formData.roastDate
-        if ((formData.purchaseLocation || '').trim()) {
-          coffeeInput.purchaseLocation = (formData.purchaseLocation || '').trim()
+        if (sanitized.roastDate) coffeeInput.roastDate = sanitized.roastDate
+        if (sanitized.purchaseLocation) {
+          coffeeInput.purchaseLocation = sanitized.purchaseLocation
         }
         if (imageUrl) coffeeInput.imageUrl = imageUrl
         await createMutation.mutateAsync(

@@ -1,10 +1,24 @@
 import { uploadData, remove, getUrl } from 'aws-amplify/storage'
 import { fetchAuthSession } from 'aws-amplify/auth'
 import { compressImage, deleteLocalImage } from '@/helpers/image'
+import { isValidId } from '@/helpers/sanitize'
 
-interface UploadResult {
-  imageUrl: string
-  key: string
+const S3_BUCKET = process.env.EXPO_PUBLIC_AWS_S3_BUCKET || ''
+
+export const extractS3Key = (value: string): string | null => {
+  if (!value.startsWith('http')) return null
+  try {
+    const url = new URL(value)
+    if (!url.hostname.includes(S3_BUCKET)) return null
+    const path = decodeURIComponent(url.pathname)
+    return path.startsWith('/') ? path.slice(1) : path
+  } catch {
+    return null
+  }
+}
+
+export const isLocalUri = (uri: string): boolean => {
+  return uri.startsWith('file://') || uri.startsWith('content://') || uri.startsWith('ph://')
 }
 
 const getIdentityId = async (): Promise<string> => {
@@ -17,7 +31,11 @@ const getIdentityId = async (): Promise<string> => {
 }
 
 export const imageService = {
-  uploadCoffeeImage: async (localUri: string, coffeeId: string): Promise<UploadResult> => {
+  uploadCoffeeImage: async (localUri: string, coffeeId: string): Promise<{ key: string }> => {
+    if (!isValidId(coffeeId)) {
+      throw new Error('Invalid coffeeId')
+    }
+
     const identityId = await getIdentityId()
     const compressed = await compressImage(localUri)
     const key = `public/coffees/${identityId}/${coffeeId}.jpg`
@@ -37,22 +55,21 @@ export const imageService = {
       await deleteLocalImage(compressed.uri)
     }
 
-    return {
-      imageUrl: key,
-      key,
-    }
+    return { key }
   },
 
-  deleteImage: async (key: string): Promise<void> => {
+  deleteImage: async (imageUrl: string): Promise<void> => {
     try {
-      await remove({ path: key })
+      const s3Key = extractS3Key(imageUrl) ?? imageUrl
+      await remove({ path: s3Key })
     } catch (error) {
       console.warn('Failed to delete image:', error)
     }
   },
 
   getSignedUrl: async (key: string): Promise<string> => {
-    const result = await getUrl({ path: key })
+    const s3Key = extractS3Key(key) ?? key
+    const result = await getUrl({ path: s3Key })
     return result.url.toString()
   },
 }
