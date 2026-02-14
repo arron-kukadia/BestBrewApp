@@ -32,22 +32,33 @@ jest.mock('react-native-reanimated', () => {
     useReducedMotion: jest.fn(() => false),
   }
 })
-jest.mock('@shopify/flash-list', () => ({
-  FlashList: ({
-    data,
-    renderItem,
-    ListEmptyComponent,
-  }: {
-    data: unknown[]
-    renderItem: (info: { item: unknown; index: number }) => React.ReactNode
-    ListEmptyComponent?: () => React.ReactNode
-  }) => {
-    if (!data || data.length === 0) {
-      return ListEmptyComponent ? ListEmptyComponent() : null
-    }
-    return data.map((item, index) => renderItem({ item, index }))
-  },
-}))
+jest.mock('@shopify/flash-list', () => {
+  const { createElement, Fragment } = require('react')
+  return {
+    FlashList: ({
+      data,
+      renderItem,
+      keyExtractor,
+      ListEmptyComponent,
+    }: {
+      data: unknown[]
+      renderItem: (info: { item: unknown; index: number }) => React.ReactNode
+      keyExtractor?: (item: unknown, index: number) => string
+      ListEmptyComponent?: () => React.ReactNode
+    }) => {
+      if (!data || data.length === 0) {
+        return ListEmptyComponent ? ListEmptyComponent() : null
+      }
+      return data.map((item, index) =>
+        createElement(
+          Fragment,
+          { key: keyExtractor ? keyExtractor(item, index) : index },
+          renderItem({ item, index })
+        )
+      )
+    },
+  }
+})
 
 const mockGoBack = jest.fn()
 jest.mock('@react-navigation/native', () => ({

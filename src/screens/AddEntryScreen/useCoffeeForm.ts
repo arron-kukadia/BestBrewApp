@@ -1,8 +1,10 @@
 import { useState, useEffect, useRef } from 'react'
 import { Alert } from 'react-native'
+import { useQueryClient } from '@tanstack/react-query'
 import { useAuthStore } from '@/stores/authStore'
 import { useCoffees, useCreateCoffee, useUpdateCoffee } from '@/api/useCoffees'
 import { imageService, isLocalUri } from '@/services/imageService'
+import { imageUrlKeys } from '@/hooks/useImageUrl'
 import { deleteLocalImage } from '@/helpers/image'
 import { CoffeeFormData } from '@/types'
 import { sanitizeFormField, sanitizePrice, sanitizeRating } from '@/helpers/sanitize'
@@ -29,6 +31,7 @@ const INITIAL_FORM_DATA: CoffeeFormData = {
 export const useCoffeeForm = (coffeeId?: string, onSuccess?: () => void) => {
   const user = useAuthStore((state) => state.user)
   const { data: coffees = [] } = useCoffees(user?.id)
+  const queryClient = useQueryClient()
   const createMutation = useCreateCoffee()
   const updateMutation = useUpdateCoffee()
 
@@ -165,15 +168,16 @@ export const useCoffeeForm = (coffeeId?: string, onSuccess?: () => void) => {
         }
 
         if (sanitized.imageUri && isLocalUri(sanitized.imageUri)) {
+          if (existingCoffee.imageUrl) {
+            await imageService.deleteImage(existingCoffee.imageUrl)
+          }
           const uploadResult = await imageService.uploadCoffeeImage(
             sanitized.imageUri,
             coffeeIdToUse
           )
           updates.imageUrl = uploadResult.key
           await deleteLocalImage(sanitized.imageUri)
-          if (existingCoffee.imageUrl) {
-            await imageService.deleteImage(existingCoffee.imageUrl)
-          }
+          queryClient.removeQueries({ queryKey: imageUrlKeys.signed(uploadResult.key) })
         }
 
         await updateMutation.mutateAsync(
