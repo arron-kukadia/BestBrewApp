@@ -2,7 +2,7 @@
 
 A modern coffee tracking app to log, rate, and discover your perfect coffee.
 NOTE: This app is currently in development and is not yet available for download. AI has been used to assist with the development of this app.
-**Now ready for download on the PlayStore!**: https://play.google.com/store/apps/details?id=com.bestbrew.app&hl=en_GB
+**Now released on the PlayStore**: https://play.google.com/store/apps/details?id=com.bestbrew.app&hl=en_GB
 
 ## Trello Board
 
